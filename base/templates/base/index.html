@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BigPartnerships</title>
+
+  <link rel="stylesheet" href="{% static 'base/css/index.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <!-- Loader -->
+  <div id="loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 9999;">
+    Loading...
+  </div>
+
+  <!-- Page Content -->
+  <div id="content" style="display: none;">
+    <nav class="navbar">
+   <h1 class="navname">
+    {% if request.tenant and request.tenant.name %}
+        {{ request.tenant.name }}
+    {% else %}
+        Tech.Io
+    {% endif %}
+</h1>
+
+      <div class="navlinks">
+        <ul class='ullinks'>
+          <li class="links"><a href="https://bigmoneypartnershipsociety.notion.site/330d0af0a54e4a8f992d7cb75334fce4?v=40bfa05d177b48bb988607b485b2a23b" target="_blank" style="text-decoration: none; color: white;">More</a></li>
+          <li class="links"><a href="?process=login" style="text-decoration: none; color: white;">Sign In</a></li>
+          <li class="links"><a href=""style="text-decoration: none; color: white;">Sign In</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="hero_sect">
+      <div class="hero">
+        <p>Welcome to <strong>BMS_BMP</strong>! Stay ahead in the freelance world with the latest updates, AI tools, and innovations. We bring you all the essential information to navigate and excel in the ever-evolving freelance industry. <em>Your journey to freelance success starts here.</em></p>
+        <a href=" class="btn" style="text-decoration: none;">Get Started</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #000; color: #fff; padding: 20px; text-align: center; margin-top: 20px;">
+      <p>&copy; 2025 BMS_BMP. All rights reserved.</p>
+      <div>
+        <a href="#" style="color: white; margin: 0 10px;">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" style="color: white; margin: 0 10px;">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" style="color: white; margin: 0 10px;">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" style="color: white; margin: 0 10px;">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    $(document).ready(function () {
+      // Show loader on page load with a delay of 5 seconds
+      setTimeout(function () {
+        $("#loader").fadeOut(500, function () {
+          $("#content").fadeIn(500);
+        });
+      }, 1500); // 5000 milliseconds = 5 seconds
+    });
+  </script>
+</body>
+
+</html>
