@@ -1,81 +1,245 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BigPartnerships</title>
-
-  <link rel="stylesheet" href="{% static 'base/css/index.css' %}">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMS Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <!-- Animated Background -->
+    <div class="gradient-bg fixed inset-0 z-0 opacity-50"></div>
 
-<body>
-  <!-- Loader -->
-  <div id="loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 9999;">
-    Loading...
-  </div>
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500">
+        <div class="loader-spinner"></div>
+    </div>
 
-  <!-- Page Content -->
-  <div id="content" style="display: none;">
-    <nav class="navbar">
-   <h1 class="navname">
-    {% if request.tenant and request.tenant.name %}
-        {{ request.tenant.name }}
-    {% else %}
-        Tech.Io
-    {% endif %}
-</h1>
+    <!-- Main Content -->
+    <div id="content" class="hidden">
+        <!-- Navigation -->
+        <nav class="fixed w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 flex items-center space-x-2">
+                            <div class="logo-container relative w-8 h-8">
+                                <div class="logo-square absolute w-full h-full bg-blue-600 transform rotate-45"></div>
+                                <div class="logo-square absolute w-full h-full bg-blue-500 transform rotate-12"></div>
+                            </div>
+                            <span class="text-xl font-bold text-gray-800 dark:text-white">
+                                {% if request.tenant and request.tenant.name %}
+                                    {{ request.tenant.name }}
+                                {% else %}
+                                    BMS Platform
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-sun text-gray-700 dark:text-gray-300"></i>
+                        </button>
+                        <a href="{% url 'account_login' %}?process=login"
+                           class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all
+                                  transform hover:scale-105 shadow-lg hover:shadow-blue-500/30">
+                           Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-      <div class="navlinks">
-        <ul class='ullinks'>
-          <li class="links"><a href="https://bigmoneypartnershipsociety.notion.site/330d0af0a54e4a8f992d7cb75334fce4?v=40bfa05d177b48bb988607b485b2a23b" target="_blank" style="text-decoration: none; color: white;">More</a></li>
-          <li class="links"><a href="?process=login" style="text-decoration: none; color: white;">Sign In</a></li>
-          <li class="links"><a href=""style="text-decoration: none; color: white;">Sign In</a></li>
-        </ul>
-      </div>
-    </nav>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center relative pt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6 hero-title">
+                    <span class="text-gradient">Partnership Management</span> Evolved
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Harness the power of AI-driven insights and real-time collaboration in our secure enterprise platform.
+                </p>
+                <div class="mt-8 flex justify-center space-x-4">
+                    <a href="{% url 'account_login' %}?process=login"
+                       class="cta-button relative overflow-hidden px-8 py-4 bg-blue-600 text-white rounded-lg
+                              transition-all duration-300 hover:bg-blue-700 transform hover:scale-105 shadow-2xl">
+                       <span class="relative z-10">Get Started</span>
+                       <div class="button-overlay absolute inset-0 bg-white opacity-0"></div>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <section class="hero_sect">
-      <div class="hero">
-        <p>Welcome to <strong>BMS_BMP</strong>! Stay ahead in the freelance world with the latest updates, AI tools, and innovations. We bring you all the essential information to navigate and excel in the ever-evolving freelance industry. <em>Your journey to freelance success starts here.</em></p>
-        <a href=" class="btn" style="text-decoration: none;">Get Started</a>
-      </div>
-    </section>
+        <!-- Features Section -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-3 gap-8 feature-grid">
+                    <!-- Feature cards will be populated by JS -->
+                </div>
+            </div>
+        </section>
 
-    <!-- Footer -->
-    <footer style="background: #000; color: #fff; padding: 20px; text-align: center; margin-top: 20px;">
-      <p>&copy; 2025 BMS_BMP. All rights reserved.</p>
-      <div>
-        <a href="#" style="color: white; margin: 0 10px;">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="#" style="color: white; margin: 0 10px;">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" style="color: white; margin: 0 10px;">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-        <a href="#" style="color: white; margin: 0 10px;">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <script>
-    $(document).ready(function () {
-      // Show loader on page load with a delay of 5 seconds
-      setTimeout(function () {
-        $("#loader").fadeOut(500, function () {
-          $("#content").fadeIn(500);
+        <!-- Stats Section -->
+        <div class="stats-bar fixed bottom-0 w-full bg-black/80 backdrop-blur-sm text-white py-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="99.9">0</span>% Uptime
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="256">0</span>bit Encryption
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="5000">0</span>+ Users
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loader Transition
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                    initializeAnimations();
+                }, 500);
+            }, 1500);
         });
-      }, 1500); // 5000 milliseconds = 5 seconds
-    });
-  </script>
-</body>
 
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Animated Gradient Background
+        function updateGradient(e) {
+            const x = e.clientX / window.innerWidth * 100;
+            const y = e.clientY / window.innerHeight * 100;
+            document.documentElement.style.setProperty('--gradient-x', `${x}%`);
+            document.documentElement.style.setProperty('--gradient-y', `${y}%`);
+        }
+        document.addEventListener('mousemove', updateGradient);
+
+        // Dynamic Feature Cards
+        function initializeAnimations() {
+            const features = [
+                { icon: 'shield-alt', title: 'Military Security', text: 'AES-256 encryption with zero-trust architecture' },
+                { icon: 'rocket', title: 'AI Analytics', text: 'Predictive insights powered by machine learning' },
+                { icon: 'infinity', title: 'Scalability', text: 'Enterprise-grade infrastructure for global operations' }
+            ];
+
+            const featureGrid = document.querySelector('.feature-grid');
+            features.forEach((feature, index) => {
+                const card = document.createElement('div');
+                card.className = `feature-card p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg
+                                transform transition-all hover:scale-105 cursor-pointer`;
+                card.innerHTML = `
+                    <div class="icon-container mb-4 text-blue-600 text-4xl">
+                        <i class="fas fa-${feature.icon}"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 dark:text-white">${feature.title}</h3>
+                    <p class="text-gray-600 dark:text-gray-400">${feature.text}</p>
+                `;
+                featureGrid.appendChild(card);
+            });
+
+            // Animate stats
+            document.querySelectorAll('.stat-number').forEach(element => {
+                const target = parseInt(element.dataset.target);
+                let current = 0;
+                const interval = setInterval(() => {
+                    current += Math.ceil(target / 50);
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(interval);
+                    }
+                    element.textContent = current;
+                }, 30);
+            });
+        }
+
+        // 3D Card Effect
+        document.addEventListener('mousemove', (e) => {
+            document.querySelectorAll('.feature-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.transform = `perspective(1000px) rotateX(${(y - rect.height/2)/20}deg) rotateY(${-(x - rect.width/2)/20}deg) scale(1.05)`;
+            });
+        });
+
+        // CTA Button Hover Effect
+        document.querySelector('.cta-button').addEventListener('mousemove', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            e.target.style.setProperty('--x', `${x}px`);
+            e.target.style.setProperty('--y', `${y}px`);
+        });
+    </script>
+
+    <style>
+        :root {
+            --gradient-x: 50%;
+            --gradient-y: 50%;
+        }
+
+        .gradient-bg {
+            background: radial-gradient(circle at var(--gradient-x) var(--gradient-y),
+                rgba(99, 102, 241, 0.1) 0%,
+                rgba(255, 255, 255, 0) 60%);
+            transition: background 0.3s ease-out;
+        }
+
+        .loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .text-gradient {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #3b82f6, #6366f1);
+        }
+
+        .button-overlay {
+            mask: radial-gradient(circle at var(--x) var(--y),
+                black 0%,
+                transparent 70%);
+            transition: opacity 0.3s;
+        }
+
+        .cta-button:hover .button-overlay {
+            opacity: 0.1;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stats-bar {
+            box-shadow: 0 -2px 30px rgba(0,0,0,0.1);
+        }
+    </style>
+</body>
 </html>

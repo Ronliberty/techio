@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Command Center</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .grid-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: minmax(200px, auto);
+            gap: 1.5rem;
+        }
+
+        .dashboard-card {
+            @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 transition-all;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .data-grid {
+            @apply rounded-lg overflow-hidden;
+            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 h-full" x-data="{
+    // Management System State
+    modules: {
+        finance: true,
+        users: true,
+        analytics: true,
+        infra: true,
+        compliance: true
+    },
+    quickStats: {
+        activeUsers: '2.4k',
+        pendingActions: 18,
+        systemHealth: 94.5,
+        apiCalls: '1.2m'
+    },
+    systemStatus: [
+        { service: 'Database', status: 'operational', latency: '42ms' },
+        { service: 'API Gateway', status: 'degraded', latency: '312ms' },
+        { service: 'Storage', status: 'maintenance', latency: 'N/A' }
+    ],
+    init() {
+        // Initialize real-time updates
+        setInterval(() => {
+            this.quickStats.apiCalls = Math.floor(Math.random() * 50000 + 1150000).toLocaleString();
+        }, 3000);
+    }
+}">
+<div class="min-h-screen flex">
+    <!-- Enhanced Side Navigation -->
+    <aside class="w-20 lg:w-64 bg-gray-900 dark:bg-gray-950 h-screen fixed flex flex-col">
+        <div class="p-4 border-b border-gray-800">
+            <div class="flex items-center space-x-3">
+                <div class="bg-purple-600 w-8 h-8 rounded-lg flex items-center justify-center">
+                    <i class='bx bx-chip text-xl text-white'></i>
+                </div>
+                <span class="text-white font-semibold hidden lg:block">CommandOS</span>
+            </div>
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+               href="#">
+                <i class='bx bx-compass text-xl'></i>
+                <span class="hidden lg:block">Overview</span>
+            </a>
+            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+               href="#">
+                <i class='bx bx-server text-xl'></i>
+                <span class="hidden lg:block">Infrastructure</span>
+            </a>
+            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+               href="">
+                <i class='bx bx-shield-quarter text-xl'></i>
+                <span class="hidden lg:block">Security</span>
+            </a>
+            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+               href="{% url 'logout' %}">
+                <i class='bx bx-log-out text-xl'></i>
+                <span class="hidden lg:block">Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 ml-20 lg:ml-64 p-6 space-y-6">
+        <!-- Status Bar -->
+        <div class="flex flex-wrap gap-4">
+            <div class="flex-1 min-w-[300px] bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-xl text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm opacity-75">Global Systems Status</p>
+                        <p class="text-2xl font-bold">All Systems Operational</p>
+                    </div>
+                    <i class='bx bx-cloud-lightning text-3xl'></i>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <template x-for="([key, value], index) in Object.entries(quickStats)" :key="index">
+                <div class="dashboard-card flex-1 min-w-[200px]">
+                    <p class="text-sm text-gray-500 mb-1" x-text="key.replace(/([A-Z])/g, ' $1').toUpperCase()"></p>
+                    <p class="text-2xl font-bold dark:text-white" x-text="value"></p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Management Grid -->
+        <div class="grid-stack">
+            <!-- Financial Module -->
+            <div class="dashboard-card" x-show="modules.finance">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold dark:text-white">Financial Overview</h3>
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-purple-600">
+                            <i class='bx bx-dots-horizontal-rounded'></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-gray-500">Monthly Revenue</p>
+                            <p class="text-lg font-bold dark:text-white">$2.8M</p>
+                        </div>
+                        <div class="text-green-500 flex items-center">
+                            <i class='bx bx-up-arrow-alt'></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div class="dashboard-card" x-show="modules.users">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold dark:text-white">User Activity</h3>
+                    <button class="text-purple-600 hover:text-purple-700 text-sm flex items-center">
+                        <i class='bx bx-plus mr-1'></i> Add User
+                    </button>
+                </div>
+                <div class="data-grid">
+                    <table class="w-full text-sm">
+                        <thead class="text-left text-gray-500 dark:text-gray-400">
+                            <tr>
+                                <th class="pb-2">User</th>
+                                <th class="pb-2">Role</th>
+                                <th class="pb-2">Last Active</th>
+                            </tr>
+                        </thead>
+                        <tbody class="dark:text-gray-300 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="py-2">Admin User</td>
+                                <td>Super Admin</td>
+                                <td>2m ago</td>
+                            </tr>
+                            <!-- Additional rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="dashboard-card" x-show="modules.infra">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold dark:text-white">Infrastructure Status</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span class="text-sm">All Systems</span>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <template x-for="service in systemStatus" :key="service.service">
+                        <div class="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                            <div>
+                                <p x-text="service.service" class="font-medium"></p>
+                                <p x-text="service.latency" class="text-sm text-gray-500"></p>
+                            </div>
+                            <span x-text="service.status"
+                                  class="px-2 py-1 rounded-full text-xs capitalize"
+                                  :class="{
+                                    'bg-green-100 text-green-800': service.status === 'operational',
+                                    'bg-yellow-100 text-yellow-800': service.status === 'degraded',
+                                    'bg-gray-100 text-gray-800': service.status === 'maintenance'
+                                  }"></span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

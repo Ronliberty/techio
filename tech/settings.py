@@ -53,6 +53,10 @@ SHARED_APPS = [
     'subs',
     'base',
     'custom',
+    'shop',
+    'community',
+    'pay',
+    'agent'
 ]
 
 TENANT_APPS = [
@@ -64,7 +68,8 @@ TENANT_APPS = [
     'hom',
     'service',
     'rooms',
-    'portfolio'
+    'portfolio',
+    'bms'
 ]
 
 INSTALLED_APPS = SHARED_APPS + TENANT_APPS  # No need to filter duplicates
@@ -115,6 +120,17 @@ TENANT_DOMAIN_MODEL = "subs.Domain"
 SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': 'saas',
+        'USER': 'postgres',
+        'PASSWORD': 'covid@2019',
+        'HOST': 'localhost',  # Change if using a remote DB
+        'PORT': '5432',  # Default PostgreSQL port
+  }
+ }
 
 AUTH_PASSWORD_VALIDATORS = [
     # {
