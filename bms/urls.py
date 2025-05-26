@@ -24,14 +24,11 @@ from .views import (
     RequestView,
     DetailUserRequestView,
     DeleteUserRequestView,
-    DetailRequestView,
-    RequestListsView,
     CreateResponseView,
     DetailResponseView,
     ListResponseView,
     DeleteResponseView,
-    UserResponseView,
-    UserDetailedResponseView
+
 
 )
 
@@ -87,20 +84,17 @@ urlpatterns = [
     path('user/request/<slug:slug>/', DetailUserRequestView.as_view(), name='user-request'),
     path('delete/request/<slug:slug>/', DeleteUserRequestView.as_view(), name='delete-request'),
 
-    #manager
-    path('detail/request/<slug:slug>/', DetailRequestView.as_view(), name='detail-request'),
-    path('list/requests/', RequestListsView.as_view(), name='list-manager'),
+
 
 
     #response
-    #manager
+
     path('create/response/<slug:slug>/', CreateResponseView.as_view(), name='response-create'),
     path('response/detail/<slug:slug>/', DetailResponseView.as_view(), name='detail-response'),
     path('list/response/', ListResponseView.as_view(), name='list-response'),
     path('delete/response/<slug:slug>/', DeleteResponseView.as_view(), name='delete-response'),
 
-    #default
-    path('user/response/', UserResponseView.as_view(), name='user-response'),
-    path('detailed/response/<slug:slug>/', UserDetailedResponseView.as_view(), name='detailed-response'),
+
+
 
     ]
