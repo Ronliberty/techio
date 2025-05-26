@@ -16,10 +16,10 @@ class  PostListView(GroupRequiredMixin, LoginRequiredMixin, ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/post-list.html']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/post-list.html']
+        return ['bms/default/post-list.html']
 
 
 class PostDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
@@ -31,10 +31,10 @@ class PostDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class PostCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Post
@@ -49,10 +49,10 @@ class PostCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class PostDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
@@ -64,10 +64,10 @@ class PostDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class NewsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     model = News
@@ -75,10 +75,10 @@ class NewsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class NewsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
@@ -90,10 +90,10 @@ class NewsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = News
@@ -108,10 +108,10 @@ class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class NewsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
@@ -123,10 +123,10 @@ class NewsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class ToolsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -135,10 +135,10 @@ class ToolsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class ToolsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
@@ -150,10 +150,10 @@ class ToolsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class ToolsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Tool
@@ -167,10 +167,10 @@ class ToolsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class ToolsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
@@ -182,10 +182,10 @@ class ToolsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class SkillsView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -194,10 +194,10 @@ class SkillsView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class SkillsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = Skill
@@ -208,10 +208,10 @@ class SkillsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class SkillsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Skill
@@ -225,10 +225,10 @@ class SkillsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class SkillsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
@@ -240,10 +240,10 @@ class SkillsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 
 class ServiceListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -252,10 +252,10 @@ class ServiceListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class CreateServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Service
@@ -269,10 +269,10 @@ class CreateServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DeleteServiceView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = Service
@@ -284,10 +284,10 @@ class DeleteServiceView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DetailServiceView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = Service
@@ -299,10 +299,10 @@ class DetailServiceView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class CreateRequestServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = ServiceRequest
@@ -316,10 +316,10 @@ class CreateRequestServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class RequestView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     model = ServiceRequest
@@ -327,10 +327,10 @@ class RequestView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DetailUserRequestView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = ServiceRequest
@@ -341,10 +341,10 @@ class DetailUserRequestView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DeleteUserRequestView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = ServiceRequest
@@ -355,10 +355,10 @@ class DeleteUserRequestView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class CreateResponseView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = ServiceResponse
@@ -373,10 +373,10 @@ class CreateResponseView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DetailResponseView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = ServiceResponse
@@ -388,10 +388,10 @@ class DetailResponseView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class ListResponseView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     model = ServiceResponse
@@ -399,10 +399,10 @@ class ListResponseView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
 class DeleteResponseView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = ServiceResponse
@@ -412,8 +412,8 @@ class DeleteResponseView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     def get_template_names(self):
         user = self.request.user
         if user.groups.filter(name='manager').exists():
-            return ['']
+            return ['bms/manager/']
         elif user.groups.filter(name='agent').exists():
-            return ['']
-        return ['']
+            return ['bms/agent/']
+        return ['bms/default/']
 
