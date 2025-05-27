@@ -8,6 +8,9 @@ User = settings.AUTH_USER_MODEL
 class ChatGroup(models.Model):
     name = models.CharField(max_length=255)
     members = models.ManyToManyField(User, related_name="chat_groups")
+    admin = models.ForeignKey(User, related_name='groupchats', blank=True, null=True, on_delete=models.SET_NULL)
+    users_online = models.ManyToManyField(User, related_name='online_in_groups', blank=True)
+    is_private = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
