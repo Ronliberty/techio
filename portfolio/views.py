@@ -19,7 +19,7 @@ from django.template.loader import render_to_string
 
 class ContactSubmissionListView(ListView):
     model = ContactSubmission
-    template_name = 'base/subs.html'
+    template_name = 'portfolio/contact/subs.html'
     context_object_name = 'submissions'
 
     def get(self, request, *args, **kwargs):
@@ -32,7 +32,7 @@ class ContactSubmissionListView(ListView):
 
 class ContactSubmissionDetailView(DetailView):
     model = ContactSubmission
-    template_name = 'base/detail.html'
+    template_name = 'portfolio/contact/detail.html'
     context_object_name = 'submission'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
@@ -46,13 +46,13 @@ class ContactSubmissionDetailView(DetailView):
 
 class HeroContentDetailView(DetailView):
     model = HeroContent
-    template_name = "base/hero/detail.html"
+    template_name = "portfolio/hero/detail.html"
     context_object_name = "hero"
 
 class HeroContentCreateView(CreateView):
     model = HeroContent
     form_class = HeroContentForm
-    template_name = "base/hero/form.html"
+    template_name = "portfolio/hero/form.html"
     success_url = reverse_lazy("base:hero_list")
 
     def form_valid(self, form):
@@ -61,7 +61,7 @@ class HeroContentCreateView(CreateView):
 
 class HeroContentDeleteView(DeleteView):
     model = HeroContent
-    template_name = "base/hero/delete.html"
+    template_name = "portfolio/hero/delete.html"
     success_url = reverse_lazy("base:hero_list")
 
     def delete(self, request, *args, **kwargs):
@@ -71,7 +71,7 @@ class HeroContentDeleteView(DeleteView):
 
 class HeroContentListView(ListView):
     model = HeroContent
-    template_name = "base/hero/list.html"
+    template_name = "portfolio/hero/list.html"
     context_object_name = "heroes"
 
 class HeroContentUpdateView(UpdateView):
@@ -88,7 +88,7 @@ class HeroContentUpdateView(UpdateView):
 
 class ProjectsListView(ListView):
     model = Project
-    template_name = "base/projects/projects.html"
+    template_name = "portfolio/projects/list.html"
     context_object_name = 'projects'
 
 class ProjectDetailView(DetailView):
@@ -99,7 +99,7 @@ class ProjectDetailView(DetailView):
 class ProjectCreateView(CreateView):
     model = Project
     form_class = ProjectForm
-    template_name = "base/projects/form.html"
+    template_name = "portfolio/projects/form.html"
     success_url = reverse_lazy("base:project_list")
 
     def form_valid(self, form):
@@ -108,7 +108,7 @@ class ProjectCreateView(CreateView):
 
 class ProjectDeleteView(DeleteView):
     model = Project
-    template_name = "base/projects/delete.html"
+    template_name = "portfolio/projects/delete.html"
     success_url = reverse_lazy("base:project_list")
 
     def delete(self, request, *args, **kwargs):
@@ -126,7 +126,7 @@ class ProjectUpdateView(SuccessMessageMixin, UpdateView):
 
 class SkillsListView(ListView):
     model = SkillCategory
-    template_name = "base/skill/skills_list.html"
+    template_name = "portfolio/skill/list.html"
     context_object_name = 'skill_categories'
 
     def get_queryset(self):
@@ -135,13 +135,13 @@ class SkillsListView(ListView):
 class SkillCreateView(CreateView):
     model = Skill
     form_class = SkillForm
-    template_name = 'base/skill/skill_form.html'
+    template_name = 'portfolio/skill/form.html'
     success_url = reverse_lazy('skills_list')
 
 class SkillCategoryUpdateView(SuccessMessageMixin, UpdateView):
     model = SkillCategory
     form_class = SkillCategoryForm
-    template_name = 'base/partials/skill_category_form.html'
+    template_name = 'portfolio/partials/category_form.html'
     success_message = "Skill category updated successfully"
 
     def get_success_url(self):
@@ -149,7 +149,7 @@ class SkillCategoryUpdateView(SuccessMessageMixin, UpdateView):
 
 class SkillDeleteView(DeleteView):
     model = Skill
-    template_name = 'base/skills/skill_confirm_delete.html'
+    template_name = 'portfolio/skills/delete.html'
     success_url = reverse_lazy('base:skills_list')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
@@ -166,7 +166,7 @@ class SkillDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 class ContactInfoView(TemplateView):
-    template_name = "base/partials/contact.html"
+    template_name = "portfolio/partials/contact.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -176,7 +176,7 @@ class ContactInfoView(TemplateView):
 
 class ContactInfoListView(ListView):
     model = ContactInfo
-    template_name = "base/contact/list.html"
+    template_name = "portfolio/contact/list.html"
     context_object_name = "contacts"
 
 
@@ -213,11 +213,11 @@ class ContactInfoUpdateView(UpdateView):
 
 class ContactInfoDeleteView(DeleteView):
     model = ContactInfo
-    template_name = "base/contact/confirm_delete.html"
+    template_name = "portfolio/contact/delete.html"
     success_url = reverse_lazy("base:contact_info_list")
 
 class FooterContentView(TemplateView):
-    template_name = "base/partials/footer.html"
+    template_name = "portfolio/partials/footer.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -236,22 +236,22 @@ class FooterContentView(TemplateView):
 
 class SocialLinkListView(ListView):
     model = SocialLink
-    template_name = "base/socials/list.html"
+    template_name = "portfolio/socials/list.html"
     context_object_name = "social_links"
 
 class SocialLinkCreateView(CreateView):
     model = SocialLink
     form_class = SocialLinkForm
-    template_name = "base/socials/form.html"
+    template_name = "portfolio/socials/form.html"
     success_url = reverse_lazy("base:social_list")
 
 class SocialLinkUpdateView(UpdateView):
     model = SocialLink
     form_class = SocialLinkForm
-    template_name = "base/socials/form.html"
+    template_name = "portfolio/socials/form.html"
     success_url = reverse_lazy("base:social_list")
 
 class SocialLinkDeleteView(DeleteView):
     model = SocialLink
-    template_name = "base/socials/delete.html"
+    template_name = "portfolio/socials/delete.html"
     success_url = reverse_lazy("base:social_list")

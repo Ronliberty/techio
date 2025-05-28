@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | BMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#1e3a8a',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'base:index' %}" class="text-xl font-bold text-primary">BMS</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'base:index' %}" class="text-gray-700 hover:text-primary transition">Home</a>
+                    <a href="{% url 'base:infor-index' %}" class="text-gray-700 hover:text-primary transition">Help Center</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition">Features</a>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'base:index' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="{% url 'base:infor-index' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Help Center</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Features</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+            <div class="text-center">
+                <div class="mx-auto h-24 w-24 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-clock text-4xl text-primary animate-pulse-slow"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Welcome to BMS</h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Welcome dear user! This feature is not currently available but will be coming soon.
+                    We're working hard to bring you this exciting new functionality.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+                    <a href="{% url 'base:infor-index' %}" class="bg-primary text-white px-6 py-3 rounded-md hover:bg-secondary transition flex items-center justify-center space-x-2">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Get Help</span>
+                    </a>
+                    <a href="{% url 'base:index' %}" class="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-50 transition flex items-center justify-center space-x-2">
+                        <i class="fas fa-home"></i>
+                        <span>Return Home</span>
+                    </a>
+                </div>
+
+                <!-- Progress/Countdown Section -->
+                <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden mb-12">
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Feature Development Progress</h3>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>Development</span>
+                                <span>75% complete</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">
+                            Estimated release: <span class="font-medium">November 15, 2023</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Notify Me Section -->
+                <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Notify me when it's ready</h3>
+                        <div class="flex">
+                            <input type="email" placeholder="Your email address" class="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:ring-primary focus:border-primary">
+                            <button class="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-secondary transition">
+                                Subscribe
+                            </button>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">
+                            We'll send you one email when this feature is available. No spam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Related Features Section -->
+    <section class="bg-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">Explore Available Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="p-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Analytics Dashboard</h3>
+                        <p class="text-gray-600 mb-4">Get real-time insights with our comprehensive analytics tools.</p>
+                        <a href="#" class="text-primary hover:text-secondary font-medium flex items-center">
+                            Learn more <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="p-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-users-cog text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">User Management</h3>
+                        <p class="text-gray-600 mb-4">Easily manage user roles, permissions, and access controls.</p>
+                        <a href="#" class="text-primary hover:text-secondary font-medium flex items-center">
+                            Learn more <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="p-6">
+                        <div class="bg-primary bg-opacity-10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-file-export text-primary"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Reporting Tools</h3>
+                        <p class="text-gray-600 mb-4">Generate and export detailed reports in multiple formats.</p>
+                        <a href="#" class="text-primary hover:text-secondary font-medium flex items-center">
+                            Learn more <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">BMS</h3>
+                    <p class="text-gray-300 mb-4">
+                        Business Management System that helps you streamline operations and grow your business.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'base:index' %}" class="text-gray-300 hover:text-white transition">Home</a></li>
+                        <li><a href="{% url 'base:help-center' %}" class="text-gray-300 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Features</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-300"><i class="fas fa-envelope mr-2"></i> support@bms.example</li>
+                        <li class="flex items-center text-gray-300"><i class="fas fa-phone mr-2"></i> +1 (555) 123-4567</li>
+                        <li class="flex items-center text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i> 123 Business St, City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2023 BMS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DOM Manipulation Script -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Email subscription handling
+        const subscribeBtn = document.querySelector('.bg-primary.text-white.px-4.py-2.rounded-r-md');
+        if (subscribeBtn) {
+            subscribeBtn.addEventListener('click', function() {
+                const emailInput = this.previousElementSibling;
+                if (emailInput.value && emailInput.value.includes('@')) {
+                    // In a real app, you would send this to your backend
+                    console.log('Subscribed email:', emailInput.value);
+                    alert('Thank you! We will notify you when this feature is available.');
+                    emailInput.value = '';
+                } else {
+                    alert('Please enter a valid email address');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

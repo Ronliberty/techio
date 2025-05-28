@@ -137,7 +137,7 @@ class InvoiceDeleteView(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
 class AnalyticsCreateView(UserPassesTestMixin, LoginRequiredMixin, CreateView):
     model = Analytics
     form_class = AnalyticForm
-    template_name = 'pay/form.html'
+    template_name = 'pay/analytics-form.html'
 
     success_url = reverse_lazy('pay:analytics-list')
     def test_func(self):
@@ -152,7 +152,7 @@ class AnalyticsCreateView(UserPassesTestMixin, LoginRequiredMixin, CreateView):
 class AnalyticsUpdateView(UserPassesTestMixin, LoginRequiredMixin, CreateView):
     model = Analytics
     form_class = AnalyticForm
-    template_name = 'pay/form.html'
+    template_name = 'pay/analytics-form.html'
 
     success_url = reverse_lazy('pay:analytics-list')
     def test_func(self):

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center | BMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#1e3a8a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'base:index' %}" class="text-xl font-bold text-primary">BMS</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'base:index' %}" class="text-gray-700 hover:text-primary transition">Home</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition">Support</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition">Contact</a>
+                </div>
+                <div class="-mr-2 flex items-center md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'base:index' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Home</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Support</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-primary text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">How Can We Help?</h1>
+            <div class="max-w-3xl mx-auto relative">
+                <input type="text" placeholder="Search help articles..." class="w-full py-4 px-6 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
+                <button class="absolute right-2 top-2 bg-accent text-white py-2 px-6 rounded-md hover:bg-secondary transition">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Left Column - Categories -->
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-md p-6 sticky top-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">Help Categories</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-primary hover:text-secondary transition block py-2 px-3 rounded hover:bg-gray-100">Getting Started</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Account Settings</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Billing & Payments</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Privacy & Security</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Troubleshooting</a></li>
+                    </ul>
+
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Popular Articles</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">How to reset your password</a></li>
+                            <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Understanding your invoice</a></li>
+                            <li><a href="#" class="text-gray-700 hover:text-primary transition block py-2 px-3 rounded hover:bg-gray-100">Two-factor authentication setup</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Content -->
+            <div class="md:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Frequently Asked Questions</h2>
+
+                    <!-- FAQ Accordion -->
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="faq-toggle w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition">
+                                <span class="text-left font-medium text-gray-800">How do I create an account?</span>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content hidden p-4 bg-white">
+                                <p class="text-gray-600">To create an account, click on the "Sign Up" button at the top right corner of our homepage. You'll need to provide your name, email address, and create a password. After submitting the form, you'll receive a confirmation email to verify your account.</p>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="faq-toggle w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition">
+                                <span class="text-left font-medium text-gray-800">What payment methods do you accept?</span>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content hidden p-4 bg-white">
+                                <p class="text-gray-600">We accept all major credit cards including Visa, MasterCard, American Express, and Discover. We also support payments through PayPal and Apple Pay for your convenience.</p>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="faq-toggle w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition">
+                                <span class="text-left font-medium text-gray-800">How can I cancel my subscription?</span>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content hidden p-4 bg-white">
+                                <p class="text-gray-600">You can cancel your subscription at any time by going to your Account Settings > Billing. Click on "Cancel Subscription" and follow the prompts. Your subscription will remain active until the end of your current billing period.</p>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="faq-toggle w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition">
+                                <span class="text-left font-medium text-gray-800">Where can I download my invoices?</span>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content hidden p-4 bg-white">
+                                <p class="text-gray-600">All your invoices are available in your Account Dashboard under the Billing section. You can view, download, or print them as PDFs. We also email you a copy of each invoice when payment is processed.</p>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <button class="faq-toggle w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition">
+                                <span class="text-left font-medium text-gray-800">How do I contact customer support?</span>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </button>
+                            <div class="faq-content hidden p-4 bg-white">
+                                <p class="text-gray-600">Our customer support team is available 24/7. You can reach us through the live chat feature on our website, by emailing support@yourcompany.com, or by calling our toll-free number at 1-800-123-4567.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Agents Section -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Contact Our Support Agents</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fas fa-headset text-xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg">Live Chat</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">Get instant help from our support agents through live chat. Available 24/7 for all customers.</p>
+                            <button class="bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition">Start Chat</button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-lg">Email Support</h3>
+                            </div>
+                            <p class="text-gray-600 mb-4">Send us an email and we'll respond within 1 business day. Include all relevant details.</p>
+                            <button class="bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition">Email Us</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Help Resources -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Additional Resources</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center">
+                                <i class="fas fa-book-open text-primary mr-2"></i> Knowledge Base
+                            </h3>
+                            <p class="text-gray-600 mb-4">Browse our comprehensive library of articles, tutorials, and guides.</p>
+                            <button class="text-primary hover:text-secondary transition font-medium">Explore Resources →</button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center">
+                                <i class="fas fa-video text-primary mr-2"></i> Video Tutorials
+                            </h3>
+                            <p class="text-gray-600 mb-4">Watch step-by-step video guides to help you get the most from our platform.</p>
+                            <button class="text-primary hover:text-secondary transition font-medium">Watch Videos →</button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center">
+                                <i class="fas fa-users text-primary mr-2"></i> Community Forum
+                            </h3>
+                            <p class="text-gray-600 mb-4">Connect with other users and experts to get answers and share ideas.</p>
+                            <button class="text-primary hover:text-secondary transition font-medium">Join Community →</button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition">
+                            <h3 class="font-semibold text-lg mb-3 flex items-center">
+                                <i class="fas fa-calendar-alt text-primary mr-2"></i> Webinars
+                            </h3>
+                            <p class="text-gray-600 mb-4">Join our live training sessions or watch recorded webinars on demand.</p>
+                            <button class="text-primary hover:text-secondary transition font-medium">View Schedule →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="bg-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">Was this information helpful?</h2>
+            <p class="text-gray-600 mb-6">Let us know how we can improve our help center</p>
+            <div class="flex justify-center space-x-4">
+                <button class="feedback-btn bg-green-100 text-green-800 py-2 px-6 rounded-md hover:bg-green-200 transition" data-feedback="yes">
+                    <i class="far fa-thumbs-up mr-2"></i> Yes
+                </button>
+                <button class="feedback-btn bg-red-100 text-red-800 py-2 px-6 rounded-md hover:bg-red-200 transition" data-feedback="no">
+                    <i class="far fa-thumbs-down mr-2"></i> No
+                </button>
+            </div>
+            <div id="feedback-form" class="hidden max-w-md mx-auto mt-6">
+                <textarea class="w-full p-3 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" placeholder="What can we improve?"></textarea>
+                <button class="mt-3 bg-primary text-white py-2 px-6 rounded-md hover:bg-secondary transition">Submit Feedback</button>
+            </div>
+            <div id="feedback-thanks" class="hidden text-green-600 mt-4">
+                <i class="fas fa-check-circle mr-2"></i> Thank you for your feedback!
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Press</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Features</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Integrations</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Updates</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Status</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-300">© 2023 YourCompany. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DOM Manipulation Script -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+
+                // Toggle content
+                content.classList.toggle('hidden');
+
+                // Rotate icon
+                icon.classList.toggle('rotate-180');
+
+                // Close other open FAQs
+                document.querySelectorAll('.faq-content').forEach(item => {
+                    if (item !== content && !item.classList.contains('hidden')) {
+                        item.classList.add('hidden');
+                        item.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        // Feedback buttons
+        document.querySelectorAll('.feedback-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const feedback = this.getAttribute('data-feedback');
+                const form = document.getElementById('feedback-form');
+                const thanks = document.getElementById('feedback-thanks');
+
+                if (feedback === 'no') {
+                    form.classList.remove('hidden');
+                    thanks.classList.add('hidden');
+                } else {
+                    form.classList.add('hidden');
+                    thanks.classList.remove('hidden');
+                    setTimeout(() => {
+                        thanks.classList.add('hidden');
+                    }, 3000);
+                }
+            });
+        });
+
+        // Submit feedback form
+        const feedbackForm = document.getElementById('feedback-form');
+        if (feedbackForm) {
+            feedbackForm.querySelector('button').addEventListener('click', function() {
+                const textarea = feedbackForm.querySelector('textarea');
+                // Here you would typically send the feedback to your server
+                console.log('Feedback submitted:', textarea.value);
+
+                feedbackForm.classList.add('hidden');
+                document.getElementById('feedback-thanks').classList.remove('hidden');
+                textarea.value = '';
+
+                setTimeout(() => {
+                    document.getElementById('feedback-thanks').classList.add('hidden');
+                }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>

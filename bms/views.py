@@ -98,6 +98,7 @@ class NewsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
 class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = News
     form_class = NewsForm
+    template_name = 'bms/manager/news-create.html'
     success_url = reverse_lazy('')
 
     def form_valid(self, form):
@@ -105,28 +106,17 @@ class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
         return super().form_valid(form)
 
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/news-create.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/news-create.html']
-        return ['bms/default/news-create.html']
+
 
 
 class NewsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = News
+    template_name = 'bms/manager/news-delete.html'
     success_url = reverse_lazy('')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/news-delete.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/news-delete.html']
-        return ['bms/default/news-delete.html']
+
 
 
 class ToolsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -157,6 +147,7 @@ class ToolsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
 
 class ToolsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Tool
+    template_name = 'bms/manager/tools-create.html'
     form_class = ToolForm
     success_url = reverse_lazy('')
 
@@ -164,28 +155,17 @@ class ToolsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/tools-create.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/tools-create.html']
-        return ['bms/default/tools-create.html']
+
 
 
 class ToolsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = Tool
+    template_name = 'tools-delete.html'
     success_url = reverse_lazy('')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/tools-delete.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/tools-delete.html']
-        return ['bms/default/tools-delete.html']
+
 
 
 class SkillsView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -215,6 +195,7 @@ class SkillsDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
 
 class SkillsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Skill
+    template_name = 'bms/manager/skill-create.html'
     form_class = SkillForm
     success_url = reverse_lazy('')
 
@@ -222,28 +203,16 @@ class SkillsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/skill-create.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/skill-create.html']
-        return ['bms/default/skill-create.html']
 
 
 class SkillsDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = Skill
     success_url = reverse_lazy('')
+    template_name = 'bms/manager/skill-delete.html'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/skill-delete.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/skill-delete.html']
-        return ['bms/default/skill-delete.html']
+
 
 
 class ServiceListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
@@ -259,6 +228,7 @@ class ServiceListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
 
 class CreateServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Service
+    template_name = 'bms/manager/service-create.html'
     form_class = ServiceForm
     success_url = reverse_lazy('')
 
@@ -266,28 +236,16 @@ class CreateServiceView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/service-create.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/service-create.html']
-        return ['bms/default/service-create.html']
 
 class DeleteServiceView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = Service
+    template_name = 'bms/manager/delete-service.html'
 
     success_url = reverse_lazy('')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/delete-service.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/delete-service.html']
-        return ['bms/default/delete-service.html']
+
 
 class DetailServiceView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = Service
@@ -362,7 +320,7 @@ class DeleteUserRequestView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
 
 class CreateResponseView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = ServiceResponse
-
+    template_name = 'bms/manager/create-response.html'
     form_class = ResponseForm
     success_url = reverse_lazy('')
 
@@ -370,13 +328,6 @@ class CreateResponseView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/create-response.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/create-response.html']
-        return ['bms/default/create-response.html']
 
 class DetailResponseView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
     model = ServiceResponse
@@ -406,14 +357,9 @@ class ListResponseView(GroupRequiredMixin, LoginRequiredMixin,ListView):
 
 class DeleteResponseView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = ServiceResponse
+    template_name = 'bms/manager/response-delete.html'
     success_url = reverse_lazy('')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/response-delete.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/response-delete.html']
-        return ['bms/default/response-delete.html']
+
 
