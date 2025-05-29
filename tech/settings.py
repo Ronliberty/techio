@@ -69,7 +69,9 @@ TENANT_APPS = [
     'service',
     'rooms',
     'portfolio',
-    'bms'
+    'bms',
+    'skillsync',
+    'todo'
 ]
 
 INSTALLED_APPS = SHARED_APPS + TENANT_APPS  # No need to filter duplicates

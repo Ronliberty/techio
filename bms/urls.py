@@ -7,6 +7,7 @@ from .views import (
     NewsListView,
     NewsDetailView,
     NewsCreateView,
+    NewsUpdateView,
     NewsDeleteView,
     ToolsListView,
     ToolsDetailView,
@@ -48,6 +49,7 @@ urlpatterns = [
     path('news/', NewsListView.as_view(), name='news-list'),
     path('news/<slug:slug>/', NewsDetailView.as_view(), name='news-detail'),
     path('create/news/', NewsCreateView.as_view(), name='news-create'),
+    path('update/news/<slug:slug>/', NewsUpdateView.as_view(), name='news-update'),
     path('delete/news/<slug:slug>/', NewsDeleteView.as_view(), name='delete-news'),
 
 

@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div>
+    {% for post in posts %}
+        <div>
+            <p>
+                {{ post.title }}
+            </p>
 
-</body>
-</html>
+            <p >
+                {{ post.description }}
+            </p>
+
+            <h1 >
+                Check Out This
+            </h1>
+
+            <div class="mb-4">
+                <a href="{% url 'bms:post-detail' post.slug %}"
+                  >
+                    Click Here!
+                </a>
+            </div>
+
+            {% if post.link %}
+                <div >
+                    <iframe class="w-full h-64 md:h-96 rounded-lg mx-auto"
+                            src="{{ post.link }}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p >
+            No posts available.
+        </p>
+    {% endfor %}
+</div>

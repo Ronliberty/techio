@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="container">
+    <h2>Response Details</h2>
+    <p><strong>Service:</strong> {{ response.service_request.service.name }}</p>
+    <p><strong>Message:</strong> {{ response.message }}</p>
+    <p><strong>Responded By:</strong> {{ response.created_by }}</p>
+    <p><strong>Response Date:</strong> {{ response.created_at }}</p>
 
-</body>
-</html>
+    <a href="{% url 'bms:list-response' %}" class="btn btn-secondary">Back to Responses</a>
+</div>

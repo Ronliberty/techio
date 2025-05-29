@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="container">
+    <h2>My Responses</h2>
+    <div id="response-list">
+        {% for response in response %}
+            <div class="response-card">
+                <h3><a href="{% url 'bms:detail-response' response.slug %}">{{ response.service_request.service.name }}</a></h3>
+                <p><strong>Response:</strong> {{ response.message }}</p>
+                <p><strong>Responded At:</strong> {{ response.created_at }}</p>
+            </div>
+        {% empty %}
+            <p>No responses available.</p>
+        {% endfor %}
+    </div>
+</div>

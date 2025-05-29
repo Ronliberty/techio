@@ -1,5 +1,5 @@
 
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, TemplateView, UpdateView
 from django.shortcuts import render
 from .models import Post, News, Tool, Skill, Service, ServiceResponse, ServiceRequest
 from .forms import PostForm, NewsForm, ToolForm, SkillForm, RequestForm, ResponseForm, ServiceForm
@@ -38,36 +38,24 @@ class PostDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
 
 class PostCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Post
+    template_name = 'bms/default/post-create.html'
     form_class = PostForm
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('bms:tools-list')
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/post-create.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/post-create.html']
-        return ['bms/default/post-create.html']
-
 
 class PostDeleteView(GroupRequiredMixin, LoginRequiredMixin,DeleteView):
     model = Post
-    success_url = reverse_lazy('')
+    template_name = 'bms/default/post-delete.html'
+    success_url = reverse_lazy('bms:tools-detail')
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['bms/manager/post-delete.html']
-        elif user.groups.filter(name='agent').exists():
-            return ['bms/agent/post-delete.html']
-        return ['bms/default/post-delete.html']
+
 
 class NewsListView(GroupRequiredMixin, LoginRequiredMixin,ListView):
     model = News
@@ -99,12 +87,18 @@ class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = News
     form_class = NewsForm
     template_name = 'bms/manager/news-create.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('bms:news-list')
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
+
+class NewsUpdateView(GroupRequiredMixin, LoginRequiredMixin,UpdateView):
+    model = News
+    form_class = NewsForm
+    template_name = 'bms/manager/news-update.html'
+    success_url = reverse_lazy('bms:news-list')
 
 
 

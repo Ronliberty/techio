@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="container">
+    <h2>Request Details</h2>
+    <p><strong>Service:</strong> {{ requests.service.name }}</p>
+    <p><strong>User:</strong> {{ requests.user }}</p>
+    <p><strong>Description:</strong> {{ requests.description }}</p>
+    <p><strong>Status:</strong> {{ requests.status }}</p>
+    <p><strong>Requested At:</strong> {{ requests.created_at }}</p>
+{% if user.groups.all.0.name == "manager" %}
+        <a href="{% url 'bms:response-create' request.slug %}" class="btn btn-primary">Respond</a>
+    {% endif %}
+    <a href="{% url 'bms:request-list' %}" class="btn btn-secondary">Back to Requests</a>
+</div>
