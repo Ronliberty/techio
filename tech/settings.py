@@ -71,7 +71,8 @@ TENANT_APPS = [
     'portfolio',
     'bms',
     'skillsync',
-    'todo'
+    'todo',
+    'editing',
 ]
 
 INSTALLED_APPS = SHARED_APPS + TENANT_APPS  # No need to filter duplicates

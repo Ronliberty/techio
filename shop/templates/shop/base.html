@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Shelf - Merchant Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#1e293b',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        info: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 70px 1fr;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main";
+            height: 100vh;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+        }
+
+        .header {
+            grid-area: header;
+        }
+
+        .main {
+            grid-area: main;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "main";
+            }
+
+            .sidebar {
+                position: fixed;
+                z-index: 50;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body x-data="dashboard()" class="bg-gray-50 text-gray-800">
+    <div class="dashboard-grid">
+        <!-- Sidebar -->
+        <aside class="sidebar bg-white shadow-md z-10">
+            <div class="p-5 border-b">
+                <h1 class="text-2xl font-bold text-primary flex items-center gap-2">
+                    <i class="fas fa-cubes"></i>
+                    <span>Elite Shelf</span>
+                </h1>
+                <p class="text-gray-500 text-sm mt-1">Merchant Dashboard</p>
+            </div>
+
+            <nav class="py-4">
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-primary bg-indigo-50 border-l-4 border-primary">
+                    <i class="fas fa-chart-line w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-box w-5"></i>
+                    <span>Products</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-shopping-cart w-5"></i>
+                    <span>Orders</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-truck w-5"></i>
+                    <span>Delivery</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-star w-5"></i>
+                    <span>Reviews</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-chart-pie w-5"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                        <span class="font-bold">JD</span>
+                    </div>
+                    <div>
+                        <p class="font-medium">John Doe</p>
+                        <p class="text-xs text-gray-500">Premium Merchant</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Header -->
+        <header class="header bg-white shadow-sm px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button @click="toggleSidebar" class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-64">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-5">
+                <button class="relative text-gray-600">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="absolute -top-1 -right-1 bg-danger text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                </button>
+                <button class="relative text-gray-600">
+                    <i class="fas fa-envelope text-xl"></i>
+                    <span class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center">
+                    <span class="font-bold">JD</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main overflow-auto p-6 bg-gray-50">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
+                <p class="text-gray-600">Welcome back! Here's what's happening with your store today.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Total Revenue</p>
+                            <h3 class="text-2xl font-bold mt-1">$24,568</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 12.5% from last month
+                            </p>
+                        </div>
+                        <div class="bg-indigo-100 text-primary p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Total Orders</p>
+                            <h3 class="text-2xl font-bold mt-1">1,245</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 8.3% from last month
+                            </p>
+                        </div>
+                        <div class="bg-green-100 text-success p-3 rounded-lg">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Pending Orders</p>
+                            <h3 class="text-2xl font-bold mt-1">87</h3>
+                            <p class="text-danger text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-down mr-1"></i> 5.2% from last week
+                            </p>
+                        </div>
+                        <div class="bg-yellow-100 text-warning p-3 rounded-lg">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Avg. Rating</p>
+                            <h3 class="text-2xl font-bold mt-1">4.7/5</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-star mr-1"></i> 128 new reviews
+                            </p>
+                        </div>
+                        <div class="bg-blue-100 text-info p-3 rounded-lg">
+                            <i class="fas fa-star text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Metrics -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Sales Chart -->
+                <div class="lg:col-span-2 bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg">Sales Performance</h3>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 text-sm rounded-lg bg-indigo-50 text-primary font-medium">Week</button>
+                            <button class="px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 font-medium">Month</button>
+                            <button class="px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 font-medium">Year</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="flex items-end h-full gap-2 pt-6">
+                            <template x-for="(bar, index) in salesData">
+                                <div class="flex flex-col items-center flex-1">
+                                    <div
+                                        class="w-full bg-gradient-to-t from-primary to-indigo-400 rounded-t-lg"
+                                        :style="`height: ${bar.value}%`"
+                                        :class="index === 6 ? 'opacity-100' : 'opacity-70'"
+                                    ></div>
+                                    <span class="text-xs text-gray-500 mt-2" x-text="bar.label"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Metrics -->
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold text-lg mb-6">Performance Metrics</h3>
+
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Order Completion</span>
+                                <span class="font-medium">82%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-primary" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Delivery On Time</span>
+                                <span class="font-medium">94%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-success" style="width: 94%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Customer Satisfaction</span>
+                                <span class="font-medium">89%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-info" style="width: 89%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Return Rate</span>
+                                <span class="font-medium">4.2%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-warning" style="width: 4.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders & Reviews -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Recent Orders -->
+                <div class="bg-white rounded-xl shadow">
+                    <div class="p-6 border-b">
+                        <h3 class="font-bold text-lg">Recent Orders</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 text-gray-500 text-sm">
+                                <tr>
+                                    <th class="py-3 px-6 text-left">Order ID</th>
+                                    <th class="py-3 px-6 text-left">Customer</th>
+                                    <th class="py-3 px-6 text-left">Date</th>
+                                    <th class="py-3 px-6 text-left">Amount</th>
+                                    <th class="py-3 px-6 text-left">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-sm">
+                                <template x-for="order in orders">
+                                    <tr>
+                                        <td class="py-3 px-6 font-medium" x-text="'#' + order.id"></td>
+                                        <td class="py-3 px-6" x-text="order.customer"></td>
+                                        <td class="py-3 px-6" x-text="order.date"></td>
+                                        <td class="py-3 px-6 font-medium" x-text="'$' + order.amount"></td>
+                                        <td class="py-3 px-6">
+                                            <span
+                                                class="status-badge"
+                                                :class="{
+                                                    'bg-green-100 text-green-800': order.status === 'Delivered',
+                                                    'bg-yellow-100 text-yellow-800': order.status === 'Processing',
+                                                    'bg-blue-100 text-blue-800': order.status === 'Shipped',
+                                                    'bg-red-100 text-red-800': order.status === 'Cancelled'
+                                                }"
+                                                x-text="order.status"
+                                            ></span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 text-center border-t">
+                        <a href="#" class="text-primary font-medium hover:underline">View all orders</a>
+                    </div>
+                </div>
+
+                <!-- Recent Reviews -->
+                <div class="bg-white rounded-xl shadow">
+                    <div class="p-6 border-b">
+                        <h3 class="font-bold text-lg">Customer Reviews</h3>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <template x-for="review in reviews">
+                            <div class="p-6">
+                                <div class="flex justify-between mb-2">
+                                    <h4 class="font-medium" x-text="review.product"></h4>
+                                    <div class="flex text-amber-400">
+                                        <template x-for="i in 5">
+                                            <i
+                                                :class="i <= review.rating ? 'fas fa-star' : 'far fa-star'"
+                                                class="text-sm"
+                                            ></i>
+                                        </template>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3" x-text="review.comment"></p>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500" x-text="review.customer"></span>
+                                    <span class="text-gray-400" x-text="review.date"></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="p-4 text-center border-t">
+                        <a href="#" class="text-primary font-medium hover:underline">View all reviews</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="mt-8 bg-white rounded-xl shadow">
+                <div class="p-6 border-b">
+                    <h3 class="font-bold text-lg">Top Performing Products</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 text-gray-500 text-sm">
+                            <tr>
+                                <th class="py-3 px-6 text-left">Product</th>
+                                <th class="py-3 px-6 text-left">Category</th>
+                                <th class="py-3 px-6 text-left">Price</th>
+                                <th class="py-3 px-6 text-left">Sold</th>
+                                <th class="py-3 px-6 text-left">Revenue</th>
+                                <th class="py-3 px-6 text-left">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            <template x-for="product in topProducts">
+                                <tr>
+                                    <td class="py-3 px-6 font-medium" x-text="product.name"></td>
+                                    <td class="py-3 px-6">
+                                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs" x-text="product.category"></span>
+                                    </td>
+                                    <td class="py-3 px-6" x-text="'$' + product.price"></td>
+                                    <td class="py-3 px-6" x-text="product.sold"></td>
+                                    <td class="py-3 px-6 font-medium" x-text="'$' + product.revenue"></td>
+                                    <td class="py-3 px-6">
+                                        <div class="flex items-center">
+                                            <span class="mr-2" x-text="product.rating"></span>
+                                            <div class="flex text-amber-400">
+                                                <i class="fas fa-star text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-8 text-center text-gray-500 text-sm py-6">
+                <p>© 2023 Elite Shelf Merchant Dashboard. All rights reserved.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function dashboard() {
+            return {
+                sidebarOpen: false,
+                toggleSidebar() {
+                    this.sidebarOpen = !this.sidebarOpen;
+                    document.querySelector('.sidebar').classList.toggle('active');
+                },
+                salesData: [
+                    { label: 'Mon', value: 40 },
+                    { label: 'Tue', value: 65 },
+                    { label: 'Wed', value: 50 },
+                    { label: 'Thu', value: 75 },
+                    { label: 'Fri', value: 60 },
+                    { label: 'Sat', value: 90 },
+                    { label: 'Sun', value: 70 }
+                ],
+                orders: [
+                    { id: 'ES-1289', customer: 'Alex Johnson', date: 'Oct 12, 2023', amount: 124.99, status: 'Delivered' },
+                    { id: 'ES-1288', customer: 'Maria Garcia', date: 'Oct 12, 2023', amount: 89.50, status: 'Processing' },
+                    { id: 'ES-1287', customer: 'Robert Smith', date: 'Oct 11, 2023', amount: 245.00, status: 'Shipped' },
+                    { id: 'ES-1286', customer: 'Emma Wilson', date: 'Oct 11, 2023', amount: 57.30, status: 'Delivered' },
+                    { id: 'ES-1285', customer: 'James Brown', date: 'Oct 10, 2023', amount: 199.99, status: 'Cancelled' }
+                ],
+                reviews: [
+                    { product: 'Wireless Headphones', customer: 'Sarah Johnson', date: 'Oct 12, 2023', rating: 5, comment: 'Excellent sound quality and comfortable to wear for long periods.' },
+                    { product: 'Smart Watch Series 5', customer: 'Michael Chen', date: 'Oct 11, 2023', rating: 4, comment: 'Great features but battery life could be better.' },
+                    { product: 'Bluetooth Speaker', customer: 'David Wilson', date: 'Oct 10, 2023', rating: 5, comment: 'Impressive sound for such a compact size. Highly recommended!' }
+                ],
+                topProducts: [
+                    { name: 'Wireless Earbuds Pro', category: 'Electronics', price: 129.99, sold: 245, revenue: 31845.55, rating: 4.8 },
+                    { name: 'Fitness Tracker X', category: 'Wearables', price: 79.99, sold: 187, revenue: 14958.13, rating: 4.6 },
+                    { name: 'Portable Charger 10000mAh', category: 'Accessories', price: 29.99, sold: 312, revenue: 9356.88, rating: 4.7 },
+                    { name: 'Smart Home Hub', category: 'Home Automation', price: 149.99, sold: 98, revenue: 14699.02, rating: 4.5 },
+                    { name: 'Gaming Mouse', category: 'Gaming', price: 49.99, sold: 156, revenue: 7798.44, rating: 4.9 }
+                ]
+            }
+        }
+    </script>
+</body>
+</html>
