@@ -1,238 +1,215 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Dashboard</title>
+    <title>Video Production Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        electric: '#4F46E5',
+                        coral: '#FF6B6B',
+                        teal: '#0D9488',
+                        lemon: '#FCD34D',
+                        lavender: '#A78BFA',
+                        sky: '#38BDF8'
+                    }
+                }
+            }
+        }
+    </script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .nav-dot {
-            transition: transform 0.3s ease, opacity 0.3s ease;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fdf2f8 100%);
         }
 
-        .nav-content {
-            clip-path: circle(0% at 95% 5%);
-            transition: clip-path 0.4s ease-out;
+        .sidebar {
+            background: linear-gradient(160deg, #4F46E5 0%, #7C3AED 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
         }
 
-        .nav-active .nav-content {
-            clip-path: circle(150% at 50% 50%);
+        .nav-item:hover {
+            background: rgba(255,255,255,0.15);
         }
 
-        .chart-card {
-            view-timeline: --chart reveal;
-            animation: fade-in linear both;
-            animation-timeline: --chart;
-            animation-range: entry 25% cover 50%;
+        .nav-item.active {
+            background: rgba(255,255,255,0.25);
+            border-left: 4px solid white;
         }
 
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .task-card {
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .priority-high { border-color: #FF6B6B; }
+        .priority-medium { border-color: #FCD34D; }
+        .priority-low { border-color: #0D9488; }
+
+        .team-member:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Navigation Trigger -->
-    <div class="fixed top-4 right-4 z-50">
-        <button id="navTrigger" class="w-12 h-12 rounded-full bg-purple-600 hover:bg-purple-700 text-white
-                   flex items-center justify-center shadow-lg transition-all hover:rotate-90">
-            <i class='bx bx-dots-vertical-rounded text-2xl'></i>
-        </button>
-    </div>
-
-    <!-- Navigation Overlay -->
-    <div id="navOverlay" class="fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity"></div>
-
-    <!-- Navigation Content -->
-    <nav id="navContent" class="fixed top-4 right-4 z-50 opacity-0 pointer-events-none transition-all duration-200">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 w-[300px] origin-top-right
-                   scale-0 transition-transform duration-200">
-            <div class="space-y-4">
-                <h3 class="text-lg font-bold dark:text-white mb-4">Quick Access</h3>
-                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    <i class='bx bx-line-chart text-2xl text-purple-600 mr-3'></i>
-                    <span class="dark:text-gray-300">Analytics Hub</span>
-                </a>
-                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    <i class='bx bx-group text-2xl text-blue-600 mr-3'></i>
-                    <span class="dark:text-gray-300">Team Management</span>
-                </a>
-                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    <i class='bx bx-wallet text-2xl text-green-600 mr-3'></i>
-                    <span class="dark:text-gray-300">Financial Center</span>
-                </a>
-              <a href="{% url 'logout' %}" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    <i class='bx bx-wallet text-2xl text-green-600 mr-3'></i>
-                    <span class="dark:text-gray-300">Logout</span>
-                </a>
-                <div class="border-t dark:border-gray-700 my-4"></div>
-                <div class="flex justify-between px-3">
-                    <button class="dark-mode-toggle p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                        <i class='bx bx-moon text-xl dark:text-white'></i>
-                    </button>
-                    <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                        <i class='bx bx-cog text-xl dark:text-gray-300'></i>
-                    </button>
-                </div>
+<body class="h-full flex overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar w-64 min-h-screen text-white flex flex-col">
+        <!-- Logo and Title -->
+        <div class="p-5 flex items-center border-b border-white/20">
+            <div class="bg-white/20 p-2 rounded-lg mr-3">
+                <i class='bx bx-video text-xl'></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold">VideoFlow</h1>
+                <p class="text-xs text-white/70">Production Dashboard</p>
             </div>
         </div>
-    </nav>
+
+        <!-- Navigation Items -->
+        <div class="p-4 flex-1">
+            <div class="space-y-1">
+                <a href="#" class="nav-item active flex items-center p-3 rounded-lg">
+                    <i class='bx bxs-dashboard text-xl mr-3'></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-task text-xl mr-3'></i>
+                    <span>Editing Tasks</span>
+                </a>
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-file text-xl mr-3'></i>
+                    <span>Script Management</span>
+                </a>
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-group text-xl mr-3'></i>
+                    <span>Team Management</span>
+                </a>
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-chalkboard text-xl mr-3'></i>
+                    <span>Tutor Assignments</span>
+                </a>
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-calendar text-xl mr-3'></i>
+                    <span>Production Calendar</span>
+                </a>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="mt-8 pt-4 border-t border-white/20">
+                <a href="#" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-cog text-xl mr-3'></i>
+                    <span>Settings</span>
+                </a>
+                <a href="{% url 'logout' %}" class="nav-item flex items-center p-3 rounded-lg">
+                    <i class='bx bx-log-out text-xl mr-3'></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-white/20 flex items-center">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-sky-400 to-electric flex items-center justify-center font-bold text-white mr-3">JD</div>
+            <div>
+                <p class="font-medium">John Director</p>
+                <p class="text-xs text-white/70">Production Supervisor</p>
+            </div>
+        </div>
+    </div>
+ <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white border-b flex items-center justify-between px-6 py-4">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">Production Dashboard</h2>
+                <p class="text-gray-500">Welcome back, John. Here's what's happening today.</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="relative p-2 rounded-full text-gray-500 hover:bg-gray-100">
+                    <i class='bx bx-bell text-xl'></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center font-bold text-white">JD</div>
+            </div>
+        </header>
+
+
+     {% block content %}{% endblock %}
 
     <script>
-    // Update the navigation toggle logic
-    navTrigger.addEventListener('click', () => {
-        navContent.classList.toggle('opacity-0');
-        navContent.classList.toggle('pointer-events-none');
-        navContent.querySelector('div').classList.toggle('scale-0');
-        navContent.querySelector('div').classList.toggle('scale-100');
-    });
-
-    navOverlay.addEventListener('click', () => {
-        navContent.classList.add('opacity-0', 'pointer-events-none');
-        navContent.querySelector('div').classList.remove('scale-100');
-        navContent.querySelector('div').classList.add('scale-0');
-    });
-    </script>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-20">
-        <!-- Dashboard Header -->
-        <div class="mb-12 text-center">
-            <h1 class="text-4xl font-bold dark:text-white mb-4">Executive Dashboard</h1>
-            <div class="flex justify-center gap-4" id="statsNav"></div>
-        </div>
-
-        <!-- Chart Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Chart Cards will be inserted here by JavaScript -->
-        </div>
-    </main>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Navigation System
-    const navTrigger = document.getElementById('navTrigger');
-    const navOverlay = document.getElementById('navOverlay');
-    const navContent = document.getElementById('navContent');
-
-    navTrigger.addEventListener('click', () => {
-        navTrigger.classList.toggle('nav-active');
-        navOverlay.classList.toggle('opacity-0');
-        navOverlay.classList.toggle('pointer-events-none');
-        navContent.parentElement.classList.toggle('nav-active');
-    });
-
-    navOverlay.addEventListener('click', () => {
-        navTrigger.classList.remove('nav-active');
-        navOverlay.classList.add('opacity-0', 'pointer-events-none');
-        navContent.parentElement.classList.remove('nav-active');
-    });
-
-    // Dark Mode Toggle
-    document.querySelector('.dark-mode-toggle').addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
-    });
-
-    // Dynamic Stats Navigation
-    const stats = [
-        { title: 'Revenue', value: '$2.8M', icon: 'bx-dollar' },
-        { title: 'Active Users', value: '1.2K', icon: 'bx-user' },
-        { title: 'Projects', value: '24', icon: 'bx-folder' }
-    ];
-
-    const statsNav = document.getElementById('statsNav');
-    stats.forEach(stat => {
-        const button = document.createElement('button');
-        button.className = 'flex items-center p-3 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors';
-        button.innerHTML = `
-            <i class='bx ${stat.icon} text-xl text-purple-600 mr-2'></i>
-            <div class="text-left">
-                <div class="text-xs text-gray-500">${stat.title}</div>
-                <div class="font-bold dark:text-white">${stat.value}</div>
-            </div>
-        `;
-        statsNav.appendChild(button);
-    });
-
-    // Chart Data and Initialization
-    const chartData = [
-        { title: 'Sales Performance', type: 'line', color: '#6D28D9' },
-        { title: 'Team Productivity', type: 'bar', color: '#10B981' },
-        { title: 'Project Budgets', type: 'doughnut', color: '#3B82F6' }
-    ];
-
-    const chartGrid = document.querySelector('.grid');
-    chartData.forEach((chart, index) => {
-        const card = document.createElement('div');
-        card.className = 'chart-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm';
-        card.innerHTML = `
-            <h4 class="font-semibold mb-4 dark:text-white">${chart.title}</h4>
-            <div class="h-64"><canvas id="chart${index}"></canvas></div>
-        `;
-        chartGrid.appendChild(card);
-
-        // Initialize chart
-        new Chart(document.getElementById(`chart${index}`), {
-            type: chart.type,
-            data: getChartData(chart.type, chart.color),
-            options: getChartOptions()
+        // Set active nav item
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
-    });
 
-    function getChartData(type, color) {
-        const baseData = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            datasets: [{
-                label: 'Metrics',
-                data: [65, 59, 80, 81],
-                backgroundColor: type === 'doughnut' ? [
-                    color, '#E5E7EB'
-                ] : color + '33',
-                borderColor: color,
-                tension: 0.4
-            }]
-        };
-
-        if (type === 'doughnut') {
-            baseData.datasets[0].borderWidth = 0;
-        }
-
-        return baseData;
-    }
-
-    function getChartOptions() {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: { color: document.documentElement.classList.contains('dark') ? '#fff' : '#000' }
-                }
-            },
-            scales: {
-                y: {
-                    display: ['line', 'bar'].includes(this.type),
-                    ticks: { color: document.documentElement.classList.contains('dark') ? '#fff' : '#000' },
-                    grid: { color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb' }
-                },
-                x: {
-                    ticks: { color: document.documentElement.classList.contains('dark') ? '#fff' : '#000' },
-                    grid: { color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb' }
-                }
-            }
-        };
-    }
-
-    // Initialize dark mode from localStorage
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.documentElement.classList.add('dark');
-    }
-});
-</script>
+        // Simulate loading animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>

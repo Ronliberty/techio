@@ -2,7 +2,326 @@
 {% load static %}
 
 {% block content %}
-<div id="content-container">
 
-</div>
+        <!-- Main Content -->
+        <div class="flex-1 overflow-y-auto p-6">
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Pending Tasks</p>
+                            <h3 class="text-2xl font-bold mt-1">24</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-electric/10 text-electric">
+                            <i class='bx bx-task text-xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Completed</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="progress-bar bg-gray-200 rounded-full">
+                            <div class="progress-fill bg-electric rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Scripts Ready</p>
+                            <h3 class="text-2xl font-bold mt-1">18</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-teal/10 text-teal">
+                            <i class='bx bx-file text-xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Reviewed</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress-bar bg-gray-200 rounded-full">
+                            <div class="progress-fill bg-teal rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Team Members</p>
+                            <h3 class="text-2xl font-bold mt-1">12</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-sky/10 text-sky">
+                            <i class='bx bx-group text-xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>Available</span>
+                            <span>83%</span>
+                        </div>
+                        <div class="progress-bar bg-gray-200 rounded-full">
+                            <div class="progress-fill bg-sky rounded-full" style="width: 83%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Upcoming Deadlines</p>
+                            <h3 class="text-2xl font-bold mt-1">7</h3>
+                        </div>
+                        <div class="p-3 rounded-lg bg-coral/10 text-coral">
+                            <i class='bx bx-time-five text-xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>On Track</span>
+                            <span>71%</span>
+                        </div>
+                        <div class="progress-bar bg-gray-200 rounded-full">
+                            <div class="progress-fill bg-coral rounded-full" style="width: 71%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Active Tasks Section -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-gray-800">Active Editing Tasks</h3>
+                            <button class="bg-electric text-white px-4 py-2 rounded-lg text-sm hover:bg-electric/90 transition">
+                                <i class='bx bx-plus mr-1'></i> New Task
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Task Item 1 -->
+                            <div class="task-card priority-high bg-white p-4 rounded-lg border-l-4 shadow-sm">
+                                <div class="flex justify-between">
+                                    <h4 class="font-medium">Product Launch Video</h4>
+                                    <span class="text-xs px-2 py-1 bg-coral/10 text-coral rounded-full">High Priority</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Final cut needs approval by Friday</p>
+
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="flex -space-x-2">
+                                        <div class="avatar bg-sky">AJ</div>
+                                        <div class="avatar bg-lavender">MP</div>
+                                        <div class="avatar bg-teal">SD</div>
+                                    </div>
+                                    <div class="text-sm text-gray-500 flex items-center">
+                                        <i class='bx bx-time mr-1'></i> 2 days left
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span>Progress</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200">
+                                        <div class="progress-fill bg-coral" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Task Item 2 -->
+                            <div class="task-card priority-medium bg-white p-4 rounded-lg border-l-4 shadow-sm">
+                                <div class="flex justify-between">
+                                    <h4 class="font-medium">Corporate Training Series</h4>
+                                    <span class="text-xs px-2 py-1 bg-lemon/10 text-amber-600 rounded-full">Medium Priority</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Episodes 3-5 editing</p>
+
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="flex -space-x-2">
+                                        <div class="avatar bg-electric">KR</div>
+                                        <div class="avatar bg-teal">TS</div>
+                                    </div>
+                                    <div class="text-sm text-gray-500 flex items-center">
+                                        <i class='bx bx-time mr-1'></i> 5 days left
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span>Progress</span>
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200">
+                                        <div class="progress-fill bg-lemon" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Task Item 3 -->
+                            <div class="task-card priority-low bg-white p-4 rounded-lg border-l-4 shadow-sm">
+                                <div class="flex justify-between">
+                                    <h4 class="font-medium">Social Media Clips</h4>
+                                    <span class="text-xs px-2 py-1 bg-teal/10 text-teal rounded-full">Low Priority</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Instagram Reels from event</p>
+
+                                <div class="flex justify-between items-center mt-4">
+                                    <div class="flex -space-x-2">
+                                        <div class="avatar bg-lavender">MJ</div>
+                                    </div>
+                                    <div class="text-sm text-gray-500 flex items-center">
+                                        <i class='bx bx-time mr-1'></i> 7 days left
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span>Progress</span>
+                                        <span>20%</span>
+                                    </div>
+                                    <div class="progress-bar bg-gray-200">
+                                        <div class="progress-fill bg-teal" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-6 py-2 text-center text-electric hover:bg-electric/5 rounded-lg border border-dashed border-electric">
+                            <i class='bx bx-plus mr-2'></i> Load More Tasks
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Team Members -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Team Members</h3>
+                            <button class="text-electric text-sm hover:text-electric/80">
+                                View All
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="team-member flex items-center p-3 bg-white hover:shadow rounded-lg transition">
+                                <div class="avatar bg-sky mr-3">AJ</div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Alex Johnson</p>
+                                    <p class="text-xs text-gray-500">Senior Video Editor</p>
+                                </div>
+                                <div class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Available</div>
+                            </div>
+
+                            <div class="team-member flex items-center p-3 bg-white hover:shadow rounded-lg transition">
+                                <div class="avatar bg-lavender mr-3">MP</div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Maya Patel</p>
+                                    <p class="text-xs text-gray-500">Motion Designer</p>
+                                </div>
+                                <div class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Available</div>
+                            </div>
+
+                            <div class="team-member flex items-center p-3 bg-white hover:shadow rounded-lg transition">
+                                <div class="avatar bg-teal mr-3">SD</div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Sam Davis</p>
+                                    <p class="text-xs text-gray-500">Color Specialist</p>
+                                </div>
+                                <div class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">In Review</div>
+                            </div>
+
+                            <div class="team-member flex items-center p-3 bg-white hover:shadow rounded-lg transition">
+                                <div class="avatar bg-electric mr-3">KR</div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Kim Rivera</p>
+                                    <p class="text-xs text-gray-500">Audio Editor</p>
+                                </div>
+                                <div class="text-xs px-2 py-1 bg-red-100 text-red-800 rounded-full">On Deadline</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Script Status -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Script Status</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-teal/10 text-teal flex items-center justify-center mr-3">
+                                    <i class='bx bx-check'></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Product Launch Video</p>
+                                    <p class="text-xs text-gray-500">Approved - Ready for Production</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-lemon/10 text-amber-500 flex items-center justify-center mr-3">
+                                    <i class='bx bx-edit'></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Corporate Training Ep.5</p>
+                                    <p class="text-xs text-gray-500">Pending Client Review</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-sky/10 text-sky flex items-center justify-center mr-3">
+                                    <i class='bx bx-time'></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Q3 Marketing Campaign</p>
+                                    <p class="text-xs text-gray-500">Draft in Progress</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-coral/10 text-coral flex items-center justify-center mr-3">
+                                    <i class='bx bx-error-circle'></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium">Customer Testimonials</p>
+                                    <p class="text-xs text-gray-500">Revisions Requested</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-gradient-to-r from-electric to-purple-600 rounded-xl p-6 text-white">
+                        <h3 class="text-lg font-bold mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="bg-white/20 py-3 rounded-lg hover:bg-white/30 transition flex flex-col items-center justify-center">
+                                <i class='bx bx-task text-xl mb-1'></i>
+                                <span class="text-sm">Assign Task</span>
+                            </button>
+                            <button class="bg-white/20 py-3 rounded-lg hover:bg-white/30 transition flex flex-col items-center justify-center">
+                                <i class='bx bx-file text-xl mb-1'></i>
+                                <span class="text-sm">Upload Script</span>
+                            </button>
+                            <button class="bg-white/20 py-3 rounded-lg hover:bg-white/30 transition flex flex-col items-center justify-center">
+                                <i class='bx bx-group text-xl mb-1'></i>
+                                <span class="text-sm">Add Member</span>
+                            </button>
+                            <button class="bg-white/20 py-3 rounded-lg hover:bg-white/30 transition flex flex-col items-center justify-center">
+                                <i class='bx bx-calendar text-xl mb-1'></i>
+                                <span class="text-sm">Schedule</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

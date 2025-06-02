@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import CategoryCreateView,  CategoryListView, CategoryDetailView, CategoryDeleteView, CategoryUpdateView, ProductListView, ProductCreateView, ProductUpdateView, ProductDetailView, ProductDeleteView, OrderListView, OrderDetailView, AddressOrderListView, AddressDetailView, WishListView, WishDetailView, CouponCreateView, CouponListView, CouponUpdateView, CouponDetailView, CouponDeleteView, CartListView
+from .views import CategoryCreateView, ShopHubView, CategoryListView, CategoryDetailView, CategoryDeleteView, CategoryUpdateView, ProductListView, ProductCreateView, ProductUpdateView, ProductDetailView, ProductDeleteView, OrderListView, OrderDetailView, AddressOrderListView, AddressDetailView, WishListView, WishDetailView, CouponCreateView, CouponListView, CouponUpdateView, CouponDetailView, CouponDeleteView, CartListView
 
 app_name = 'shop'
 urlpatterns = [
+    path('shop0-hub/', ShopHubView.as_view(), name='shop-hub'),
     path('category/', CategoryCreateView.as_view(), name='category-create' ),
     path('category/update/<slug:slug>/', CategoryUpdateView.as_view(), name='category-update'),
     path('category/list/', CategoryListView.as_view(), name='category-list'),

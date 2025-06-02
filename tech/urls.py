@@ -10,6 +10,11 @@ urlpatterns = [
     path('', include('base.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('custom/', include('custom.urls')),
+    path('bms/', include('bms.urls')),
+    path('portfolio/', include('portfolio.urls')),
+    path('skillsync/', include('skillsync.urls')),
+    path('editing/', include('editing.urls')),
+    path('shop/', include('shop.urls')),
     path('accounts/', include('allauth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]

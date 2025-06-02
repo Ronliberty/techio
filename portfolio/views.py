@@ -16,6 +16,10 @@ from django.template.loader import render_to_string
 
 @method_decorator(cache_page(60 * 15), name='dispatch')
 
+class PortfolioHubView(TemplateView):
+    template_name = 'portfolio/portfolio-hub.html'
+
+
 
 class ContactSubmissionListView(ListView):
     model = ContactSubmission

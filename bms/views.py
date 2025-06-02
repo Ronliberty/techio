@@ -8,7 +8,8 @@ from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 
-
+class BmsHubView(TemplateView):
+    template_name = 'bms/default-hub.html'
 
 class  PostListView(GroupRequiredMixin, LoginRequiredMixin, ListView):
     model = Post

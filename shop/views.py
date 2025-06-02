@@ -1,11 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
-from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView, View
 
 
 from .models import Category, Prod, Cart, Order, Coupon, Address, Wishlist
 from .forms import CategoryForm
 from .mixins import GroupRequiredMixin
+
+
+class ShopHubView(TemplateView):
+    template_name = 'shop/shop-hub.html'
+
+
+
 class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Category
     form_class = CategoryForm

@@ -5,36 +5,36 @@ from .models import Post, News, Tool, Skill, Service, ServiceResponse, ServiceRe
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['']
+        fields = '__all__'
 
 
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ['']
+        fields = '__all__'
 
 
 class ToolForm(forms.ModelForm):
     class Meta:
         model = Tool
-        fields = ['']
+        fields = '__all__'
 
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
-        fields = ['']
+        fields = '__all__'
 
 class RequestForm(forms.ModelForm):
     class Meta:
         model = ServiceRequest
-        fields = ['']
+        fields = '__all__'
 
 class ResponseForm(forms.ModelForm):
     class Meta:
         model = ServiceResponse
-        fields = ['']
+        fields = '__all__'
 
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
-        fields = ['']
+        fields = '__all__'

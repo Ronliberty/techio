@@ -4,200 +4,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Command Center</title>
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <title>Manager Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .grid-stack {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: minmax(200px, auto);
-            gap: 1.5rem;
+        .sidebar {
+            transition: all 0.3s ease;
         }
 
-        .dashboard-card {
-            @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 transition-all;
-            border: 1px solid rgba(255,255,255,0.05);
+        .sidebar-collapsed {
+            width: 80px;
         }
 
-        .data-grid {
-            @apply rounded-lg overflow-hidden;
-            background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+        .sidebar-expanded {
+            width: 260px;
+        }
+
+        .main-content {
+            transition: margin-left 0.3s ease;
+        }
+
+        .content-expanded {
+            margin-left: 260px;
+        }
+
+        .content-collapsed {
+            margin-left: 80px;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+
+        .chart-card {
+            view-timeline: --chart reveal;
+            animation: fade-in linear both;
+            animation-timeline: --chart;
+            animation-range: entry 25% cover 50%;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .employee-card:hover .employee-actions {
+            opacity: 1;
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 h-full" x-data="{
-    // Management System State
-    modules: {
-        finance: true,
-        users: true,
-        analytics: true,
-        infra: true,
-        compliance: true
-    },
-    quickStats: {
-        activeUsers: '2.4k',
-        pendingActions: 18,
-        systemHealth: 94.5,
-        apiCalls: '1.2m'
-    },
-    systemStatus: [
-        { service: 'Database', status: 'operational', latency: '42ms' },
-        { service: 'API Gateway', status: 'degraded', latency: '312ms' },
-        { service: 'Storage', status: 'maintenance', latency: 'N/A' }
-    ],
-    init() {
-        // Initialize real-time updates
-        setInterval(() => {
-            this.quickStats.apiCalls = Math.floor(Math.random() * 50000 + 1150000).toLocaleString();
-        }, 3000);
-    }
-}">
-<div class="min-h-screen flex">
-    <!-- Enhanced Side Navigation -->
-    <aside class="w-20 lg:w-64 bg-gray-900 dark:bg-gray-950 h-screen fixed flex flex-col">
-        <div class="p-4 border-b border-gray-800">
-            <div class="flex items-center space-x-3">
-                <div class="bg-purple-600 w-8 h-8 rounded-lg flex items-center justify-center">
-                    <i class='bx bx-chip text-xl text-white'></i>
-                </div>
-                <span class="text-white font-semibold hidden lg:block">CommandOS</span>
-            </div>
-        </div>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="sidebar sidebar-expanded bg-white dark:bg-gray-800 h-screen fixed shadow-lg z-30">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="p-4 border-b dark:border-gray-700 flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+                        M
+                    </div>
 
-        <nav class="flex-1 p-4 space-y-2">
-            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
-               href="#">
-                <i class='bx bx-compass text-xl'></i>
-                <span class="hidden lg:block">Overview</span>
-            </a>
-            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
-               href="#">
-                <i class='bx bx-server text-xl'></i>
-                <span class="hidden lg:block">Infrastructure</span>
-            </a>
-            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
-               href="">
-                <i class='bx bx-shield-quarter text-xl'></i>
-                <span class="hidden lg:block">Security</span>
-            </a>
-            <a class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
-               href="{% url 'logout' %}">
-                <i class='bx bx-log-out text-xl'></i>
-                <span class="hidden lg:block">Logout</span>
-            </a>
-        </nav>
+                </div>
+                <button id="sidebarToggle" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                    <i class='bx bx-chevron-left'></i>
+                </button>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="flex-1 overflow-y-auto py-4">
+                <div class="px-4 mb-6">
+                    <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Management</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-purple-50 dark:bg-gray-700 text-purple-600 dark:text-purple-400">
+                                <i class='bx bx-home text-xl mr-3'></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-user text-xl mr-3'></i>
+                                <span>Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-store text-xl mr-3'></i>
+                                <span>Sellers</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-id-card text-xl mr-3'></i>
+                                <span>Agents</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="px-4 mb-6">
+                    <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Operations</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-task text-xl mr-3'></i>
+                                <span>Tasks</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-calendar text-xl mr-3'></i>
+                                <span>Schedules</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="px-4">
+                    <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Settings</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-cog text-xl mr-3'></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                <i class='bx bx-log-out text-xl mr-3'></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 ml-20 lg:ml-64 p-6 space-y-6">
-        <!-- Status Bar -->
-        <div class="flex flex-wrap gap-4">
-            <div class="flex-1 min-w-[300px] bg-gradient-to-r from-purple-600 to-blue-600 p-4 rounded-xl text-white">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-sm opacity-75">Global Systems Status</p>
-                        <p class="text-2xl font-bold">All Systems Operational</p>
-                    </div>
-                    <i class='bx bx-cloud-lightning text-3xl'></i>
+    <!-- Main Content -->
+    <main class="main-content content-expanded flex-1 min-h-screen">
+        <!-- Top Navigation -->
+        <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-20">
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold dark:text-white">Dashboard</h1>
                 </div>
-            </div>
 
-            <!-- Quick Stats -->
-            <template x-for="([key, value], index) in Object.entries(quickStats)" :key="index">
-                <div class="dashboard-card flex-1 min-w-[200px]">
-                    <p class="text-sm text-gray-500 mb-1" x-text="key.replace(/([A-Z])/g, ' $1').toUpperCase()"></p>
-                    <p class="text-2xl font-bold dark:text-white" x-text="value"></p>
-                </div>
-            </template>
-        </div>
+                <div class="flex items-center space-x-4">
+                    <button class="dark-mode-toggle p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <i class='bx bx-moon text-xl dark:text-white'></i>
+                    </button>
 
-        <!-- Management Grid -->
-        <div class="grid-stack">
-            <!-- Financial Module -->
-            <div class="dashboard-card" x-show="modules.finance">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold dark:text-white">Financial Overview</h3>
-                    <div class="flex space-x-2">
-                        <button class="text-gray-400 hover:text-purple-600">
-                            <i class='bx bx-dots-horizontal-rounded'></i>
+                    <div class="relative">
+                        <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 relative">
+                            <i class='bx bx-bell text-xl dark:text-white'></i>
+                            <span class="notification-dot"></span>
                         </button>
                     </div>
-                </div>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-xs text-gray-500">Monthly Revenue</p>
-                            <p class="text-lg font-bold dark:text-white">$2.8M</p>
-                        </div>
-                        <div class="text-green-500 flex items-center">
-                            <i class='bx bx-up-arrow-alt'></i>
-                            <span>12%</span>
+
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+                            M
                         </div>
                     </div>
-                    <div class="h-32 bg-gray-100 dark:bg-gray-700 rounded-lg"></div>
                 </div>
             </div>
+        </header>
 
-            <!-- User Management -->
-            <div class="dashboard-card" x-show="modules.users">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold dark:text-white">User Activity</h3>
-                    <button class="text-purple-600 hover:text-purple-700 text-sm flex items-center">
-                        <i class='bx bx-plus mr-1'></i> Add User
-                    </button>
-                </div>
-                <div class="data-grid">
-                    <table class="w-full text-sm">
-                        <thead class="text-left text-gray-500 dark:text-gray-400">
-                            <tr>
-                                <th class="pb-2">User</th>
-                                <th class="pb-2">Role</th>
-                                <th class="pb-2">Last Active</th>
-                            </tr>
-                        </thead>
-                        <tbody class="dark:text-gray-300 divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="py-2">Admin User</td>
-                                <td>Super Admin</td>
-                                <td>2m ago</td>
-                            </tr>
-                            <!-- Additional rows -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Dashboard Content -->
 
-            <!-- System Health -->
-            <div class="dashboard-card" x-show="modules.infra">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-semibold dark:text-white">Infrastructure Status</h3>
-                    <div class="flex items-center space-x-2">
-                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                        <span class="text-sm">All Systems</span>
-                    </div>
-                </div>
-                <div class="space-y-3">
-                    <template x-for="service in systemStatus" :key="service.service">
-                        <div class="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
-                            <div>
-                                <p x-text="service.service" class="font-medium"></p>
-                                <p x-text="service.latency" class="text-sm text-gray-500"></p>
-                            </div>
-                            <span x-text="service.status"
-                                  class="px-2 py-1 rounded-full text-xs capitalize"
-                                  :class="{
-                                    'bg-green-100 text-green-800': service.status === 'operational',
-                                    'bg-yellow-100 text-yellow-800': service.status === 'degraded',
-                                    'bg-gray-100 text-gray-800': service.status === 'maintenance'
-                                  }"></span>
-                        </div>
-                    </template>
-                </div>
-            </div>
-        </div>
+   {% block content %}{% endblock %}
     </main>
-</div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sidebar Toggle
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const mainContent = document.querySelector('.main-content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-collapsed');
+            sidebar.classList.toggle('sidebar-expanded');
+            mainContent.classList.toggle('content-collapsed');
+            mainContent.classList.toggle('content-expanded');
+
+            // Change icon based on state
+            if (sidebar.classList.contains('sidebar-collapsed')) {
+                sidebarToggle.innerHTML = '<i class="bx bx-chevron-right"></i>';
+            } else {
+                sidebarToggle.innerHTML = '<i class="bx bx-chevron-left"></i>';
+            }
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+
+        darkModeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+            updateCharts();
+        });
+
+        // Initialize dark mode from localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Charts
+        const performanceChart = new Chart(
+            document.getElementById('performanceChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Performance Score',
+                            data: [75, 82, 78, 85, 90, 88],
+                            backgroundColor: '#6D28D9',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: getChartOptions('Performance Score')
+            }
+        );
+
+        const salesChart = new Chart(
+            document.getElementById('salesChart'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Clothing', 'Home Goods', 'Other'],
+                    datasets: [
+                        {
+                            data: [35, 25, 30, 10],
+                            backgroundColor: [
+                                '#10B981',
+                                '#3B82F6',
+                                '#F59E0B',
+                                '#EF4444'
+                            ],
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: getChartOptions()
+            }
+        );
+
+        const tasksChart = new Chart(
+            document.getElementById('tasksChart'),
+            {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Completed Tasks',
+                            data: [12, 15, 10, 18, 20, 8, 5],
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Pending Tasks',
+                            data: [5, 8, 12, 6, 3, 10, 15],
+                            borderColor: '#F59E0B',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: getChartOptions('Tasks')
+            }
+        );
+
+        function getChartOptions(title = '') {
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#fff' : '#000';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: textColor
+                        }
+                    },
+                    title: {
+                        display: !!title,
+                        text: title,
+                        color: textColor
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: gridColor
+                        },
+                        ticks: {
+                            color: textColor
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: gridColor
+                        },
+                        ticks: {
+                            color: textColor
+                        }
+                    }
+                }
+            };
+        }
+
+        function updateCharts() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#fff' : '#000';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+
+            // Update all charts
+            [performanceChart, salesChart, tasksChart].forEach(chart => {
+                chart.options.plugins.legend.labels.color = textColor;
+                if (chart.options.plugins.title) {
+                    chart.options.plugins.title.color = textColor;
+                }
+
+                if (chart.options.scales) {
+                    if (chart.options.scales.x) {
+                        chart.options.scales.x.ticks.color = textColor;
+                        chart.options.scales.x.grid.color = gridColor;
+                    }
+                    if (chart.options.scales.y) {
+                        chart.options.scales.y.ticks.color = textColor;
+                        chart.options.scales.y.grid.color = gridColor;
+                    }
+                }
+
+                chart.update();
+            });
+        }
+    });
+    </script>
 </body>
 </html>

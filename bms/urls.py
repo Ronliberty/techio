@@ -29,6 +29,7 @@ from .views import (
     DetailResponseView,
     ListResponseView,
     DeleteResponseView,
+    BmsHubView,
 
 
 )
@@ -36,6 +37,7 @@ from .views import (
 app_name = 'bms'
 
 urlpatterns = [
+    path('bms/', BmsHubView.as_view(), name='bms-hub'),
     #post
     path('post/', PostListView.as_view(), name='post-list'),
     path('post/<slug:slug>/', PostDetailView.as_view(), name='post-detail'),

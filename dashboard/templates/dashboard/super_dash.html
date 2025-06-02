@@ -2,7 +2,299 @@
 {% load static %}
 
 {% block content %}
-<div id="content-container">
 
+<div id="content-container">
+<div class="p-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Total Employees</p>
+                            <h3 class="text-2xl font-bold dark:text-white">142</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400">
+                            <i class='bx bx-user text-2xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-green-500 text-sm font-medium">+12% from last month</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Active Sellers</p>
+                            <h3 class="text-2xl font-bold dark:text-white">86</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400">
+                            <i class='bx bx-store text-2xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-green-500 text-sm font-medium">+5% from last month</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Registered Agents</p>
+                            <h3 class="text-2xl font-bold dark:text-white">34</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400">
+                            <i class='bx bx-id-card text-2xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-red-500 text-sm font-medium">-2% from last month</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400">Pending Tasks</p>
+                            <h3 class="text-2xl font-bold dark:text-white">18</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-400">
+                            <i class='bx bx-task text-2xl'></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-red-500 text-sm font-medium">+3 from yesterday</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm chart-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-semibold dark:text-white">Employee Performance</h4>
+                        <select class="text-sm bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-1 dark:text-white">
+                            <option>This Month</option>
+                            <option>Last Month</option>
+                            <option>This Quarter</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm chart-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-semibold dark:text-white">Sales Distribution</h4>
+                        <select class="text-sm bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-1 dark:text-white">
+                            <option>This Month</option>
+                            <option>Last Month</option>
+                            <option>This Quarter</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm chart-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-semibold dark:text-white">Task Completion</h4>
+                        <select class="text-sm bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-1 dark:text-white">
+                            <option>This Week</option>
+                            <option>Last Week</option>
+                            <option>This Month</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="tasksChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Employees -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="font-semibold dark:text-white">Recent Employees</h4>
+                    <button class="text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2">
+                        Add Employee
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
+                                <th class="pb-3">Name</th>
+                                <th class="pb-3">Position</th>
+                                <th class="pb-3">Department</th>
+                                <th class="pb-3">Status</th>
+                                <th class="pb-3">Last Active</th>
+                                <th class="pb-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold mr-3">
+                                            JD
+                                        </div>
+                                        <div>
+                                            <p class="font-medium dark:text-white">John Doe</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">john@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">Sales Manager</td>
+                                <td class="py-4 dark:text-gray-300">Sales</td>
+                                <td class="py-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-400">Active</span>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">2 hours ago</td>
+                                <td class="py-4">
+                                    <div class="flex space-x-2">
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-edit'></i>
+                                        </button>
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3">
+                                            AS
+                                        </div>
+                                        <div>
+                                            <p class="font-medium dark:text-white">Alice Smith</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">alice@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">HR Specialist</td>
+                                <td class="py-4 dark:text-gray-300">Human Resources</td>
+                                <td class="py-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-400">Active</span>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">Today</td>
+                                <td class="py-4">
+                                    <div class="flex space-x-2">
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-edit'></i>
+                                        </button>
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <td class="py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-bold mr-3">
+                                            RJ
+                                        </div>
+                                        <div>
+                                            <p class="font-medium dark:text-white">Robert Johnson</p>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">robert@example.com</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">IT Support</td>
+                                <td class="py-4 dark:text-gray-300">Information Technology</td>
+                                <td class="py-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-400">On Leave</span>
+                                </td>
+                                <td class="py-4 dark:text-gray-300">3 days ago</td>
+                                <td class="py-4">
+                                    <div class="flex space-x-2">
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-edit'></i>
+                                        </button>
+                                        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex justify-between items-center">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Showing 1 to 3 of 42 entries</p>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            Previous
+                        </button>
+                        <button class="px-3 py-1 rounded-lg bg-purple-600 text-white">
+                            1
+                        </button>
+                        <button class="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
+                            2
+                        </button>
+                        <button class="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
+                        <i class='bx bx-user-plus text-2xl'></i>
+                    </div>
+                    <h4 class="font-medium dark:text-white mb-2">Add Employee</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Register new employees to the system</p>
+                    <button class="mt-auto text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 w-full">
+                        Add New
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center mb-4">
+                        <i class='bx bx-store-alt text-2xl'></i>
+                    </div>
+                    <h4 class="font-medium dark:text-white mb-2">Manage Sellers</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">View and manage all seller accounts</p>
+                    <button class="mt-auto text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 w-full">
+                        Go to Sellers
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
+                        <i class='bx bx-id-card text-2xl'></i>
+                    </div>
+                    <h4 class="font-medium dark:text-white mb-2">Agent Portal</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Manage and communicate with agents</p>
+                    <button class="mt-auto text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 w-full">
+                        Agent Dashboard
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-400 flex items-center justify-center mb-4">
+                        <i class='bx bx-task text-2xl'></i>
+                    </div>
+                    <h4 class="font-medium dark:text-white mb-2">Create Task</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Assign new tasks to your team</p>
+                    <button class="mt-auto text-sm bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg px-4 py-2 w-full">
+                        New Task
+                    </button>
+                </div>
+            </div>
+</div>
 </div>
 {% endblock %}
+
+

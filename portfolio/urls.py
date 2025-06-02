@@ -1,11 +1,11 @@
 # urls.py
 from django.urls import path
-from .views import  SkillCreateView, ContactSubmissionListView,HeroContentUpdateView, HeroContentListView, HeroContentDetailView, HeroContentCreateView, HeroContentDeleteView, ContactSubmissionDetailView, ProjectDetailView, ProjectDeleteView,  SkillDeleteView, ContactInfoListView, ContactInfoCreateView, ContactInfoDeleteView, ProjectsListView, SkillsListView, ContactInfoView, FooterContentView, ProjectCreateView, SkillCategoryUpdateView, ContactInfoUpdateView, ProjectUpdateView,  SocialLinkListView, SocialLinkCreateView, SocialLinkUpdateView, SocialLinkDeleteView
+from .views import  SkillCreateView, PortfolioHubView, ContactSubmissionListView,HeroContentUpdateView, HeroContentListView, HeroContentDetailView, HeroContentCreateView, HeroContentDeleteView, ContactSubmissionDetailView, ProjectDetailView, ProjectDeleteView,  SkillDeleteView, ContactInfoListView, ContactInfoCreateView, ContactInfoDeleteView, ProjectsListView, SkillsListView, ContactInfoView, FooterContentView, ProjectCreateView, SkillCategoryUpdateView, ContactInfoUpdateView, ProjectUpdateView,  SocialLinkListView, SocialLinkCreateView, SocialLinkUpdateView, SocialLinkDeleteView
 
 
 app_name = 'portfolio'
 urlpatterns = [
-
+    path('portfolio-hub/', PortfolioHubView.as_view(), name='portfolio-hub'),
 
     path("hero/", HeroContentListView.as_view(), name="hero_list"),
     path("hero/create/", HeroContentCreateView.as_view(), name="hero_create"),
