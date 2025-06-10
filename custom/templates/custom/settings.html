@@ -1,0 +1,175 @@
+{% extends 'custom/base.html' %}
+
+{% block content %}
+<div class="bg-white shadow rounded-lg" id="settings-container">
+    <div class="px-6 py-5 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-900">Account Settings</h1>
+        <p class="mt-1 text-sm text-gray-500">Manage your account information and preferences</p>
+    </div>
+
+    <div class="divide-y divide-gray-200">
+        <!-- Profile Section -->
+        <div class="px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+                    <p class="mt-1 text-sm text-gray-500">Update your personal details and avatar</p>
+                </div>
+                <a href="" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Edit Profile
+                </a>
+            </div>
+
+            <div class="mt-6 flex items-center space-x-6">
+                <div class="flex-shrink-0">
+                    {% if user.profile.image %}
+                <img class="h-16 w-16 rounded-full object-cover" src="{{ user.profile.image.url }}" alt="Profile photo">
+            {% else %}
+                <div class="h-16 w-16 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-semibold text-gray-600">
+                    {{ user.username|first|upper }}
+                </div>
+            {% endif %}
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-lg font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</h3>
+                    <p class="text-sm text-gray-500">{{ user.email }}</p>
+                    <p class="text-sm text-gray-500">Member since {{ user.date_joined|date:"F Y" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Account Settings</h2>
+                    <p class="mt-1 text-sm text-gray-500">Manage email, password, and account security</p>
+                </div>
+                <a href="" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Edit Settings
+                </a>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-medium text-gray-900">Email Address</h4>
+                    <p class="mt-1 text-sm text-gray-500">{{ user.email }}</p>
+                    <p class="mt-2 text-xs text-gray-500">
+                        {% if user.emailaddress_set.verified %}Verified{% else %}Not verified{% endif %}
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="text-sm font-medium text-gray-900">Password</h4>
+                    <p class="mt-1 text-sm text-gray-500">
+                        {% if user.has_usable_password %}
+                            Last changed {{ user.password_changed|timesince }} ago
+                        {% else %}
+                            No password set (social login)
+                        {% endif %}
+                    </p>
+                    <a href="" class="mt-2 text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                    hx-get="{% url 'account_change_password' %}"
+                       hx-target="#settings-container"
+                       hx-trigger="click"
+                       hx-push-url="true">>Change password</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Preferences -->
+        <div class="px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Notification Preferences</h2>
+                    <p class="mt-1 text-sm text-gray-500">Choose how you receive notifications</p>
+                </div>
+                <a href="" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Configure
+                </a>
+            </div>
+
+            <div class="mt-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-900">Email Notifications</h4>
+                        <p class="text-sm text-gray-500">Receive updates via email</p>
+                    </div>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                        <input type="checkbox" name="email_notifications" id="email_notifications" class="sr-only toggle-checkbox" {% if user.profile.email_notifications %}checked{% endif %}>
+                        <label for="email_notifications" class="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer">
+                            <span class="block h-6 w-6 rounded-full bg-white shadow transform transition-transform duration-200 ease-in-out {% if user.profile.email_notifications %}translate-x-4{% endif %}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-900">Push Notifications</h4>
+                        <p class="text-sm text-gray-500">Receive updates on your device</p>
+                    </div>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                        <input type="checkbox" name="push_notifications" id="push_notifications" class="sr-only toggle-checkbox" {% if user.profile.push_notifications %}checked{% endif %}>
+                        <label for="push_notifications" class="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer">
+                            <span class="block h-6 w-6 rounded-full bg-white shadow transform transition-transform duration-200 ease-in-out {% if user.profile.push_notifications %}translate-x-4{% endif %}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="px-6 py-5 bg-red-50 rounded-b-lg">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-medium text-red-800">Danger Zone</h2>
+                    <p class="mt-1 text-sm text-red-600">These actions are irreversible</p>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-medium text-red-800">Delete Account</h4>
+                        <p class="text-sm text-red-600">Permanently remove your account and all data</p>
+                    </div>
+                    <a href="{% url 'custom:delete-account' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Delete Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add JavaScript to handle the toggle switches if needed
+document.querySelectorAll('.toggle-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const label = this.nextElementSibling;
+        const span = label.querySelector('span');
+        if (this.checked) {
+            span.classList.add('translate-x-4');
+        } else {
+            span.classList.remove('translate-x-4');
+        }
+
+        // You could add AJAX here to save the preference
+        const fieldName = this.name;
+        const isChecked = this.checked;
+
+        fetch('/update-notification-preference/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                field: fieldName,
+                value: isChecked
+            })
+        });
+    });
+});
+</script>
+{% endblock %}
