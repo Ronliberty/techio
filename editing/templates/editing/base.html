@@ -59,33 +59,8 @@
         }
     </style>
 </head>
-<body x-data="{
-        sidebarOpen: false,
-        activeTab: 'projects',
-        projects: [
-            { id: 1, title: 'Summer Campaign', platform: 'YouTube', type: 'Long Video', progress: 75, deadline: '2023-08-15', members: 4 },
-            { id: 2, title: 'Product Launch', platform: 'Instagram', type: 'Reels', progress: 30, deadline: '2023-07-30', members: 3 },
-            { id: 3, title: 'Brand Story', platform: 'Facebook', type: 'Long Video', progress: 90, deadline: '2023-07-20', members: 5 },
-            { id: 4, title: 'TikTok Challenge', platform: 'TikTok', type: 'Reels', progress: 50, deadline: '2023-08-05', members: 2 }
-        ],
-        tasks: [
-            { id: 1, title: 'Write script for Summer Campaign', project: 'Summer Campaign', assigned: 'You', status: 'In Progress', due: 'Today' },
-            { id: 2, title: 'Review Product Launch edits', project: 'Product Launch', assigned: 'Sarah', status: 'Pending', due: 'Tomorrow' },
-            { id: 3, title: 'Add captions to Brand Story', project: 'Brand Story', assigned: 'Mike', status: 'Completed', due: 'Jul 18' },
-            { id: 4, title: 'Source music for TikTok Challenge', project: 'TikTok Challenge', assigned: 'You', status: 'In Progress', due: 'Jul 22' }
-        ],
-        team: [
-            { name: 'Alex Johnson', role: 'Lead Editor', active: true },
-            { name: 'Sarah Miller', role: 'Script Writer', active: true },
-            { name: 'Mike Chen', role: 'Video Editor', active: false },
-            { name: 'Emma Davis', role: 'Content Producer', active: true }
-        ],
-        notifications: [
-            { id: 1, text: 'Sarah commented on your script draft', time: '10 min ago', read: false },
-            { id: 2, text: 'Brand Story project approved', time: '2 hours ago', read: true },
-            { id: 3, text: 'New version available for review', time: '1 day ago', read: false }
-        ]
-    }"
+<body x-data="{ activeTab: 'dashboard' }"
+
     class="bg-gray-100 min-h-screen flex">
     <!-- Sidebar -->
     <aside class="sidebar bg-white w-64 min-h-screen py-6 px-4 fixed lg:static inset-y-0 left-0 transform lg:translate-x-0 -translate-x-full z-30"
@@ -105,7 +80,7 @@
         <nav>
             <ul class="space-y-1">
                 <li>
-                    <a href="{% url 'dashboard:user_dashboard' %}" :class="{'bg-indigo-50 text-primary': activeTab === 'dashboard'}"
+                    <a  @click="activeTab = 'dashboard'" :class="{'bg-indigo-50 text-primary': activeTab === 'dashboard'}"
                        class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-primary rounded-lg transition cursor-pointer">
                         <i class="fas fa-chart-pie mr-3"></i>
                         <span>Dashboard</span>
@@ -164,23 +139,39 @@
                         <span>Help & Support</span>
                     </a>
                 </li>
+                <li>
+                     <a href="{% url 'dashboard:user_dashboard' %}" class="flex items-center px-3 py-3 text-sm font-medium rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors duration-200 mb-2">
+                        <i class="fas fa-home mr-3 text-indigo-600"></i>
+                        Home
+                    </a>
+                </li>
             </ul>
         </div>
 
-        <div class="absolute bottom-0 left-0 w-full p-4 border-t">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User avatar">
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-gray-900">David Wilson</p>
-                    <p class="text-xs text-gray-500">Creative Director</p>
-                </div>
+      <div class="absolute bottom-0 left-0 w-full p-4 border-t">
+    <div class="flex items-center">
+        <!-- Add flex and items-center to this div -->
+        <div class="relative flex items-center">
+            {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" class="w-8 h-8 rounded-full cursor-pointer"
+                 alt="Profile photo"
+                 @click="profileOpen = !profileOpen">
+            {% else %}
+            <div class="h-8 w-8 rounded-full border-2 border-indigo-300 group-hover:border-indigo-100 transition-colors bg-indigo-100 flex items-center justify-center text-sm font-medium text-indigo-800 cursor-pointer"
+                 @click="profileOpen = !profileOpen">
+                {{ user.username|first|upper }}
+            </div>
+            {% endif %}
+            <div class="ml-3">
+                <p class="text-sm font-medium text-gray-900">{{ user.first_name|default:user.username }}</p>
+                <p class="text-xs text-gray-500">Creative Director</p>
             </div>
         </div>
+    </div>
+</div>
     </aside>
 
-    <!-- Main Content -->
+
     <div class="flex-1 lg:ml-64">
         <!-- Header -->
         <header class="bg-white shadow-sm">
@@ -212,7 +203,7 @@
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
                             <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User avatar">
-                            <span class="hidden md:inline text-gray-700">David</span>
+                            <span class="hidden md:inline text-gray-700">{{ user.first_name|default:user.username }}</span>
                             <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                         </button>
 
@@ -230,345 +221,9 @@
 
         <!-- Main Content Area -->
         <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-            <!-- Projects Tab -->
-            <template x-if="activeTab === 'projects'">
-                <div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-medium text-gray-900">Active Projects</h3>
-                        <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
-                            <i class="fas fa-plus mr-2"></i> New Project
-                        </button>
-                    </div>
 
-                    <div class="grid-layout">
-                        <template x-for="project in projects" :key="project.id">
-                            <div class="project-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300">
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800" x-text="project.platform"></span>
-                                            <h4 class="text-lg font-semibold mt-2" x-text="project.title"></h4>
-                                            <p class="text-sm text-gray-500 mt-1" x-text="project.type"></p>
-                                        </div>
-                                        <div class="flex -space-x-2">
-                                            <template x-for="i in project.members">
-                                                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" :src="'https://randomuser.me/api/portraits/' + (i % 2 === 0 ? 'men' : 'women') + '/' + i + '.jpg'" alt="">
-                                            </template>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-6">
-                                        <div class="flex justify-between text-sm mb-1">
-                                            <span class="text-gray-600">Progress</span>
-                                            <span class="font-medium" x-text="project.progress + '%'"></span>
-                                        </div>
-                                        <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="bg-primary h-2 rounded-full" :style="'width: ' + project.progress + '%'"></div>
-                                        </div>
-
-                                        <div class="flex justify-between mt-4 text-sm">
-                                            <div>
-                                                <span class="text-gray-600">Deadline:</span>
-                                                <span class="font-medium ml-1" x-text="project.deadline"></span>
-                                            </div>
-                                            <div class="flex space-x-2">
-                                                <button class="text-gray-500 hover:text-gray-700">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="text-gray-500 hover:text-gray-700">
-                                                    <i class="fas fa-share-alt"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-gray-50 px-5 py-3 border-t flex justify-between">
-                                    <button class="text-primary text-sm font-medium flex items-center">
-                                        <i class="fas fa-file-alt mr-1"></i> View Script
-                                    </button>
-                                    <button class="text-secondary text-sm font-medium flex items-center">
-                                        <i class="fas fa-play-circle mr-1"></i> Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="mt-8">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-                        <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <ul>
-                                <li class="border-b border-gray-100">
-                                    <div class="p-4 flex">
-                                        <div class="flex-shrink-0">
-                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/11.jpg" alt="User avatar">
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">Sarah Miller</p>
-                                            <p class="text-sm text-gray-500">Updated the script for Summer Campaign</p>
-                                            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="border-b border-gray-100">
-                                    <div class="p-4 flex">
-                                        <div class="flex-shrink-0">
-                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User avatar">
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">David Wilson</p>
-                                            <p class="text-sm text-gray-500">Created a new project: TikTok Challenge</p>
-                                            <p class="text-xs text-gray-400 mt-1">5 hours ago</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="p-4 flex">
-                                        <div class="flex-shrink-0">
-                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/22.jpg" alt="User avatar">
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">Mike Chen</p>
-                                            <p class="text-sm text-gray-500">Uploaded new footage for Brand Story</p>
-                                            <p class="text-xs text-gray-400 mt-1">Yesterday</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Tasks Tab -->
-            <template x-if="activeTab === 'tasks'">
-                <div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-medium text-gray-900">Your Tasks</h3>
-                        <div class="flex space-x-3">
-                            <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center">
-                                <i class="fas fa-filter mr-2"></i> Filter
-                            </button>
-                            <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
-                                <i class="fas fa-plus mr-2"></i> New Task
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="flex border-b border-gray-200">
-                            <button class="px-6 py-3 border-b-2 border-primary text-primary font-medium">All</button>
-                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">In Progress</button>
-                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">Pending</button>
-                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">Completed</button>
-                        </div>
-
-                        <ul>
-                            <template x-for="task in tasks" :key="task.id">
-                                <li class="task-item border-b border-gray-100 hover:bg-gray-50 transition">
-                                    <div class="p-4 flex items-start">
-                                        <div class="flex-shrink-0 pt-1">
-                                            <div class="flex items-center justify-center h-5 w-5 rounded-full border-2 border-gray-300">
-                                                <template x-if="task.status === 'Completed'">
-                                                    <i class="fas fa-check text-green-500 text-xs"></i>
-                                                </template>
-                                            </div>
-                                        </div>
-                                        <div class="ml-4 flex-1">
-                                            <div class="flex items-center justify-between">
-                                                <p class="text-sm font-medium text-gray-900" x-text="task.title"></p>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                                                      :class="{
-                                                        'bg-yellow-100 text-yellow-800': task.status === 'In Progress',
-                                                        'bg-blue-100 text-blue-800': task.status === 'Pending',
-                                                        'bg-green-100 text-green-800': task.status === 'Completed'
-                                                      }"
-                                                      x-text="task.status"></span>
-                                            </div>
-                                            <div class="mt-1 flex items-center text-sm text-gray-500">
-                                                <span class="mr-3" x-text="'Project: ' + task.project"></span>
-                                                <span class="mr-3" x-text="'Assigned: ' + task.assigned"></span>
-                                                <span><i class="far fa-clock mr-1"></i> Due: <span x-text="task.due"></span></span>
-                                            </div>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            <button class="text-gray-400 hover:text-gray-600">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="text-gray-400 hover:text-gray-600">
-                                                <i class="fas fa-comment"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white rounded-lg shadow p-5">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Task Progress</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600">Completed</span>
-                                        <span class="font-medium">25%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600">In Progress</span>
-                                        <span class="font-medium">45%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600">Pending</span>
-                                        <span class="font-medium">30%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 30%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow p-5 md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Comments</h3>
-                            <div class="space-y-4">
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/11.jpg" alt="User avatar">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="bg-gray-50 rounded-lg p-3">
-                                            <p class="text-sm font-medium text-gray-900">Sarah Miller</p>
-                                            <p class="text-sm text-gray-700 mt-1">The intro sequence needs more energy. Can we add dynamic transitions?</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-1">On Summer Campaign script - 2 hours ago</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/22.jpg" alt="User avatar">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="bg-gray-50 rounded-lg p-3">
-                                            <p class="text-sm font-medium text-gray-900">Mike Chen</p>
-                                            <p class="text-sm text-gray-700 mt-1">I've added the B-roll footage to the assets folder. Let me know if you need anything else.</p>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-1">On Brand Story project - 1 day ago</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-            <!-- Team Tab -->
-            <template x-if="activeTab === 'team'">
-                <div>
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-medium text-gray-900">Team Members</h3>
-                        <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
-                            <i class="fas fa-user-plus mr-2"></i> Add Member
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <template x-for="member in team" :key="member.name">
-                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                                <div class="p-5">
-                                    <div class="flex items-center">
-                                        <img class="h-16 w-16 rounded-full" :src="'https://randomuser.me/api/portraits/' + (member.name.includes('Sarah') || member.name.includes('Emma') ? 'women' : 'men') + '/' + (Math.floor(Math.random() * 50) + 1) + '.jpg'" alt="User avatar">
-                                        <div class="ml-4">
-                                            <h4 class="text-lg font-semibold" x-text="member.name"></h4>
-                                            <p class="text-sm text-gray-500" x-text="member.role"></p>
-                                            <div class="flex items-center mt-1">
-                                                <span class="flex h-2 w-2 relative">
-                                                    <span x-show="member.active" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                                    <span :class="{'bg-green-500': member.active, 'bg-gray-400': !member.active}" class="relative inline-flex rounded-full h-2 w-2"></span>
-                                                </span>
-                                                <span class="ml-2 text-xs" :class="{'text-green-600': member.active, 'text-gray-500': !member.active}"
-                                                      x-text="member.active ? 'Online' : 'Offline'"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-6">
-                                        <div class="flex justify-between text-sm">
-                                            <div>
-                                                <p class="text-gray-600">Projects</p>
-                                                <p class="font-medium">4</p>
-                                            </div>
-                                            <div>
-                                                <p class="text-gray-600">Tasks</p>
-                                                <p class="font-medium">12</p>
-                                            </div>
-                                            <div>
-                                                <p class="text-gray-600">Completed</p>
-                                                <p class="font-medium">9</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-gray-50 px-5 py-3 flex justify-between">
-                                    <button class="text-primary text-sm font-medium flex items-center">
-                                        <i class="fas fa-comment mr-1"></i> Message
-                                    </button>
-                                    <button class="text-secondary text-sm font-medium flex items-center">
-                                        <i class="fas fa-tasks mr-1"></i> Assign
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow p-5">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Team Activity</h3>
-                        <div class="relative">
-                            <div class="absolute h-full w-0.5 bg-gray-200 left-4 top-0"></div>
-                            <ul class="space-y-4">
-                                <li class="relative pl-10">
-                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-indigo-100 text-primary flex items-center justify-center">
-                                        <i class="fas fa-file-alt"></i>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-sm"><span class="font-medium">Sarah Miller</span> uploaded a new script draft for <span class="font-medium">Summer Campaign</span></p>
-                                        <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
-                                    </div>
-                                </li>
-                                <li class="relative pl-10">
-                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-purple-100 text-secondary flex items-center justify-center">
-                                        <i class="fas fa-play-circle"></i>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-sm"><span class="font-medium">Mike Chen</span> published a new version of <span class="font-medium">Brand Story</span></p>
-                                        <p class="text-xs text-gray-500 mt-1">5 hours ago</p>
-                                    </div>
-                                </li>
-                                <li class="relative pl-10">
-                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-sm"><span class="font-medium">Emma Davis</span> completed all tasks for <span class="font-medium">Product Launch</span></p>
-                                        <p class="text-xs text-gray-500 mt-1">1 day ago</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        </main>
+        {% block content %}{% endblock %}
+ </main>
     </div>
 </body>
 </html>

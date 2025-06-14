@@ -1,0 +1,95 @@
+ <template x-if="activeTab === 'team'">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-medium text-gray-900">Team Members</h3>
+                        <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
+                            <i class="fas fa-user-plus mr-2"></i> Add Member
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <template x-for="member in team" :key="member.name">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="p-5">
+                                    <div class="flex items-center">
+                                        <img class="h-16 w-16 rounded-full" :src="'https://randomuser.me/api/portraits/' + (member.name.includes('Sarah') || member.name.includes('Emma') ? 'women' : 'men') + '/' + (Math.floor(Math.random() * 50) + 1) + '.jpg'" alt="User avatar">
+                                        <div class="ml-4">
+                                            <h4 class="text-lg font-semibold" x-text="member.name"></h4>
+                                            <p class="text-sm text-gray-500" x-text="member.role"></p>
+                                            <div class="flex items-center mt-1">
+                                                <span class="flex h-2 w-2 relative">
+                                                    <span x-show="member.active" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                                    <span :class="{'bg-green-500': member.active, 'bg-gray-400': !member.active}" class="relative inline-flex rounded-full h-2 w-2"></span>
+                                                </span>
+                                                <span class="ml-2 text-xs" :class="{'text-green-600': member.active, 'text-gray-500': !member.active}"
+                                                      x-text="member.active ? 'Online' : 'Offline'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-6">
+                                        <div class="flex justify-between text-sm">
+                                            <div>
+                                                <p class="text-gray-600">Projects</p>
+                                                <p class="font-medium">4</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-gray-600">Tasks</p>
+                                                <p class="font-medium">12</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-gray-600">Completed</p>
+                                                <p class="font-medium">9</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-5 py-3 flex justify-between">
+                                    <button class="text-primary text-sm font-medium flex items-center">
+                                        <i class="fas fa-comment mr-1"></i> Message
+                                    </button>
+                                    <button class="text-secondary text-sm font-medium flex items-center">
+                                        <i class="fas fa-tasks mr-1"></i> Assign
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-5">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Team Activity</h3>
+                        <div class="relative">
+                            <div class="absolute h-full w-0.5 bg-gray-200 left-4 top-0"></div>
+                            <ul class="space-y-4">
+                                <li class="relative pl-10">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-indigo-100 text-primary flex items-center justify-center">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <p class="text-sm"><span class="font-medium">Sarah Miller</span> uploaded a new script draft for <span class="font-medium">Summer Campaign</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                                    </div>
+                                </li>
+                                <li class="relative pl-10">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-purple-100 text-secondary flex items-center justify-center">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <p class="text-sm"><span class="font-medium">Mike Chen</span> published a new version of <span class="font-medium">Brand Story</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">5 hours ago</p>
+                                    </div>
+                                </li>
+                                <li class="relative pl-10">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <p class="text-sm"><span class="font-medium">Emma Davis</span> completed all tasks for <span class="font-medium">Product Launch</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">1 day ago</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template>

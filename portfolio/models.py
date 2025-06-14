@@ -311,13 +311,7 @@ class PortfolioContent(models.Model):
 
 
 # Social Media Integration
-class SocialLink(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    platform = models.CharField(max_length=50)
-    url = models.URLField()
 
-    class Meta:
-        unique_together = ('user', 'platform')
 
 
 # Tagging System for Content Organization

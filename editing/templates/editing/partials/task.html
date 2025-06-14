@@ -1,0 +1,130 @@
+ <template x-if="activeTab === 'tasks'">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-medium text-gray-900">Your Tasks</h3>
+                        <div class="flex space-x-3">
+                            <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-filter mr-2"></i> Filter
+                            </button>
+                            <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-plus mr-2"></i> New Task
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="flex border-b border-gray-200">
+                            <button class="px-6 py-3 border-b-2 border-primary text-primary font-medium">All</button>
+                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">In Progress</button>
+                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">Pending</button>
+                            <button class="px-6 py-3 text-gray-500 font-medium hover:text-gray-700">Completed</button>
+                        </div>
+
+                        <ul>
+                            <template x-for="task in tasks" :key="task.id">
+                                <li class="task-item border-b border-gray-100 hover:bg-gray-50 transition">
+                                    <div class="p-4 flex items-start">
+                                        <div class="flex-shrink-0 pt-1">
+                                            <div class="flex items-center justify-center h-5 w-5 rounded-full border-2 border-gray-300">
+                                                <template x-if="task.status === 'Completed'">
+                                                    <i class="fas fa-check text-green-500 text-xs"></i>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-gray-900" x-text="task.title"></p>
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                                                      :class="{
+                                                        'bg-yellow-100 text-yellow-800': task.status === 'In Progress',
+                                                        'bg-blue-100 text-blue-800': task.status === 'Pending',
+                                                        'bg-green-100 text-green-800': task.status === 'Completed'
+                                                      }"
+                                                      x-text="task.status"></span>
+                                            </div>
+                                            <div class="mt-1 flex items-center text-sm text-gray-500">
+                                                <span class="mr-3" x-text="'Project: ' + task.project"></span>
+                                                <span class="mr-3" x-text="'Assigned: ' + task.assigned"></span>
+                                                <span><i class="far fa-clock mr-1"></i> Due: <span x-text="task.due"></span></span>
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-comment"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-lg shadow p-5">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Task Progress</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Completed</span>
+                                        <span class="font-medium">25%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">In Progress</span>
+                                        <span class="font-medium">45%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600">Pending</span>
+                                        <span class="font-medium">30%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-5 md:col-span-2">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Comments</h3>
+                            <div class="space-y-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/11.jpg" alt="User avatar">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="bg-gray-50 rounded-lg p-3">
+                                            <p class="text-sm font-medium text-gray-900">Sarah Miller</p>
+                                            <p class="text-sm text-gray-700 mt-1">The intro sequence needs more energy. Can we add dynamic transitions?</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1">On Summer Campaign script - 2 hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/22.jpg" alt="User avatar">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="bg-gray-50 rounded-lg p-3">
+                                            <p class="text-sm font-medium text-gray-900">Mike Chen</p>
+                                            <p class="text-sm text-gray-700 mt-1">I've added the B-roll footage to the assets folder. Let me know if you need anything else.</p>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-1">On Brand Story project - 1 day ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>

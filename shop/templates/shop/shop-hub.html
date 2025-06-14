@@ -2,7 +2,283 @@
 {% load static %}
 
 {% block content %}
-<div>
-  <h1>Welcome and teach </h1>
-</div>
+  <template x-if="activeTab === 'dashboard'">
+ <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
+                <p class="text-gray-600">Welcome back! Here's what's happening with your store today.</p>
+
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Total Revenue</p>
+                            <h3 class="text-2xl font-bold mt-1">$24,568</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 12.5% from last month
+                            </p>
+                        </div>
+                        <div class="bg-indigo-100 text-primary p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Total Orders</p>
+                            <h3 class="text-2xl font-bold mt-1">1,245</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 8.3% from last month
+                            </p>
+                        </div>
+                        <div class="bg-green-100 text-success p-3 rounded-lg">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Pending Orders</p>
+                            <h3 class="text-2xl font-bold mt-1">87</h3>
+                            <p class="text-danger text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-down mr-1"></i> 5.2% from last week
+                            </p>
+                        </div>
+                        <div class="bg-yellow-100 text-warning p-3 rounded-lg">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Avg. Rating</p>
+                            <h3 class="text-2xl font-bold mt-1">4.7/5</h3>
+                            <p class="text-success text-sm mt-1 flex items-center">
+                                <i class="fas fa-star mr-1"></i> 128 new reviews
+                            </p>
+                        </div>
+                        <div class="bg-blue-100 text-info p-3 rounded-lg">
+                            <i class="fas fa-star text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Metrics -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Sales Chart -->
+                <div class="lg:col-span-2 bg-white rounded-xl shadow p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-lg">Sales Performance</h3>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 text-sm rounded-lg bg-indigo-50 text-primary font-medium">Week</button>
+                            <button class="px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 font-medium">Month</button>
+                            <button class="px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 font-medium">Year</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="flex items-end h-full gap-2 pt-6">
+                            <template x-for="(bar, index) in salesData">
+                                <div class="flex flex-col items-center flex-1">
+                                    <div
+                                        class="w-full bg-gradient-to-t from-primary to-indigo-400 rounded-t-lg"
+                                        :style="`height: ${bar.value}%`"
+                                        :class="index === 6 ? 'opacity-100' : 'opacity-70'"
+                                    ></div>
+                                    <span class="text-xs text-gray-500 mt-2" x-text="bar.label"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Metrics -->
+                <div class="bg-white rounded-xl shadow p-6">
+                    <h3 class="font-bold text-lg mb-6">Performance Metrics</h3>
+
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Order Completion</span>
+                                <span class="font-medium">82%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-primary" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Delivery On Time</span>
+                                <span class="font-medium">94%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-success" style="width: 94%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Customer Satisfaction</span>
+                                <span class="font-medium">89%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-info" style="width: 89%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-gray-600">Return Rate</span>
+                                <span class="font-medium">4.2%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-warning" style="width: 4.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders & Reviews -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Recent Orders -->
+                <div class="bg-white rounded-xl shadow">
+                    <div class="p-6 border-b">
+                        <h3 class="font-bold text-lg">Recent Orders</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 text-gray-500 text-sm">
+                                <tr>
+                                    <th class="py-3 px-6 text-left">Order ID</th>
+                                    <th class="py-3 px-6 text-left">Customer</th>
+                                    <th class="py-3 px-6 text-left">Date</th>
+                                    <th class="py-3 px-6 text-left">Amount</th>
+                                    <th class="py-3 px-6 text-left">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-sm">
+                                <template x-for="order in orders">
+                                    <tr>
+                                        <td class="py-3 px-6 font-medium" x-text="'#' + order.id"></td>
+                                        <td class="py-3 px-6" x-text="order.customer"></td>
+                                        <td class="py-3 px-6" x-text="order.date"></td>
+                                        <td class="py-3 px-6 font-medium" x-text="'$' + order.amount"></td>
+                                        <td class="py-3 px-6">
+                                            <span
+                                                class="status-badge"
+                                                :class="{
+                                                    'bg-green-100 text-green-800': order.status === 'Delivered',
+                                                    'bg-yellow-100 text-yellow-800': order.status === 'Processing',
+                                                    'bg-blue-100 text-blue-800': order.status === 'Shipped',
+                                                    'bg-red-100 text-red-800': order.status === 'Cancelled'
+                                                }"
+                                                x-text="order.status"
+                                            ></span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 text-center border-t">
+                        <a href="#" class="text-primary font-medium hover:underline">View all orders</a>
+                    </div>
+                </div>
+
+                <!-- Recent Reviews -->
+                <div class="bg-white rounded-xl shadow">
+                    <div class="p-6 border-b">
+                        <h3 class="font-bold text-lg">Customer Reviews</h3>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <template x-for="review in reviews">
+                            <div class="p-6">
+                                <div class="flex justify-between mb-2">
+                                    <h4 class="font-medium" x-text="review.product"></h4>
+                                    <div class="flex text-amber-400">
+                                        <template x-for="i in 5">
+                                            <i
+                                                :class="i <= review.rating ? 'fas fa-star' : 'far fa-star'"
+                                                class="text-sm"
+                                            ></i>
+                                        </template>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3" x-text="review.comment"></p>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500" x-text="review.customer"></span>
+                                    <span class="text-gray-400" x-text="review.date"></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="p-4 text-center border-t">
+                        <a href="#" class="text-primary font-medium hover:underline">View all reviews</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="mt-8 bg-white rounded-xl shadow">
+                <div class="p-6 border-b">
+                    <h3 class="font-bold text-lg">Top Performing Products</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 text-gray-500 text-sm">
+                            <tr>
+                                <th class="py-3 px-6 text-left">Product</th>
+                                <th class="py-3 px-6 text-left">Category</th>
+                                <th class="py-3 px-6 text-left">Price</th>
+                                <th class="py-3 px-6 text-left">Sold</th>
+                                <th class="py-3 px-6 text-left">Revenue</th>
+                                <th class="py-3 px-6 text-left">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            <template x-for="product in topProducts">
+                                <tr>
+                                    <td class="py-3 px-6 font-medium" x-text="product.name"></td>
+                                    <td class="py-3 px-6">
+                                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs" x-text="product.category"></span>
+                                    </td>
+                                    <td class="py-3 px-6" x-text="'$' + product.price"></td>
+                                    <td class="py-3 px-6" x-text="product.sold"></td>
+                                    <td class="py-3 px-6 font-medium" x-text="'$' + product.revenue"></td>
+                                    <td class="py-3 px-6">
+                                        <div class="flex items-center">
+                                            <span class="mr-2" x-text="product.rating"></span>
+                                            <div class="flex text-amber-400">
+                                                <i class="fas fa-star text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+   </div>
+
+  </template>
+ {% include "shop/partials/product.html" %}
+ {% include "shop/partials/order.html" %}
+ {% include "shop/partials/delivery.html" %}
+ {% include "shop/partials/review.html" %}
+ {% include "shop/partials/analytic.html" %}
+
+
+
+
+
 {% endblock %}

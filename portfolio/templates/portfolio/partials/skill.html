@@ -1,0 +1,112 @@
+ <template x-if="activeTab === 'skills'">
+                    <div>
+                        <div class="flex justify-between items-center mb-8">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800">Skills & Expertise</h2>
+                                <p class="text-gray-600">Showcase your top skills and areas of expertise</p>
+                            </div>
+                            <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-save mr-2"></i> Save Changes
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2">
+                                <div class="bg-white rounded-xl shadow-md form-card p-6">
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Skills</h3>
+
+                                    <div class="flex flex-wrap gap-2 mb-6">
+                                        <template x-for="skill in skills">
+                                            <div class="relative group">
+                                                <span class="px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full font-medium skill-tag flex items-center">
+                                                    <span x-text="skill"></span>
+                                                    <button @click="skills = skills.filter(s => s !== skill)" class="ml-2 text-indigo-600 opacity-0 group-hover:opacity-100 transition">
+                                                        <i class="fas fa-times text-xs"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Add New Skill</label>
+                                        <div class="flex">
+                                            <input type="text" x-model="newSkill" placeholder="Enter a skill" class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-primary focus:border-primary">
+                                            <button @click="if(newSkill.trim() !== '') { skills.push(newSkill); newSkill = ''; }" class="bg-primary text-white px-4 rounded-r-lg">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Skill Categories</h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="rounded text-primary focus:ring-primary">
+                                                    <span class="ml-2 text-gray-700">Frontend Development</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="rounded text-primary focus:ring-primary">
+                                                    <span class="ml-2 text-gray-700">Backend Development</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="rounded text-primary focus:ring-primary">
+                                                    <span class="ml-2 text-gray-700">UI/UX Design</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" class="rounded text-primary focus:ring-primary">
+                                                    <span class="ml-2 text-gray-700">DevOps</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="bg-white rounded-xl shadow-md p-6">
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Skill Tips</h3>
+                                    <div class="space-y-4">
+                                        <div class="bg-indigo-50 p-4 rounded-lg">
+                                            <h4 class="font-medium text-indigo-700 flex items-center">
+                                                <i class="fas fa-lightbulb mr-2"></i> Highlight Key Skills
+                                            </h4>
+                                            <p class="text-sm text-gray-600 mt-1">List 6-8 of your strongest skills that are relevant to your target roles.</p>
+                                        </div>
+                                        <div class="bg-purple-50 p-4 rounded-lg">
+                                            <h4 class="font-medium text-purple-700 flex items-center">
+                                                <i class="fas fa-star mr-2"></i> Order by Proficiency
+                                            </h4>
+                                            <p class="text-sm text-gray-600 mt-1">Place your most proficient skills at the top to grab attention.</p>
+                                        </div>
+                                        <div class="bg-blue-50 p-4 rounded-lg">
+                                            <h4 class="font-medium text-blue-700 flex items-center">
+                                                <i class="fas fa-sync-alt mr-2"></i> Keep Updated
+                                            </h4>
+                                            <p class="text-sm text-gray-600 mt-1">Regularly update your skills as you learn new technologies.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Popular Skills</h3>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">React.js</span>
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">Node.js</span>
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">TypeScript</span>
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">AWS</span>
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">Figma</span>
+                                            <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm">Python</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>

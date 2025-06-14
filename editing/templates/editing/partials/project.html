@@ -1,0 +1,109 @@
+
+            <template x-if="activeTab === 'projects'">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-medium text-gray-900">Active Projects</h3>
+                        <button class="bg-primary hover:bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center">
+                            <i class="fas fa-plus mr-2"></i> New Project
+                        </button>
+                    </div>
+
+                    <div class="grid-layout">
+                        <template x-for="project in projects" :key="project.id">
+                            <div class="project-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300">
+                                <div class="p-5">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800" x-text="project.platform"></span>
+                                            <h4 class="text-lg font-semibold mt-2" x-text="project.title"></h4>
+                                            <p class="text-sm text-gray-500 mt-1" x-text="project.type"></p>
+                                        </div>
+                                        <div class="flex -space-x-2">
+                                            <template x-for="i in project.members">
+                                                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" :src="'https://randomuser.me/api/portraits/' + (i % 2 === 0 ? 'men' : 'women') + '/' + i + '.jpg'" alt="">
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-6">
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span class="text-gray-600">Progress</span>
+                                            <span class="font-medium" x-text="project.progress + '%'"></span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-primary h-2 rounded-full" :style="'width: ' + project.progress + '%'"></div>
+                                        </div>
+
+                                        <div class="flex justify-between mt-4 text-sm">
+                                            <div>
+                                                <span class="text-gray-600">Deadline:</span>
+                                                <span class="font-medium ml-1" x-text="project.deadline"></span>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <i class="fas fa-share-alt"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-5 py-3 border-t flex justify-between">
+                                    <button class="text-primary text-sm font-medium flex items-center">
+                                        <i class="fas fa-file-alt mr-1"></i> View Script
+                                    </button>
+                                    <button class="text-secondary text-sm font-medium flex items-center">
+                                        <i class="fas fa-play-circle mr-1"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="mt-8">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <ul>
+                                <li class="border-b border-gray-100">
+                                    <div class="p-4 flex">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/11.jpg" alt="User avatar">
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-900">Sarah Miller</p>
+                                            <p class="text-sm text-gray-500">Updated the script for Summer Campaign</p>
+                                            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="border-b border-gray-100">
+                                    <div class="p-4 flex">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User avatar">
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-900">David Wilson</p>
+                                            <p class="text-sm text-gray-500">Created a new project: TikTok Challenge</p>
+                                            <p class="text-xs text-gray-400 mt-1">5 hours ago</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="p-4 flex">
+                                        <div class="flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/22.jpg" alt="User avatar">
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-900">Mike Chen</p>
+                                            <p class="text-sm text-gray-500">Uploaded new footage for Brand Story</p>
+                                            <p class="text-xs text-gray-400 mt-1">Yesterday</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template>
