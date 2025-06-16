@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ openMobileMenu: false, openDropdown: false, currentView: 'dashboard' }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Mobile menu button -->
+    <div class="md:hidden bg-white shadow">
+        <div class="flex justify-between items-center p-4">
+            <h1 class="text-xl font-bold text-indigo-600">Task Manager</h1>
+            <button @click="openMobileMenu = !openMobileMenu" class="text-gray-500 hover:text-gray-600">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r border-gray-200">
+                <div class="flex items-center justify-center h-16 px-4 bg-white border-b border-gray-200">
+                    <h1 class="text-xl font-bold text-indigo-600">Task Manager</h1>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-2">
+                        <!-- Dashboard -->
+                        <button @click="currentView = 'dashboard'"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'dashboard' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </button>
+
+                        <!-- Task Lists -->
+                        <div>
+                            <button @click="currentView = 'tasklists'"
+                                    :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tasklists' }"
+                                    class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                <i class="fas fa-list-ul mr-3"></i>
+                                Task Lists
+                            </button>
+                        </div>
+
+                        <!-- Tasks -->
+                        <button @click="currentView = 'tasks'"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tasks' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tasks mr-3"></i>
+                            Tasks
+                        </button>
+
+                        <!-- Tags -->
+                        <button @click="currentView = 'tags'"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tags' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tags mr-3"></i>
+                            Tags
+                        </button>
+                       <a href="{% url 'dashboard:user_dashboard' %}" class="flex items-center px-3 py-3 text-sm font-medium rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors duration-200 mb-2">
+                            <i class="fas fa-home mr-3 text-indigo-600"></i>
+                            Home
+                        </a>
+                    </nav>
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="User avatar">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-700">John Doe</p>
+                            <button class="text-xs font-medium text-gray-500 hover:text-gray-700">View profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile sidebar -->
+        <div x-show="openMobileMenu" @click.away="openMobileMenu = false"
+             class="fixed inset-0 z-40 md:hidden" x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-75" @click="openMobileMenu = false"></div>
+            <div class="fixed inset-y-0 left-0 flex flex-col w-64 max-w-xs bg-white">
+                <div class="flex items-center justify-center h-16 px-4 bg-white border-b border-gray-200">
+                    <h1 class="text-xl font-bold text-indigo-600">Task Manager</h1>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-2">
+                        <!-- Dashboard -->
+                        <button @click="currentView = 'dashboard'; openMobileMenu = false"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'dashboard' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </button>
+
+                        <!-- Task Lists -->
+                        <button @click="currentView = 'tasklists'; openMobileMenu = false"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tasklists' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-list-ul mr-3"></i>
+                            Task Lists
+                        </button>
+
+                        <!-- Tasks -->
+                        <button @click="currentView = 'tasks'; openMobileMenu = false"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tasks' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tasks mr-3"></i>
+                            Tasks
+                        </button>
+
+                        <!-- Tags -->
+                        <button @click="currentView = 'tags'; openMobileMenu = false"
+                                :class="{ 'bg-indigo-50 text-indigo-600': currentView === 'tags' }"
+                                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-600 transition">
+                            <i class="fas fa-tags mr-3"></i>
+                            Tags
+                        </button>
+                    </nav>
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="User avatar">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-700">John Doe</p>
+                            <button class="text-xs font-medium text-gray-500 hover:text-gray-700">View profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top navigation -->
+            <div class="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+                <div class="flex items-center">
+                    <h2 class="text-lg font-medium text-gray-900" x-text="currentView.charAt(0).toUpperCase() + currentView.slice(1)"></h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-1 text-gray-400 rounded-full hover:text-gray-500 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                            <span class="text-sm font-medium text-gray-700">John Doe</span>
+                            <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/32" alt="User avatar">
+                        </button>
+                        <div x-show="open" @click.away="open = false"
+                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content area -->
+            <div class="flex-1 overflow-auto p-4">
+                <!-- Dashboard View -->
+                <div x-show="currentView === 'dashboard'" class="space-y-6">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <!-- Stats Cards -->
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                        <i class="fas fa-tasks text-white"></i>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Total Tasks</dt>
+                                            <dd class="flex items-baseline">
+                                                <div class="text-2xl font-semibold text-gray-900">24</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                        <i class="fas fa-check-circle text-white"></i>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Completed</dt>
+                                            <dd class="flex items-baseline">
+                                                <div class="text-2xl font-semibold text-gray-900">8</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                                        <i class="fas fa-exclamation-circle text-white"></i>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Pending</dt>
+                                            <dd class="flex items-baseline">
+                                                <div class="text-2xl font-semibold text-gray-900">12</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-red-500 rounded-md p-3">
+                                        <i class="fas fa-clock text-white"></i>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">Overdue</dt>
+                                            <dd class="flex items-baseline">
+                                                <div class="text-2xl font-semibold text-gray-900">4</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Tasks -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Tasks</h3>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Complete project proposal</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Today</span>
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Review team tasks</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tomorrow</span>
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" checked>
+                                            <span class="ml-3 text-sm font-medium text-gray-900 line-through">Send meeting notes</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Completed</span>
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Lists View -->
+                <div x-show="currentView === 'tasklists'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-medium text-gray-900">Task Lists</h2>
+                        <button @click="currentView = 'tasklist-create'" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-plus mr-2"></i> New List
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <!-- Task List Cards -->
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="px-4 py-5 sm:p-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">Work Tasks</h3>
+                                    <div class="flex space-x-2">
+                                        <button @click="currentView = 'tasklist-update'" class="text-indigo-600 hover:text-indigo-900">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-500">5 tasks</p>
+                                    <div class="mt-2">
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                            <span>2 completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                <button @click="currentView = 'tasklist-detail'" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                    View details
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="px-4 py-5 sm:p-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">Personal</h3>
+                                    <div class="flex space-x-2">
+                                        <button @click="currentView = 'tasklist-update'" class="text-indigo-600 hover:text-indigo-900">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-500">8 tasks</p>
+                                    <div class="mt-2">
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                            <span>3 completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                <button @click="currentView = 'tasklist-detail'" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                    View details
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="px-4 py-5 sm:p-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">Shopping</h3>
+                                    <div class="flex space-x-2">
+                                        <button @click="currentView = 'tasklist-update'" class="text-indigo-600 hover:text-indigo-900">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-500">4 tasks</p>
+                                    <div class="mt-2">
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                            <span>1 completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                <button @click="currentView = 'tasklist-detail'" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                    View details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task List Detail View -->
+                <div x-show="currentView === 'tasklist-detail'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'tasklists'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to lists
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900">Work Tasks</h2>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button @click="currentView = 'tasklist-update'" class="inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-edit mr-2"></i> Edit
+                            </button>
+                            <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <i class="fas fa-trash mr-2"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">Tasks in this list</h3>
+                                <button @click="currentView = 'task-create'" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <i class="fas fa-plus mr-2"></i> Add Task
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Complete project proposal</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Today</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Review team tasks</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tomorrow</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" checked>
+                                            <span class="ml-3 text-sm font-medium text-gray-900 line-through">Send meeting notes</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Completed</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task List Create/Update View -->
+                <div x-show="currentView === 'tasklist-create' || currentView === 'tasklist-update'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'tasklists'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to lists
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900" x-text="currentView === 'tasklist-create' ? 'Create New Task List' : 'Edit Task List'"></h2>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:p-6">
+                            <form>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="list-name" class="block text-sm font-medium text-gray-700">List Name</label>
+                                        <input type="text" id="list-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g. Work Tasks">
+                                    </div>
+                                    <div>
+                                        <label for="list-description" class="block text-sm font-medium text-gray-700">Description</label>
+                                        <textarea id="list-description" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Optional description"></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button @click="currentView = 'tasklists'" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks View -->
+                <div x-show="currentView === 'tasks'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-medium text-gray-900">All Tasks</h2>
+                        <button @click="currentView = 'task-create'" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-plus mr-2"></i> New Task
+                        </button>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">Tasks</h3>
+                                <div class="flex space-x-2">
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option>All</option>
+                                        <option>Completed</option>
+                                        <option>Pending</option>
+                                        <option>Overdue</option>
+                                    </select>
+                                    <select class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                        <option>Sort by Due Date</option>
+                                        <option>Sort by Priority</option>
+                                        <option>Sort by Title</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Complete project proposal</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Today</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">Work</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Review team tasks</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tomorrow</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">Work</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" checked>
+                                            <span class="ml-3 text-sm font-medium text-gray-900 line-through">Send meeting notes</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Completed</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">Work</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-900">Buy groceries</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tomorrow</span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Personal</span>
+                                            <button @click="currentView = 'task-detail'" class="text-gray-400 hover:text-gray-500">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Detail View -->
+                <div x-show="currentView === 'task-detail'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'tasks'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to tasks
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900">Complete project proposal</h2>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button @click="currentView = 'task-update'" class="inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-edit mr-2"></i> Edit
+                            </button>
+                            <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                <i class="fas fa-trash mr-2"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Task Details</h3>
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Description</h4>
+                                    <p class="mt-1 text-sm text-gray-900">Finish the project proposal document and send it to the client for review. Include all the requirements and timeline.</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Due Date</h4>
+                                    <p class="mt-1 text-sm text-gray-900">June 20, 2023</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Priority</h4>
+                                    <p class="mt-1 text-sm text-gray-900">High</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Status</h4>
+                                    <p class="mt-1 text-sm text-gray-900">In Progress</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Task List</h4>
+                                    <p class="mt-1 text-sm text-gray-900">Work Tasks</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-500">Tags</h4>
+                                    <div class="mt-1 flex flex-wrap gap-2">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Work</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Urgent</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">Comments</h3>
+                                <button @click="currentView = 'comment-create'" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <i class="fas fa-plus mr-2"></i> Add Comment
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="">
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="text-sm font-semibold text-gray-900">John Doe</h4>
+                                                <span class="text-xs text-gray-500">2 hours ago</span>
+                                            </div>
+                                            <p class="text-sm text-gray-700 mt-1">Make sure to include the budget breakdown in the proposal.</p>
+                                            <div class="mt-2 flex justify-end">
+                                                <button class="text-xs text-red-600 hover:text-red-900">
+                                                    <i class="fas fa-trash mr-1"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <img class="h-10 w-10 rounded-full" src="https://via.placeholder.com/40" alt="">
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="text-sm font-semibold text-gray-900">Jane Smith</h4>
+                                                <span class="text-xs text-gray-500">1 day ago</span>
+                                            </div>
+                                            <p class="text-sm text-gray-700 mt-1">I've attached the requirements document for reference.</p>
+                                            <div class="mt-2 flex justify-end">
+                                                <button class="text-xs text-red-600 hover:text-red-900">
+                                                    <i class="fas fa-trash mr-1"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Reminders Section -->
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">Reminders</h3>
+                                <button @click="currentView = 'reminder-create'" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    <i class="fas fa-plus mr-2"></i> Add Reminder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-bell text-yellow-500 mr-3"></i>
+                                            <span class="text-sm font-medium text-gray-900">June 18, 2023 at 10:00 AM</span>
+                                        </div>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-bell text-yellow-500 mr-3"></i>
+                                            <span class="text-sm font-medium text-gray-900">June 19, 2023 at 3:00 PM</span>
+                                        </div>
+                                        <button class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Create/Update View -->
+                <div x-show="currentView === 'task-create' || currentView === 'task-update'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'tasks'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to tasks
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900" x-text="currentView === 'task-create' ? 'Create New Task' : 'Edit Task'"></h2>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:p-6">
+                            <form>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="task-title" class="block text-sm font-medium text-gray-700">Title</label>
+                                        <input type="text" id="task-title" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Task title">
+                                    </div>
+                                    <div>
+                                        <label for="task-description" class="block text-sm font-medium text-gray-700">Description</label>
+                                        <textarea id="task-description" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Task description"></textarea>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                        <div>
+                                            <label for="task-due-date" class="block text-sm font-medium text-gray-700">Due Date</label>
+                                            <input type="date" id="task-due-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        </div>
+                                        <div>
+                                            <label for="task-priority" class="block text-sm font-medium text-gray-700">Priority</label>
+                                            <select id="task-priority" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option>Low</option>
+                                                <option>Medium</option>
+                                                <option selected>High</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="task-list" class="block text-sm font-medium text-gray-700">Task List</label>
+                                            <select id="task-list" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option>Work Tasks</option>
+                                                <option>Personal</option>
+                                                <option>Shopping</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="task-status" class="block text-sm font-medium text-gray-700">Status</label>
+                                            <select id="task-status" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                <option>Not Started</option>
+                                                <option>In Progress</option>
+                                                <option>Completed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Tags</label>
+                                        <div class="mt-2 flex flex-wrap gap-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                Work
+                                                <button type="button" class="ml-1.5 inline-flex text-blue-400 hover:text-blue-600">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </span>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Urgent
+                                                <button type="button" class="ml-1.5 inline-flex text-green-400 hover:text-green-600">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </span>
+                                            <button type="button" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-indigo-600 hover:text-indigo-900">
+                                                <i class="fas fa-plus mr-1"></i> Add Tag
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button @click="currentView = 'tasks'" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comment Create View -->
+                <div x-show="currentView === 'comment-create'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'task-detail'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to task
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900">Add Comment</h2>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:p-6">
+                            <form>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="comment-text" class="block text-sm font-medium text-gray-700">Comment</label>
+                                        <textarea id="comment-text" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Your comment"></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button @click="currentView = 'task-detail'" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Add Comment
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reminder Create View -->
+                <div x-show="currentView === 'reminder-create'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'task-detail'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to task
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900">Add Reminder</h2>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:p-6">
+                            <form>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="reminder-date" class="block text-sm font-medium text-gray-700">Date</label>
+                                        <input type="date" id="reminder-date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="reminder-time" class="block text-sm font-medium text-gray-700">Time</label>
+                                        <input type="time" id="reminder-time" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button @click="currentView = 'task-detail'" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Set Reminder
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags View -->
+                <div x-show="currentView === 'tags'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-medium text-gray-900">Tags</h2>
+                        <button @click="currentView = 'tag-create'" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-plus mr-2"></i> New Tag
+                        </button>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">All Tags</h3>
+                        </div>
+                        <div class="bg-white overflow-hidden">
+                            <ul class="divide-y divide-gray-200">
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Work</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button @click="currentView = 'tag-update'" class="text-indigo-600 hover:text-indigo-900">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Personal</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button @click="currentView = 'tag-update'" class="text-indigo-600 hover:text-indigo-900">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Shopping</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button @click="currentView = 'tag-update'" class="text-indigo-600 hover:text-indigo-900">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Urgent</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button @click="currentView = 'tag-update'" class="text-indigo-600 hover:text-indigo-900">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tag Create/Update View -->
+                <div x-show="currentView === 'tag-create' || currentView === 'tag-update'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <button @click="currentView = 'tags'" class="text-indigo-600 hover:text-indigo-900 mb-2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back to tags
+                            </button>
+                            <h2 class="text-lg font-medium text-gray-900" x-text="currentView === 'tag-create' ? 'Create New Tag' : 'Edit Tag'"></h2>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-4 py-5 sm:p-6">
+                            <form>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="tag-name" class="block text-sm font-medium text-gray-700">Name</label>
+                                        <input type="text" id="tag-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Tag name">
+                                    </div>
+                                    <div>
+                                        <label for="tag-color" class="block text-sm font-medium text-gray-700">Color</label>
+                                        <select id="tag-color" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            <option value="blue" class="bg-blue-100 text-blue-800">Blue</option>
+                                            <option value="green" class="bg-green-100 text-green-800">Green</option>
+                                            <option value="purple" class="bg-purple-100 text-purple-800">Purple</option>
+                                            <option value="red" class="bg-red-100 text-red-800">Red</option>
+                                            <option value="yellow" class="bg-yellow-100 text-yellow-800">Yellow</option>
+                                            <option value="indigo" class="bg-indigo-100 text-indigo-800">Indigo</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex justify-end space-x-3">
+                                        <button @click="currentView = 'tags'" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Alpine.js data and methods can be added here if needed
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', () => ({
+                init() {
+                    // Initialize any data or state here
+                }
+            }))
+        })
+    </script>
+</body>
+</html>

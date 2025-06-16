@@ -15,6 +15,7 @@ urlpatterns = [
     path('skillsync/', include('skillsync.urls')),
     path('editing/', include('editing.urls')),
     path('shop/', include('shop.urls')),
+    path('todo/', include('todo.urls')),
     path('accounts/', include('allauth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]

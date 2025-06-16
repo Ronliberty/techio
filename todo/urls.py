@@ -4,6 +4,7 @@ from . views import *
 
 app_name = 'todo'
 urlpatterns = [
+    path('todo/', ToDoHubView.as_view(), name='todo-hub'),
     # TaskList URLs
     path('tasklists/', TaskListListView.as_view(), name='tasklist-list'),
     path('tasklists/create/', TaskListCreateView.as_view(), name='tasklist-create'),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('tags/create/', TagCreateView.as_view(), name='tag-create'),
     path('tags/<int:pk>/update/', TagUpdateView.as_view(), name='tag-update'),
     path('tags/<int:pk>/delete/', TagDeleteView.as_view(), name='tag-delete'),
+
 ]

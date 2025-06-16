@@ -73,6 +73,12 @@
             <i class='bx bx-movie-play mr-3 text-blue-600'></i>
             <span class="text-gray-700">VideoEditing</span>
         </a>
+         <a href="{% url 'todo:todo-hub' %}"
+           class="w-full text-left p-2 rounded-lg hover:bg-gray-100 flex items-center"
+           :class="currentView === 'portfolio' && 'bg-purple-50'">
+            <i class='bx bx-task text-blue-600'></i>
+            <span class="text-gray-700">Todo-hub</span>
+        </a>
     </div>
 </nav>
     </aside>
