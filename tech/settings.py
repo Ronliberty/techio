@@ -48,6 +48,8 @@ SHARED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
+    'corsheaders',
+    'rest_framework',
 
     # Your shared apps
     'subs',
@@ -78,9 +80,13 @@ TENANT_APPS = [
 INSTALLED_APPS = SHARED_APPS + TENANT_APPS  # No need to filter duplicates
 
 
-
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -165,6 +171,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React dev server
+    "https://your-react-app.com",  # Optional production React app
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://your-react-app.com",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
