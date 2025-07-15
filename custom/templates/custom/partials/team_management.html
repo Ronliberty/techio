@@ -1,0 +1,403 @@
+<template x-if="activeTab === 'team'">
+ <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Team Management</h1>
+
+    <!-- Performance Filters -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <label for="department-filter" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                <select id="department-filter" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Departments</option>
+                    <option value="sales">Sales</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="development">Development</option>
+                    <option value="support">Support</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="performance-filter" class="block text-sm font-medium text-gray-700 mb-1">Performance</label>
+                <select id="performance-filter" class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">All Ratings</option>
+                    <option value="5">⭐ 5 Stars</option>
+                    <option value="4">⭐ 4 Stars</option>
+                    <option value="3">⭐ 3 Stars</option>
+                    <option value="2">⭐ 2 Stars</option>
+                    <option value="1">⭐ 1 Star</option>
+                </select>
+            </div>
+
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mt-6 transition-colors">
+                Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Team Members Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Rank
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Name
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Department
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Position
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Performance
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Team Member 1 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            1
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/32.jpg" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
+                                    <div class="text-sm text-gray-500">sarah.johnson@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Sales
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Senior Sales Executive
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+                                <span class="ml-2 text-sm text-gray-500">(5.0)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-900 mr-3" onclick="openRemoveModal('Sarah Johnson')">Remove</button>
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+
+                    <!-- Team Member 2 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            2
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/42.jpg" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">Michael Chen</div>
+                                    <div class="text-sm text-gray-500">michael.chen@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                Development
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Lead Developer
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐</span>
+                                <span class="ml-2 text-sm text-gray-500">(4.5)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-900 mr-3" onclick="openRemoveModal('Michael Chen')">Remove</button>
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+
+                    <!-- Team Member 3 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            3
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/65.jpg" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">Emma Rodriguez</div>
+                                    <div class="text-sm text-gray-500">emma.rodriguez@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                Marketing
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Marketing Specialist
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐⭐</span>
+                                <span class="ml-2 text-sm text-gray-500">(4.2)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-900 mr-3" onclick="openRemoveModal('Emma Rodriguez')">Remove</button>
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+
+                    <!-- Team Member 4 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            4
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/75.jpg" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">David Wilson</div>
+                                    <div class="text-sm text-gray-500">david.wilson@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Support
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Customer Support Lead
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐</span>
+                                <span class="ml-2 text-sm text-gray-500">(3.8)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-900 mr-3" onclick="openRemoveModal('David Wilson')">Remove</button>
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+
+                    <!-- Team Member 5 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            5
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/88.jpg" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">Lisa Thompson</div>
+                                    <div class="text-sm text-gray-500">lisa.thompson@example.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Sales
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            Junior Sales Associate
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">⭐⭐⭐</span>
+                                <span class="ml-2 text-sm text-gray-500">(3.2)</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-red-600 hover:text-red-900 mr-3" onclick="openRemoveModal('Lisa Thompson')">Remove</button>
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Department Performance Summary -->
+    <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Department Performance Summary</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Sales Department -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-800">Sales</h3>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        5 members
+                    </span>
+                </div>
+                <div class="mt-2">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">⭐⭐⭐⭐</span>
+                        <span class="ml-2 text-sm text-gray-500">(4.3 avg)</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Top performer:</span>
+                            <span class="font-medium">Sarah Johnson (5.0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Department -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-800">Marketing</h3>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                        3 members
+                    </span>
+                </div>
+                <div class="mt-2">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">⭐⭐⭐⭐</span>
+                        <span class="ml-2 text-sm text-gray-500">(4.1 avg)</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Top performer:</span>
+                            <span class="font-medium">Emma Rodriguez (4.2)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Development Department -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-800">Development</h3>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        8 members
+                    </span>
+                </div>
+                <div class="mt-2">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">⭐⭐⭐⭐</span>
+                        <span class="ml-2 text-sm text-gray-500">(4.0 avg)</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Top performer:</span>
+                            <span class="font-medium">Michael Chen (4.5)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Department -->
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-800">Support</h3>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        4 members
+                    </span>
+                </div>
+                <div class="mt-2">
+                    <div class="flex items-center">
+                        <span class="text-yellow-400">⭐⭐⭐</span>
+                        <span class="ml-2 text-sm text-gray-500">(3.5 avg)</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Top performer:</span>
+                            <span class="font-medium">David Wilson (3.8)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Team Member Modal -->
+<div id="removeModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Remove Team Member
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                Are you sure you want to remove <span id="memberName" class="font-medium"></span> from your team? This action cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" onclick="confirmRemove()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Remove
+                </button>
+                <button type="button" onclick="closeRemoveModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+
+
+<script>
+    // Modal functions
+    function openRemoveModal(name) {
+        document.getElementById('memberName').textContent = name;
+        document.getElementById('removeModal').classList.remove('hidden');
+    }
+
+    function closeRemoveModal() {
+        document.getElementById('removeModal').classList.add('hidden');
+    }
+
+    function confirmRemove() {
+        // Here you would typically make an AJAX call to your backend
+        alert('Removal request sent for ' + document.getElementById('memberName').textContent);
+        closeRemoveModal();
+    }
+</script>

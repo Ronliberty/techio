@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block content %}
+<template x-if="activeTab === 'dashboard'">
 
-<div id="content-container">
 <div class="p-6">
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -295,6 +295,11 @@
             </div>
 </div>
 </div>
+    </template>
+ {% include "custom/partials/employee.html" %}
+ {% include "custom/partials/sellers.html" %}
+ {% include "custom/partials/agents.html" %}
+ {% include "shop/partials/merchant/cat-form.html" %}
 {% endblock %}
 
 

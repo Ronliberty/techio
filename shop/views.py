@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, DeleteView, UpdateView, View
-
+from urllib3 import request
 
 from .models import Category, Prod, Cart, Order, Coupon, Address, Wishlist
 from .forms import CategoryForm
@@ -11,45 +13,30 @@ from .mixins import GroupRequiredMixin
 class ShopHubView(TemplateView):
     template_name = 'shop/shop-hub.html'
 
-
+class ProductManagementView(TemplateView):
+    template_name = 'shop/partials/product_management.html'
 
 class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Category
     form_class = CategoryForm
+    template_name = 'shop/partials/merchant/cat-form.html'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['shop/managers/cat-form.html']
-
-        elif user.groups.filter(name='merchant').exists():
-            return ['shop/merchants/cat-form.html']
-        return ['shop/default/cat-form.html']
-
-    def test_func(self):
-        return self.request.user.groups.filter( name__in=['manager', 'merchant', 'default']).exists()
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
 
 
 
 class CategoryListView(ListView):
     model = Category
+    template_name = 'shop/partials/merchants/cat-list.html'
+
+    def render_to_response(self, context, **response_kwargs):
+        if not self.request.headers.get('HX-Request'):
+            return HttpResponseForbidden(
+                render_to_string(
+                    'custom/errors/htmx_only.html', context, request=self.request
+                )
+            )
+        return super().render_to_response(context, **response_kwargs)
     
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['shop/managers/cat-list.html']
-
-        elif user.groups.filter(name='merchant').exists():
-            return ['shop/merchants/cat-list.html']
-        return ['shop/default/cat-list.html']
-
-    def test_func(self):
-        return self.request.user.groups.filter( name__in=['manager', 'merchant', 'default']).exists()
 
 
 class CategoryDetailView(DetailView):
@@ -71,33 +58,12 @@ class CategoryDetailView(DetailView):
 class CategoryDeleteView(DeleteView):
     model = Category
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['shop/managers/cat-delete.html']
-
-        elif user.groups.filter(name='merchant').exists():
-            return ['shop/merchants/cat-delete.html']
-        return ['shop/default/cat-delete.html']
-
-    def test_func(self):
-        return self.request.user.groups.filter( name__in=['manager', 'merchant', 'default']).exists()
 
 
 class CategoryUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Category
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['shop/managers/cat-form.html']
 
-        elif user.groups.filter(name='merchant').exists():
-            return ['shop/merchants/cat-form.html']
-        return ['shop/default/cat-form.html']
-
-    def test_func(self):
-        return self.request.user.groups.filter( name__in=['manager', 'merchant', 'default']).exists()
 
 
 class ProductListView(UserPassesTestMixin, LoginRequiredMixin, ListView):

@@ -8,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
 class SkillSyncHubView(TemplateView):
     template_name = 'skillsync/skill-sync-hub.html'
+class EssaysManagementView(TemplateView):
+    template_name = 'skillsync/partials/essay_management.html'
 
 class ListCategoryView(TemplateView):
     template_name = 'skillsync/skill-sync-hub.html'

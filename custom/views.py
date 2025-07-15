@@ -8,12 +8,14 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.views.generic.edit import FormView
 from django.template.loader import render_to_string
-from .models import CustomUser, Notify
+from .models import CustomUser, Notify, Team
 from datetime import timedelta
 from django.contrib.auth import logout  # Add this import
 from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponse, HttpResponseForbidden
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import Group
 User = get_user_model()
 
 class RedirectAfterLoginView(LoginRequiredMixin, View):
@@ -32,6 +34,50 @@ class RedirectAfterLoginView(LoginRequiredMixin, View):
 
         # Fallback
         return redirect('base:index')
+
+
+class Command(BaseCommand):
+    help = 'Assign users to teams based on available managers'
+
+    def handle(self, *args, **options):
+        # Get all non-manager users
+        manager_group = Group.objects.get(name='manager')
+        users = User.objects.exclude(groups=manager_group).exclude(is_superuser=True)
+        managers = User.objects.filter(groups=manager_group)
+
+        if not managers.exists():
+            self.stdout.write(self.style.ERROR('No managers found!'))
+            return
+
+        # Clear existing teams (optional)
+        Team.objects.all().delete()
+
+        # Create teams and assign users
+        users_per_manager = users.count() // managers.count()
+        remaining_users = users.count() % managers.count()
+
+        user_index = 0
+        for i, manager in enumerate(managers):
+            # Create team for this manager
+            team = Team.objects.create(manager=manager)
+
+            # Calculate how many users this manager gets
+            count = users_per_manager + (1 if i < remaining_users else 0)
+
+            # Assign users
+            team.members.set(users[user_index:user_index + count])
+            user_index += count
+
+            self.stdout.write(
+                self.style.SUCCESS(f'Assigned {count} users to manager {manager.username}')
+            )
+
+
+class TeamManagementView(TemplateView):
+    template_name = 'custom/partials/team_management.html'
+
+class ProductionCalendar(TemplateView):
+    template_name = 'custom/partials/production_calendar'
 
 class SettingsView(TemplateView):
     template_name = 'custom/settings.html'

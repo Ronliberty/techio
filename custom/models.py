@@ -48,6 +48,42 @@ class CustomUser(AbstractUser):
             self.username = self.email.split('@')[0]  # Auto-generate username from email
         super().save(*args, **kwargs)
 
+
+class ProductionOrder(models.Model):
+    STATUS_CHOICES = [
+        ('planned', 'Planned'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('delayed', 'Delayed'),
+    ]
+
+    product = models.CharField(max_length=255)  # Simplified for static version
+    quantity = models.PositiveIntegerField(default=1)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned')
+    assigned_to = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.product}"
+
+
+
+class Team(models.Model):
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='managed_team')
+    members = models.ManyToManyField(User, related_name='teams')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Team managed by {self.manager.username}"
+
+    class Meta:
+        verbose_name = "Team"
+        verbose_name_plural = "Teams"
+
+
 class Notification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # The user who receives the notification
     message = models.TextField()  # The notification message

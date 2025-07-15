@@ -3,10 +3,15 @@ from django.views.generic import TemplateView, CreateView, ListView, UpdateView,
 from django.urls import reverse_lazy, reverse
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-# Create your views here.
+
 class EditingHubView(TemplateView):
     template_name = 'editing/editing-hub.html'
 
+class EditingManagementView(TemplateView):
+    template_name = 'editing/partials/manager_editing_tasks.html'
+
+class ScriptsManagementView(TemplateView):
+    template_name = 'editing/partials/manager_scripts_tasks.html'
 
 class EditingServiceCreateView(LoginRequiredMixin, CreateView):
     model = EditingService

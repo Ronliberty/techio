@@ -1,0 +1,199 @@
+<template x-if="activeTab === 'calendar'">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Calendar Header -->
+    <div class="flex flex-wrap items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">
+                Production Calendar - June 2023
+            </h1>
+            <div class="flex items-center space-x-4 mt-2">
+                <a href="#" class="px-3 py-1 bg-gray-200 rounded-md hover:bg-gray-300">
+                    &larr; May
+                </a>
+                <span class="text-xl font-semibold">
+                    June 2023
+                </span>
+                <a href="#" class="px-3 py-1 bg-gray-200 rounded-md hover:bg-gray-300">
+                    July &rarr;
+                </a>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center">
+                <div class="w-3 h-3 bg-blue-100 border border-blue-300 rounded-sm mr-2"></div>
+                <span class="text-sm">Planned</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-3 h-3 bg-yellow-100 border border-yellow-300 rounded-sm mr-2"></div>
+                <span class="text-sm">In Progress</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-3 h-3 bg-green-100 border border-green-300 rounded-sm mr-2"></div>
+                <span class="text-sm">Completed</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-3 h-3 bg-red-100 border border-red-300 rounded-sm mr-2"></div>
+                <span class="text-sm">Delayed</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Weekday Headers -->
+        <div class="grid grid-cols-7 bg-gray-100 border-b">
+            <div class="p-3 text-center font-medium text-gray-500">Monday</div>
+            <div class="p-3 text-center font-medium text-gray-500">Tuesday</div>
+            <div class="p-3 text-center font-medium text-gray-500">Wednesday</div>
+            <div class="p-3 text-center font-medium text-gray-500">Thursday</div>
+            <div class="p-3 text-center font-medium text-gray-500">Friday</div>
+            <div class="p-3 text-center font-medium text-gray-500 text-red-500">Saturday</div>
+            <div class="p-3 text-center font-medium text-gray-500 text-red-500">Sunday</div>
+        </div>
+
+        <!-- Calendar Weeks - Static Data -->
+        <div class="grid grid-cols-7 border-b">
+            <!-- Week 1 -->
+            <div class="min-h-32 border-r bg-gray-50"></div> <!-- May 29 -->
+            <div class="min-h-32 border-r bg-gray-50"></div> <!-- May 30 -->
+            <div class="min-h-32 border-r bg-gray-50"></div> <!-- May 31 -->
+            <div class="min-h-32 border-r"> <!-- June 1 -->
+                <div class="p-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">1</span>
+                        <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
+                            2 orders
+                        </span>
+                    </div>
+                    <div class="mt-1 space-y-1 max-h-24 overflow-y-auto">
+                        <div class="text-xs p-2 rounded bg-blue-100 text-blue-800 border cursor-pointer hover:shadow-sm">
+                            <div class="font-medium truncate">Widget X200</div>
+                            <div class="flex justify-between mt-1">
+                                <span>John D.</span>
+                                <span>08:00</span>
+                            </div>
+                        </div>
+                        <div class="text-xs p-2 rounded bg-yellow-100 text-yellow-800 border cursor-pointer hover:shadow-sm">
+                            <div class="font-medium truncate">Gadget Y500</div>
+                            <div class="flex justify-between mt-1">
+                                <span>Sarah M.</span>
+                                <span>13:30</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="min-h-32 border-r"> <!-- June 2 -->
+                <div class="p-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">2</span>
+                    </div>
+                </div>
+            </div>
+            <div class="min-h-32 border-r bg-gray-50"> <!-- June 3 -->
+                <div class="p-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-red-500">3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="min-h-32 bg-gray-50"> <!-- June 4 -->
+                <div class="p-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-red-500">4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="grid grid-cols-7 border-b">
+            <div class="min-h-32 border-r"> <!-- June 5 -->
+                <div class="p-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">5</span>
+                        <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
+                            1 order
+                        </span>
+                    </div>
+                    <div class="mt-1 space-y-1 max-h-24 overflow-y-auto">
+                        <div class="text-xs p-2 rounded bg-green-100 text-green-800 border cursor-pointer hover:shadow-sm">
+                            <div class="font-medium truncate">Tool Z100</div>
+                            <div class="flex justify-between mt-1">
+                                <span>Mike T.</span>
+                                <span>10:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- June 6-11 would continue similarly -->
+        </div>
+
+        <!-- Additional weeks would go here -->
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-lg font-bold">Order #1024</h3>
+                <button onclick="document.getElementById('orderModal').classList.add('hidden')"
+                        class="text-gray-500 hover:text-gray-700">
+                    ✕
+                </button>
+            </div>
+            <div class="p-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-1">Product</label>
+                    <p class="text-gray-900 font-medium">Widget X200</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Start</label>
+                        <p class="text-gray-900">June 1, 2023 08:00</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">End</label>
+                        <p class="text-gray-900">June 1, 2023 16:00</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Quantity</label>
+                        <p class="text-gray-900">500 units</p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Status</label>
+                        <p class="text-gray-900">PLANNED</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-1">Assigned To</label>
+                    <p class="text-gray-900">John Doe</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-1">Notes</label>
+                    <p class="text-gray-900">Priority order for client XYZ</p>
+                </div>
+            </div>
+            <div class="p-4 border-t flex justify-end space-x-3">
+                <button class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Edit</button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+
+
+<script>
+    // Simple modal toggle for static version
+    document.querySelectorAll('.cursor-pointer').forEach(el => {
+        el.addEventListener('click', () => {
+            document.getElementById('orderModal').classList.remove('hidden');
+        });
+    });
+</script>

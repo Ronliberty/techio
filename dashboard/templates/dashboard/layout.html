@@ -7,7 +7,11 @@
     <title>Manager Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
     <style>
         .sidebar {
             transition: all 0.3s ease;
@@ -60,16 +64,22 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex">
+<body  x-data="{ activeTab: 'performance' }" class="bg-gray-50 dark:bg-gray-900 min-h-screen flex">
     <!-- Sidebar -->
     <aside class="sidebar sidebar-expanded bg-white dark:bg-gray-800 h-screen fixed shadow-lg z-30">
         <div class="flex flex-col h-full">
             <!-- Sidebar Header -->
             <div class="p-4 border-b dark:border-gray-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
-                        M
-                    </div>
+                  {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}"
+                     class="w-8 h-8 rounded-full object-cover"
+                     alt="Profile photo">
+                {% else %}
+                <div class="h-8 w-8 rounded-full border-2 border-indigo-300 bg-indigo-100 flex items-center justify-center text-sm font-medium text-indigo-800">
+                    {{ user.username|first|upper }}
+                </div>
+                {% endif %}
 
                 </div>
                 <button id="sidebarToggle" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
@@ -83,56 +93,300 @@
                     <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Management</h3>
                     <ul>
                         <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg bg-purple-50 dark:bg-gray-700 text-purple-600 dark:text-purple-400">
-                                <i class='bx bx-home text-xl mr-3'></i>
-                                <span>Dashboard</span>
-                            </a>
+                        <a
+                            @click="activeTab = 'dashboard'"
+                            class="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200"
+                            :class="activeTab === 'dashboard'
+                                ? 'bg-indigo-100 text-primary border-l-4 border-primary dark:bg-gray-700 dark:text-purple-400'
+                                : 'text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300'">
+                            <i class='bx bx-home text-xl mr-3'></i>
+                            <span>Dashboard</span>
+                        </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <a @click="activeTab = 'employee'" class="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200"
+                               :class="activeTab === 'employee'
+                                  ? 'bg-indigo-100 text-primary border-l-4 border-primary dark:bg-gray-700 dark:text-purple-400'
+                                  : 'text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300'">
                                 <i class='bx bx-user text-xl mr-3'></i>
                                 <span>Employees</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <a @click="activeTab = 'sellers'" class="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200"
+                               :class="activeTab === 'sellers'
+                                  ? 'bg-indigo-100 text-primary border-l-4 border-primary dark:bg-gray-700 dark:text-purple-400'
+                                  : 'text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300'">
                                 <i class='bx bx-store text-xl mr-3'></i>
                                 <span>Sellers</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <a  @click="activeTab = 'agents'" class="flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors duration-200"
+                               :class="activeTab === 'agents'
+                                  ? 'bg-indigo-100 text-primary border-l-4 border-primary dark:bg-gray-700 dark:text-purple-400'
+                                  : 'text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:text-gray-300'">
                                 <i class='bx bx-id-card text-xl mr-3'></i>
                                 <span>Agents</span>
                             </a>
                         </li>
                     </ul>
                 </div>
+                <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                    <span>LANDING PAGES</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+                <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                    <span>BMS</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                <div class="px-4 mb-6">
-                    <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Operations</h3>
-                    <ul>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                                <i class='bx bx-task text-xl mr-3'></i>
-                                <span>Tasks</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                                <i class='bx bx-calendar text-xl mr-3'></i>
-                                <span>Schedules</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                                <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
-                                <span>Reports</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+              <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                    <span>SHOP</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a @click="activeTab = 'category'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Product</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>WishList</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Coupon</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+               <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                        <span>EDITING</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+                <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                    <span>SKILLSYNC</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
+                <div  x-data="{ open: false }" class="px-4 mb-6">
+                    <button @click="open = !open"
+                    class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                    <span>PORTFOLIO</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                  <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-calendar text-xl mr-3'></i>
+                            <span>Schedules</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+                                 <div  x-data="{ open: false }" class="px-4 mb-6">
+                            <button @click="open = !open"
+                            class="flex items-center justify-between w-full text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2 focus:outline-none">
+                            <span>PAYMENT</span>
+                            <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                          <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
+                            <li>
+                                <a href="#"
+                                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                    <i class='bx bx-task text-xl mr-3'></i>
+                                    <span>Tasks</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                    <i class='bx bx-calendar text-xl mr-3'></i>
+                                    <span>Schedules</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                                    <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                                    <span>Reports</span>
+                                </a>
+                            </li>
+                        </ul>
+            </div>
                 <div class="px-4">
                     <h3 class="text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 mb-2">Settings</h3>
                     <ul>
@@ -176,17 +430,27 @@
                     </div>
 
                     <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
-                            M
-                        </div>
+                     {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}"
+                     class="w-8 h-8 rounded-full object-cover"
+                     alt="Profile photo">
+                {% else %}
+                <div class="h-8 w-8 rounded-full border-2 border-indigo-300 bg-indigo-100 flex items-center justify-center text-sm font-medium text-indigo-800">
+                    {{ user.username|first|upper }}
+                </div>
+                {% endif %}
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Dashboard Content -->
+ <div id="content-container">
+   {% block content %}
 
-   {% block content %}{% endblock %}
+
+
+        {% endblock %}
+       </div>
     </main>
 
     <script>

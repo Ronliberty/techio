@@ -25,16 +25,12 @@ class UserDashboardView(BaseDashboardView):
 
 
 
-class SuperDashboard(LoginRequiredMixin, TemplateView):
+class SuperDashboard(BaseDashboardView):
     template_name = 'dashboard/super_dash.html'
     group_name = None
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_superuser:
-            return super().dispatch(request, *args, **kwargs)
-
-        if self.group_name and not request.user.groups.filter(name=self.group_name).exists():
-            messages.error(request, "You are not authorized to access this page")
-            return redirect('base:index')
+            return super(BaseDashboardView, self).dispatch(request, *args, **kwargs)
 
         return super().dispatch(request, *args, **kwargs)
 

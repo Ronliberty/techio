@@ -3,7 +3,7 @@
 
 {% block content %}
 
-        <!-- Main Content -->
+<template x-if="activeTab === 'dashboard'">
         <div class="flex-1 overflow-y-auto p-6">
             <!-- Stats Overview -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -323,5 +323,12 @@
                 </div>
             </div>
         </div>
-    </div>
+
+    </template>
+ {% include "editing/partials/manager_editing_tasks.html" %}
+ {% include "editing/partials/manager_scripts_tasks.html" %}
+{% include "custom/partials/team_management.html" %}
+{% include "skillsync/partials/essays_management.html" %}
+{% include "shop/partials/product_management.html" %}
+{% include "custom/partials/production_calendar.html" %}
 {% endblock %}
