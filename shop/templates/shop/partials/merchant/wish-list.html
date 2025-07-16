@@ -1,10 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<template x-if="activeTab === 'wishlist'">
+  <div class="max-w-7xl mx-auto p-6">
+    <!-- Wishlist Header -->
+    <div class="bg-gray-800 rounded-xl p-4 mb-6 border border-gray-700">
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <h2 class="text-xl font-bold text-white">Wishlist Management</h2>
 
-</body>
-</html>
+        <div class="flex items-center w-full md:w-auto">
+          <!-- Search -->
+          <div class="relative w-full md:w-64">
+            <input type="text" placeholder="Search wishlists..." class="pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition w-full">
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Navigation -->
+    <div class="flex space-x-4 mb-6 border-b border-gray-700">
+      <a
+        hx-get=""
+        hx-target="#wishlist-container"
+        hx-swap="innerHTML"
+        class="pb-3 px-1 font-medium text-purple-400 border-b-2 border-purple-500 transition cursor-pointer"
+      >
+        <i class="fas fa-list mr-2"></i>Wishlists
+      </a>
+      <a
+        hx-get=""
+        hx-target="#wishlist-container"
+        hx-swap="innerHTML"
+        class="pb-3 px-1 font-medium text-gray-400 hover:text-gray-200 border-b-2 border-transparent hover:border-gray-500 transition cursor-pointer"
+      >
+        <i class="fas fa-info-circle mr-2"></i>Details
+      </a>
+    </div>
+
+    <!-- Wishlist Container -->
+    <div id="wishlist-container" class="bg-gray-800 shadow rounded-lg overflow-hidden min-h-[400px]">
+      <!-- Wishlist List View -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-700">
+          <thead class="bg-gray-750">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Customer</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Items</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Updated</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-gray-800 divide-y divide-gray-700">
+            {% for wishlist in wishlists %}
+            <tr class="hover:bg-gray-750 transition">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    {% if wishlist.user.profile.image %}
+                    <img class="h-10 w-10 rounded-full" src="{{ wishlist.user.profile.image.url }}" alt="">
+                    {% else %}
+                    <div class="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center text-sm font-medium text-gray-300">
+                      {{ wishlist.user.username|first|upper }}
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-white">{{ wishlist.user.username }}</div>
+                    <div class="text-sm text-gray-400">{{ wishlist.user.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+                {{ wishlist.items.count }} items
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                {{ wishlist.created_at|date:"M d, Y" }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                {{ wishlist.updated_at|date:"M d, Y" }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button
+                  hx-get=""
+                  hx-target="#wishlist-container"
+                  class="text-purple-400 hover:text-purple-300"
+                >
+                  <i class="fas fa-eye mr-1"></i> View
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="bg-gray-800 px-4 py-3 flex items-center justify-between border-t border-gray-700 sm:px-6">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm text-gray-400">
+              Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">{{ wishlists.count }}</span> results
+            </p>
+          </div>
+          <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700">
+                <span class="sr-only">Previous</span>
+                <i class="fas fa-chevron-left"></i>
+              </a>
+              <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700"> 1 </a>
+              <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-700 bg-purple-600 text-sm font-medium text-white"> 2 </a>
+              <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700"> 3 </a>
+              <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-700 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700">
+                <span class="sr-only">Next</span>
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

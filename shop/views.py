@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, CreateView, ListView, DetailView,
 from urllib3 import request
 
 from .models import Category, Prod, Cart, Order, Coupon, Address, Wishlist
-from .forms import CategoryForm
+from .forms import CategoryForm, ProdForm
 from .mixins import GroupRequiredMixin
 
 
@@ -83,17 +83,11 @@ class ProductListView(UserPassesTestMixin, LoginRequiredMixin, ListView):
 
 class ProductCreateView(UserPassesTestMixin, LoginRequiredMixin, CreateView):
     model = Prod
+    form_class = ProdForm
+    template_name = 'shop/merchant/prod-form.html'
 
-    def get_template_names(self):
-        user = self.request.user
-        if user.groups.filter(name='manager').exists():
-            return ['shop/managers/prod-form.html']
 
-        elif user.groups.filter(name='merchant').exists():
-            return ['shop/merchant/prod-form.html']
-        return ['shop/default/prod-form.html']
-    def test_func(self):
-        return self.request.user.groups.filter(name__in=['manager', 'merchant', 'default']).exists()
+
 
 
 class ProductDetailView(GroupRequiredMixin, LoginRequiredMixin, DetailView):
