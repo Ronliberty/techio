@@ -178,24 +178,38 @@
                 </button>
                   <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
                     <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <a @click="activeTab = 'news'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
                             <i class='bx bx-task text-xl mr-3'></i>
-                            <span>Tasks</span>
+                            <span>News</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <a @click="activeTab = 'skills'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
                             <i class='bx bx-calendar text-xl mr-3'></i>
-                            <span>Schedules</span>
+                            <span>Skills</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a @click="activeTab = 'tools'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
+                            <i class='bx bx-task text-xl mr-3'></i>
+                            <span>Tools</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <a @click="activeTab = 'posts'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
                             <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
-                            <span>Reports</span>
+                            <span>Posts</span>
+                        </a>
+                    </li>
+                      <li>
+                        <a @click="activeTab = 'services'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
+                            <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
+                            <span>Services</span>
                         </a>
                     </li>
                 </ul>
@@ -261,22 +275,16 @@
                 </button>
                   <ul x-show="open" x-transition.duration.200ms class="space-y-1 mt-2">
                     <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <a @click="activeTab = 'task-editing'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
                             <i class='bx bx-task text-xl mr-3'></i>
                             <span>Tasks</span>
                         </a>
                     </li>
+
                     <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class='bx bx-calendar text-xl mr-3'></i>
-                            <span>Schedules</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <a  @click="activeTab = 'reports'"
+                            class="flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
                             <i class='bx bx-bar-chart-alt-2 text-xl mr-3'></i>
                             <span>Reports</span>
                         </a>

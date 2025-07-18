@@ -6,6 +6,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class EditingHubView(TemplateView):
     template_name = 'editing/editing-hub.html'
+class ReportsView(TemplateView):
+    template_name = 'editing/partials/reports.html'
+
+class TasksOverView(TemplateView):
+    template_name = 'editing/partials/super_task.html'
 
 class EditingManagementView(TemplateView):
     template_name = 'editing/partials/manager_editing_tasks.html'

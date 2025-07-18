@@ -1,10 +1,235 @@
-<div class="container">
-    <h2>Create a New Service</h2>
-    <form method="post">
+<template x-if="activeTab === 'services'">
+<div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+  <div class="flex flex-wrap justify-between items-center mb-6">
+    <div>
+      <h2 class="text-xl font-bold text-white">Services Management</h2>
+      <p class="text-gray-400">Create and manage your service offerings</p>
+    </div>
+    <div class="flex space-x-3 mt-3 sm:mt-0">
+      <button class="px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+        <i class="fas fa-chart-pie mr-2"></i>Analytics
+      </button>
+      <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+        <i class="fas fa-plus mr-2"></i>New Service
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Total Services</h3>
+        <i class="fas fa-concierge-bell text-purple-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">56</div>
+      <div class="text-xs text-gray-400 mt-1">+8 this quarter</div>
+    </div>
+
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Active</h3>
+        <i class="fas fa-check-circle text-green-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">48</div>
+      <div class="text-xs text-gray-400 mt-1">86% active rate</div>
+    </div>
+
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Countries</h3>
+        <i class="fas fa-globe-americas text-blue-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">24</div>
+      <div class="text-xs text-gray-400 mt-1">Covered regions</div>
+    </div>
+
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Creators</h3>
+        <i class="fas fa-users text-yellow-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">18</div>
+      <div class="text-xs text-gray-400 mt-1">Active contributors</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Service Form -->
+    <div class="bg-gray-750 rounded-xl p-6 border border-gray-700">
+      <h3 class="text-lg font-semibold text-white mb-6">Create New Service</h3>
+
+      <form method="post" class="space-y-6">
         {% csrf_token %}
-        <div class="form-group">
-            {{ form.as_p }}
+
+        <div class="space-y-1">
+          <label for="name" class="block text-sm font-medium text-gray-300">
+            <i class="fas fa-tag mr-2 text-purple-400"></i>Service Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition"
+            placeholder="Enter service name"
+            required
+          >
         </div>
-        <button type="submit" class="btn btn-primary">Create Service</button>
-    </form>
+
+        <div class="space-y-1">
+          <label for="description" class="block text-sm font-medium text-gray-300">
+            <i class="fas fa-align-left mr-2 text-purple-400"></i>Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition resize-y min-h-[120px]"
+            placeholder="Describe the service in detail..."
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label for="sample_website" class="block text-sm font-medium text-gray-300">
+              <i class="fas fa-link mr-2 text-purple-400"></i>Sample Website
+            </label>
+            <input
+              type="url"
+              id="sample_website"
+              name="sample_website"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition"
+              placeholder="https://example.com"
+            >
+          </div>
+
+          <div class="space-y-1">
+            <label for="country" class="block text-sm font-medium text-gray-300">
+              <i class="fas fa-flag mr-2 text-purple-400"></i>Country
+            </label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition"
+              placeholder="Country of operation"
+            >
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-4">
+          <button
+            type="submit"
+            class="px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center"
+          >
+            <i class="fas fa-save mr-2"></i>Create Service
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Services List -->
+    <div class="bg-gray-750 rounded-xl p-6 border border-gray-700">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-semibold text-white">Recent Services</h3>
+        <div class="flex space-x-2">
+          <button class="px-3 py-1 text-sm border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+            All
+          </button>
+          <button class="px-3 py-1 text-sm border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+            Active
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-4 max-h-[500px] overflow-y-auto scrollbar pr-2">
+        {% for i in "12345"|make_list %}
+        <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-purple-500 transition service-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="text-md font-medium text-white">AI-Powered Analytics Suite</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 text-xs rounded-full bg-purple-900 text-purple-300">Data Analysis</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-blue-900 text-blue-300">USA</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="text-gray-400 hover:text-yellow-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm mt-3 line-clamp-2">
+            Comprehensive analytics platform that uses machine learning to provide actionable business insights and predictive analytics.
+          </p>
+
+          <div class="flex flex-wrap justify-between items-center mt-4 pt-3 border-t border-gray-700">
+            <div class="flex items-center">
+              <a href="#" class="text-sm text-purple-400 hover:text-purple-300 flex items-center">
+                <i class="fas fa-external-link-alt mr-1"></i> analytics.example.com
+              </a>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="text-sm text-gray-400">
+                <i class="far fa-user mr-1"></i> JohnDoe
+              </div>
+              <div class="text-sm text-gray-400">
+                <i class="far fa-clock mr-1"></i> May 15, 2023
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- New Service Example -->
+        <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-blue-500 transition service-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="text-md font-medium text-white">Cloud Automation Platform</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 text-xs rounded-full bg-blue-900 text-blue-300">Cloud</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">Global</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="text-gray-400 hover:text-yellow-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm mt-3 line-clamp-2">
+            Enterprise-grade cloud automation solution that streamlines deployment processes and reduces operational costs.
+          </p>
+
+          <div class="flex flex-wrap justify-between items-center mt-4 pt-3 border-t border-gray-700">
+            <div class="flex items-center">
+              <a href="#" class="text-sm text-purple-400 hover:text-purple-300 flex items-center">
+                <i class="fas fa-external-link-alt mr-1"></i> cloudauto.example.com
+              </a>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="text-sm text-gray-400">
+                <i class="far fa-user mr-1"></i> JaneSmith
+              </div>
+              <div class="text-sm text-gray-400">
+                <i class="far fa-clock mr-1"></i> Jun 02, 2023
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+</template>

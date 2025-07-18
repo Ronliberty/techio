@@ -39,7 +39,7 @@ class PostDetailView(GroupRequiredMixin, LoginRequiredMixin,DetailView):
 
 class PostCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = Post
-    template_name = 'bms/default/post-create.html'
+    template_name = 'bms/manager/post-create.html'
     form_class = PostForm
     success_url = reverse_lazy('bms:tools-list')
 

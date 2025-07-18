@@ -1,0 +1,293 @@
+ <template x-if="activeTab === 'reports'">
+<div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+  <div class="flex flex-wrap justify-between items-center mb-6">
+    <h2 class="text-xl font-bold text-white">Performance Reports</h2>
+    <div class="flex space-x-3 mt-3 sm:mt-0">
+      <div class="relative">
+        <select class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition">
+          <option>Last 7 Days</option>
+          <option>Last 30 Days</option>
+          <option>Last Quarter</option>
+          <option>Last Year</option>
+        </select>
+      </div>
+      <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+        <i class="fas fa-download mr-2"></i>Export
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Sales Chart -->
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-white">Sales Performance</h3>
+        <div class="text-right">
+          <p class="text-2xl font-bold text-green-400">$24,580</p>
+          <p class="text-sm text-green-300">+12.5% from last month</p>
+        </div>
+      </div>
+      <div class="h-72">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Revenue Chart -->
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-white">Revenue Streams</h3>
+        <div class="text-right">
+          <p class="text-2xl font-bold text-purple-400">$42,360</p>
+          <p class="text-sm text-gray-400">Quarter-to-date</p>
+        </div>
+      </div>
+      <div class="h-72">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Conversion Rate -->
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-md font-semibold text-white">Conversion Rate</h3>
+        <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">+4.2%</span>
+      </div>
+      <div class="text-3xl font-bold text-white mb-2">8.7%</div>
+      <div class="h-32">
+        <canvas id="conversionChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Customer Acquisition -->
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-md font-semibold text-white">Customer Acquisition</h3>
+        <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">+22%</span>
+      </div>
+      <div class="text-3xl font-bold text-white mb-2">1,248</div>
+      <div class="h-32">
+        <canvas id="acquisitionChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Task Completion -->
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-md font-semibold text-white">Task Completion</h3>
+        <span class="px-2 py-1 text-xs rounded-full bg-yellow-900 text-yellow-300">-3%</span>
+      </div>
+      <div class="text-3xl font-bold text-white mb-2">78%</div>
+      <div class="h-32">
+        <canvas id="completionChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+    <h3 class="text-lg font-semibold text-white mb-4">Detailed Performance Metrics</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-700">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Metric</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Current</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Previous</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Change</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Target</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Monthly Revenue</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-white">$24,580</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">$21,840</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">+12.5%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">$25,000</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Customer Retention</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-white">84.3%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">82.1%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">+2.2%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">85%</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Avg. Order Value</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-white">$147.50</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">$142.80</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">+3.3%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">$150.00</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Task Completion</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-white">78%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">81%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-400">-3%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">85%</td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">New Customers</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-white">324</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">266</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-400">+21.8%</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">300</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+    </template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize charts
+  initCharts();
+
+  function initCharts() {
+    // Sales Performance Chart
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    new Chart(salesCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+          label: 'Current Month',
+          data: [12000, 19000, 15000, 18000, 22000, 19500, 24580],
+          borderColor: '#8B5CF6',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          tension: 0.4,
+          fill: true
+        }, {
+          label: 'Previous Month',
+          data: [11000, 17000, 14000, 16000, 20000, 18000, 21840],
+          borderColor: '#6D28D9',
+          borderDash: [5, 5],
+          tension: 0.4,
+          fill: false
+        }]
+      },
+      options: getChartOptions('Sales ($)')
+    });
+
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revenueCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Product Sales', 'Services', 'Subscriptions', 'Other'],
+        datasets: [{
+          data: [45, 25, 20, 10],
+          backgroundColor: [
+            '#8B5CF6',
+            '#0EA5E9',
+            '#10B981',
+            '#F59E0B'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        ...getChartOptions(),
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#F3F4F6'
+            }
+          }
+        }
+      }
+    });
+
+    // Mini Charts
+    const miniCharts = [
+      { id: 'conversionChart', color: '#0EA5E9', data: [6.2, 7.1, 7.5, 7.9, 8.2, 8.5, 8.7] },
+      { id: 'acquisitionChart', color: '#10B981', data: [780, 890, 940, 1020, 1120, 1180, 1248] },
+      { id: 'completionChart', color: '#F59E0B', data: [85, 83, 82, 80, 79, 78, 78] }
+    ];
+
+    miniCharts.forEach(chart => {
+      const ctx = document.getElementById(chart.id).getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['', '', '', '', '', '', ''],
+          datasets: [{
+            data: chart.data,
+            borderColor: chart.color,
+            backgroundColor: 'rgba(0,0,0,0)',
+            tension: 0.4,
+            pointRadius: 0,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              display: false,
+              grid: {
+                display: false
+              }
+            },
+            y: {
+              display: false,
+              grid: {
+                display: false
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function getChartOptions(title = '') {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: {
+            color: '#F3F4F6'
+          }
+        },
+        title: {
+          display: !!title,
+          text: title,
+          color: '#F3F4F6'
+        }
+      },
+      scales: {
+        y: {
+          grid: {
+            color: '#374151'
+          },
+          ticks: {
+            color: '#9CA3AF'
+          }
+        },
+        x: {
+          grid: {
+            color: '#374151'
+          },
+          ticks: {
+            color: '#9CA3AF'
+          }
+        }
+      }
+    };
+  }
+});
+</script>
