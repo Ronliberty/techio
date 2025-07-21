@@ -1,58 +1,294 @@
 <template x-if="activeTab === 'skills'">
-<form method="post" class="space-y-6">
-    {% csrf_token %}
+<div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+  <div class="flex flex-wrap justify-between items-center mb-6">
+    <div>
+      <h2 class="text-xl font-bold text-white">Skills Management</h2>
+      <p class="text-gray-400">Define and manage skills in your system</p>
+    </div>
+    <div class="flex space-x-3 mt-3 sm:mt-0">
+      <button class="px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+        <i class="fas fa-chart-bar mr-2"></i>Analytics
+      </button>
+      <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+        <i class="fas fa-plus mr-2"></i>New Skill
+      </button>
+    </div>
+  </div>
 
-    <div class="space-y-6">
-        <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                Skill Name
-            </label>
-            <input type="text" name="name" id="name"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-                          focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
-                          {% if form.name.errors %}border-red-500{% endif %}"
-                   value="{{ form.name.value|default_if_none:'' }}">
-            {% if form.name.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ form.name.errors.as_text }}</p>
-            {% endif %}
-        </div>
-
-        <div>
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-                Description
-            </label>
-            <textarea name="description" id="description" rows="5"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-                             focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
-                             {% if form.description.errors %}border-red-500{% endif %}">{{ form.description.value|default_if_none:'' }}</textarea>
-            {% if form.description.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ form.description.errors.as_text }}</p>
-            {% endif %}
-        </div>
-
-        <div>
-            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">
-                Country
-            </label>
-            <input type="text" name="country" id="country"
-                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm
-                          focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
-                          {% if form.country.errors %}border-red-500{% endif %}"
-                   value="{{ form.country.value|default_if_none:'' }}">
-            {% if form.country.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ form.country.errors.as_text }}</p>
-            {% endif %}
-        </div>
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Total Skills</h3>
+        <i class="fas fa-code text-purple-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">84</div>
+      <div class="text-xs text-gray-400 mt-1">+12 this quarter</div>
     </div>
 
-    <div class="pt-6">
-        <button type="submit"
-                class="inline-flex justify-center rounded-md border border-transparent
-                       bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
-                       hover:bg-indigo-700 focus:outline-none focus:ring-2
-                       focus:ring-indigo-500 focus:ring-offset-2">
-            Submit
-        </button>
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Technical</h3>
+        <i class="fas fa-microchip text-blue-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">56</div>
+      <div class="text-xs text-gray-400 mt-1">67% of total</div>
     </div>
-</form>
-    </template>
+
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Soft Skills</h3>
+        <i class="fas fa-comments text-green-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">28</div>
+      <div class="text-xs text-gray-400 mt-1">33% of total</div>
+    </div>
+
+    <div class="bg-gray-750 rounded-xl p-4 border border-gray-700">
+      <div class="flex justify-between items-center">
+        <h3 class="text-md font-medium text-gray-300">Countries</h3>
+        <i class="fas fa-globe-americas text-yellow-400"></i>
+      </div>
+      <div class="text-2xl font-bold text-white mt-2">42</div>
+      <div class="text-xs text-gray-400 mt-1">Covered regions</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Skill Form -->
+    <div class="bg-gray-750 rounded-xl p-6 border border-gray-700">
+      <h3 class="text-lg font-semibold text-white mb-6">Create New Skill</h3>
+
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <div class="space-y-1">
+          <label for="name" class="block text-sm font-medium text-gray-300">
+            <i class="fas fa-tag mr-2 text-purple-400"></i>Skill Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition
+                   {% if form.name.errors %}border-red-500{% endif %}"
+            placeholder="Enter skill name"
+            value="{{ form.name.value|default_if_none:'' }}"
+          >
+          {% if form.name.errors %}
+            <div class="text-xs text-red-400 mt-1">
+              {% for error in form.name.errors %}
+                <i class="fas fa-exclamation-circle mr-1"></i>{{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="space-y-1">
+          <label for="description" class="block text-sm font-medium text-gray-300">
+            <i class="fas fa-align-left mr-2 text-purple-400"></i>Description
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            rows="5"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition resize-y min-h-[120px]
+                   {% if form.description.errors %}border-red-500{% endif %}"
+            placeholder="Describe the skill in detail..."
+          >{{ form.description.value|default_if_none:'' }}</textarea>
+          {% if form.description.errors %}
+            <div class="text-xs text-red-400 mt-1">
+              {% for error in form.description.errors %}
+                <i class="fas fa-exclamation-circle mr-1"></i>{{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="space-y-1">
+          <label for="country" class="block text-sm font-medium text-gray-300">
+            <i class="fas fa-flag mr-2 text-purple-400"></i>Country
+          </label>
+          <input
+            type="text"
+            name="country"
+            id="country"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:border-purple-500 transition
+                   {% if form.country.errors %}border-red-500{% endif %}"
+            placeholder="Country relevance"
+            value="{{ form.country.value|default_if_none:'' }}"
+          >
+          {% if form.country.errors %}
+            <div class="text-xs text-red-400 mt-1">
+              {% for error in form.country.errors %}
+                <i class="fas fa-exclamation-circle mr-1"></i>{{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="flex justify-end pt-4">
+          <button
+            type="submit"
+            class="inline-flex justify-center items-center px-5 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <i class="fas fa-save mr-2"></i>Save Skill
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Skills List -->
+    <div class="bg-gray-750 rounded-xl p-6 border border-gray-700">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-semibold text-white">Recent Skills</h3>
+        <div class="flex space-x-2">
+          <button class="px-3 py-1 text-sm border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+            All
+          </button>
+          <button class="px-3 py-1 text-sm border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+            Technical
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-4 max-h-[500px] overflow-y-auto scrollbar pr-2">
+        {% for i in "12345"|make_list %}
+        <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-purple-500 transition skill-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="text-md font-medium text-white">Python Programming</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 text-xs rounded-full bg-blue-900 text-blue-300">Programming</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-purple-900 text-purple-300">Technical</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-gray-700 text-gray-300">Global</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="text-gray-400 hover:text-yellow-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm mt-3 line-clamp-2">
+            Proficiency in Python programming language including OOP, data structures, and popular libraries like NumPy and Pandas.
+          </p>
+
+          <div class="flex flex-wrap justify-between items-center mt-4 pt-3 border-t border-gray-700">
+            <div class="flex items-center">
+              <div class="flex items-center">
+                <i class="fas fa-users text-gray-500 mr-1"></i>
+                <span class="text-sm text-gray-400">142 users</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center">
+                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                <span class="text-sm text-gray-400">4.7</span>
+              </div>
+              <div class="text-sm text-gray-400">
+                <i class="far fa-calendar mr-1"></i> Added: May 12
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-green-500 transition skill-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="text-md font-medium text-white">Project Management</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">Management</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-yellow-900 text-yellow-300">Soft Skill</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-gray-700 text-gray-300">USA</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="text-gray-400 hover:text-yellow-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm mt-3 line-clamp-2">
+            Expertise in managing projects from conception to completion using methodologies like Agile and Scrum.
+          </p>
+
+          <div class="flex flex-wrap justify-between items-center mt-4 pt-3 border-t border-gray-700">
+            <div class="flex items-center">
+              <div class="flex items-center">
+                <i class="fas fa-users text-gray-500 mr-1"></i>
+                <span class="text-sm text-gray-400">98 users</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center">
+                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                <span class="text-sm text-gray-400">4.5</span>
+              </div>
+              <div class="text-sm text-gray-400">
+                <i class="far fa-calendar mr-1"></i> Added: Apr 28
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- New Skill Example -->
+        <div class="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-blue-500 transition skill-card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="text-md font-medium text-white">Machine Learning</h4>
+              <div class="flex flex-wrap gap-2 mt-2">
+                <span class="px-2 py-1 text-xs rounded-full bg-purple-900 text-purple-300">AI</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-blue-900 text-blue-300">Technical</span>
+                <span class="px-2 py-1 text-xs rounded-full bg-gray-700 text-gray-300">Global</span>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button class="text-gray-400 hover:text-yellow-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm mt-3 line-clamp-2">
+            Understanding of machine learning algorithms, model training, and deployment using frameworks like TensorFlow and PyTorch.
+          </p>
+
+          <div class="flex flex-wrap justify-between items-center mt-4 pt-3 border-t border-gray-700">
+            <div class="flex items-center">
+              <div class="flex items-center">
+                <i class="fas fa-users text-gray-500 mr-1"></i>
+                <span class="text-sm text-gray-400">76 users</span>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center">
+                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                <span class="text-sm text-gray-400">4.8</span>
+              </div>
+              <div class="text-sm text-gray-400">
+                <i class="far fa-calendar mr-1"></i> Added: Jun 5
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>

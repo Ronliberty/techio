@@ -88,11 +88,25 @@ class NewsCreateView(GroupRequiredMixin, LoginRequiredMixin,CreateView):
     model = News
     form_class = NewsForm
     template_name = 'bms/manager/news-create.html'
-    success_url = reverse_lazy('bms:news-list')
+    def get_success_url(self):
+        return reverse('bms:news-create')
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add stats for the cards
+        context['published_count'] = News.objects.filter(status='published').count()
+        context['draft_count'] = News.objects.filter(status='draft').count()
+        context['country_count'] = News.objects.values('country').distinct().count()
+
+        # Add recent news for the list section
+        context['recent_news'] = News.objects.all().order_by('-created_at')[:10]
+
+        return context
 
 
 class NewsUpdateView(GroupRequiredMixin, LoginRequiredMixin,UpdateView):

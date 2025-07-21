@@ -1,0 +1,154 @@
+<template x-if="activeTab === 'contact-management'">
+<div class="bg-gray-750 rounded-xl p-5 border border-gray-700 mb-8">
+    <div class="flex flex-wrap justify-between items-center mb-6">
+      <div>
+        <h2 class="text-xl font-bold text-white">Academic Services</h2>
+        <p class="text-gray-400">Manage student academic support services</p>
+      </div>
+      <div class="flex space-x-3 mt-3 sm:mt-0">
+        <button class="px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+          <i class="fas fa-filter mr-2"></i>Filter
+        </button>
+        <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+          <i class="fas fa-plus mr-2"></i>New Service
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-400">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-300">
+          <tr>
+            <th scope="col" class="px-6 py-3">Service</th>
+            <th scope="col" class="px-6 py-3">Student</th>
+            <th scope="col" class="px-6 py-3">Level</th>
+            <th scope="col" class="px-6 py-3">Deadline</th>
+            <th scope="col" class="px-6 py-3">Status</th>
+            <th scope="col" class="px-6 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-gray-700 hover:bg-gray-800 transition">
+            <td class="px-6 py-4">
+              <div class="font-medium text-white">Dissertation Help</div>
+              <div class="text-gray-400">Computer Science</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-white">John Smith</div>
+              <div class="text-gray-400">john@example.com</div>
+            </td>
+            <td class="px-6 py-4">PhD</td>
+            <td class="px-6 py-4">
+              <div class="text-white">Jun 30, 2023</div>
+              <div class="text-xs text-red-400">Overdue</div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 text-xs rounded-full bg-yellow-900 text-yellow-300">Pending</span>
+            </td>
+            <td class="px-6 py-4 flex space-x-2">
+              <button class="text-gray-400 hover:text-blue-400">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-gray-400 hover:text-red-400">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <!-- Repeat for other rows -->
+        </tbody>
+      </table>
+    </div>
+   <div>
+   <h3 class="text-lg font-semibold text-white mb-4">Create New Service</h3>
+    <form>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Service Type -->
+        <div>
+          <label class="block text-gray-300 mb-2">Service Type</label>
+          <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <option value="">Select service</option>
+            <option value="dissertation">Dissertation Help</option>
+            <option value="thesis">Thesis Assistance</option>
+            <option value="editing">Editing Service</option>
+            <option value="tutoring">Subject Tutoring</option>
+          </select>
+        </div>
+
+        <!-- Subject Area -->
+        <div>
+          <label class="block text-gray-300 mb-2">Subject Area</label>
+          <input type="text" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Computer Science">
+        </div>
+
+        <!-- Student Selection -->
+        <div>
+          <label class="block text-gray-300 mb-2">Student</label>
+          <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <option value="">Select student</option>
+            <option value="1">John Smith (john@example.com)</option>
+            <option value="2">Emma Johnson (emma@example.com)</option>
+            <option value="3">Michael Chen (michael@example.com)</option>
+          </select>
+        </div>
+
+        <!-- Academic Level -->
+        <div>
+          <label class="block text-gray-300 mb-2">Academic Level</label>
+          <div class="flex space-x-4">
+            <label class="inline-flex items-center">
+              <input type="radio" name="level" value="undergrad" class="text-purple-600 bg-gray-700 border-gray-600">
+              <span class="ml-2 text-gray-300">Undergrad</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="level" value="master" class="text-purple-600 bg-gray-700 border-gray-600">
+              <span class="ml-2 text-gray-300">Master's</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="level" value="phd" checked class="text-purple-600 bg-gray-700 border-gray-600">
+              <span class="ml-2 text-gray-300">PhD</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Deadline -->
+        <div>
+          <label class="block text-gray-300 mb-2">Deadline</label>
+          <input
+            type="date"
+            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          >
+        </div>
+
+        <!-- Additional Notes -->
+        <div class="md:col-span-2">
+          <label class="block text-gray-300 mb-2">Additional Notes</label>
+          <textarea
+            rows="3"
+            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            placeholder="Special requirements or details"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-700">
+        <button
+          type="button"
+          @click="isFormOpen = false"
+          class="px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+        >
+          Create Service
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+
+
+</template>
