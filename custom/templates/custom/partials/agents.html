@@ -1,3 +1,256 @@
 <template x-if="activeTab === 'agents'">
-  <div>Agents</div>
+  <div class="bg-gray-750 rounded-xl p-5 border border-gray-700">
+    <div class="flex flex-wrap justify-between items-center mb-6">
+      <div>
+        <h2 class="text-xl font-bold text-white">Agents Management</h2>
+        <p class="text-gray-400">Manage your customer support agents</p>
+      </div>
+      <div class="flex space-x-3 mt-3 sm:mt-0">
+        <button class="px-4 py-2 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 transition">
+          <i class="fas fa-filter mr-2"></i>Filter
+        </button>
+        <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+          <i class="fas fa-plus mr-2"></i>New Agent
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg border border-gray-700">
+      <table class="min-w-full divide-y divide-gray-700">
+        <thead class="bg-gray-800">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Agent
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Contact
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Department
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Tickets
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Status
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-gray-750 divide-y divide-gray-700">
+          <!-- Agent 1 -->
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-900 flex items-center justify-center">
+                  <span class="text-white font-medium">AJ</span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-white">Alex Johnson</div>
+                  <div class="text-xs text-gray-400">ID: AGT-001</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">alex@company.com</div>
+              <div class="text-xs text-gray-400">Ext: 101</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">Technical Support</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">42 open</div>
+              <div class="text-xs text-gray-400">87% resolved</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">Available</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex space-x-2">
+                <button class="text-gray-400 hover:text-blue-400">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-red-400">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="text-gray-400 hover:text-green-400">
+                  <i class="fas fa-headset"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 2 -->
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-900 flex items-center justify-center">
+                  <span class="text-white font-medium">SR</span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-white">Samantha Reyes</div>
+                  <div class="text-xs text-gray-400">ID: AGT-002</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">samantha@company.com</div>
+              <div class="text-xs text-gray-400">Ext: 102</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">Billing Support</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">28 open</div>
+              <div class="text-xs text-gray-400">92% resolved</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-green-900 text-green-300">Available</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex space-x-2">
+                <button class="text-gray-400 hover:text-blue-400">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-red-400">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="text-gray-400 hover:text-green-400">
+                  <i class="fas fa-headset"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 3 -->
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-900 flex items-center justify-center">
+                  <span class="text-white font-medium">MC</span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-white">Michael Chen</div>
+                  <div class="text-xs text-gray-400">ID: AGT-003</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">michael@company.com</div>
+              <div class="text-xs text-gray-400">Ext: 103</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">Technical Support</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">56 open</div>
+              <div class="text-xs text-gray-400">85% resolved</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-gray-700 text-gray-300">On Break</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex space-x-2">
+                <button class="text-gray-400 hover:text-blue-400">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-red-400">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="text-gray-400 hover:text-green-400">
+                  <i class="fas fa-headset"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 4 -->
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-900 flex items-center justify-center">
+                  <span class="text-white font-medium">EP</span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-white">Emma Patel</div>
+                  <div class="text-xs text-gray-400">ID: AGT-004</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">emma@company.com</div>
+              <div class="text-xs text-gray-400">Ext: 104</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">Account Management</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">19 open</div>
+              <div class="text-xs text-gray-400">95% resolved</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-blue-900 text-blue-300">In Call</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex space-x-2">
+                <button class="text-gray-400 hover:text-blue-400">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-red-400">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="text-gray-400 hover:text-green-400">
+                  <i class="fas fa-headset"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Agent 5 -->
+          <tr class="hover:bg-gray-800 transition">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-900 flex items-center justify-center">
+                  <span class="text-white font-medium">DK</span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-white">David Kim</div>
+                  <div class="text-xs text-gray-400">ID: AGT-005</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">david@company.com</div>
+              <div class="text-xs text-gray-400">Ext: 105</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">Technical Support</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-300">63 open</div>
+              <div class="text-xs text-gray-400">79% resolved</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs rounded-full bg-red-900 text-red-300">Offline</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <div class="flex space-x-2">
+                <button class="text-gray-400 hover:text-blue-400">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-red-400">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <button class="text-gray-400 hover:text-green-400">
+                  <i class="fas fa-headset"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
